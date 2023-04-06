@@ -1,0 +1,13 @@
+name: massfunction
+channels:
+  - defaults
+dependencies:
+  - python=3.9
+  - jupyter
+  - pip
+  - pip:
+    - tqdm
+    - scipy
+    - matplotlib
+    - numpy
+    - seaborn
