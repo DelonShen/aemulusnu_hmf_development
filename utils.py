@@ -1,17 +1,22 @@
 import math
 from scipy.integrate import quad
 import matplotlib.pyplot as plt
+import pickle 
+import numpy as np
 
-rhocrit = 2.77533742639e+11  # critical density of the universe in units of h^2 M_sun / Mpc^3
+G = 4.3009e-9 #km^2 Mpc/ (Msolar  s^2)
 
-def M_to_R(M, Omega_m):
-    return (M / (4/3 * math.pi * rhocrit * Omega_m)) ** (1/3)
+def M_to_R(M, box, a):
+    return (M / (4/3 * math.pi * rhom_a(box, a))) ** (1/3) # h^-1 Mpc  
 
-def R_to_M(R, Omega_m):
-    return R ** 3 * 4/3 * math.pi * rhocrit * Omega_m
+def R_to_M(R,box, a):
+    return R ** 3 * 4/3 * math.pi * rhom_a(box, a)
 
 def scaleToRedshift(a):
     return 1/a-1
+
+def redshiftToScale(z):
+    return 1/(1+z)
 
 def sigma2(pk, R):
     def dσ2dk(k):
@@ -22,3 +27,18 @@ def sigma2(pk, R):
     res, err = quad(dσ2dk, 0, 20 / R)
     σ2 = res
     return σ2
+
+def rhom_a(box, a):
+    cosmo_params = pickle.load(open('cosmo_params.pkl', 'rb'))
+    ombh2 = cosmo_params[box]['ombh2']
+    omch2 = cosmo_params[box]['omch2']
+    H0 = cosmo_params[box]['H0'] #[km s^-1 Mpc-1]
+    h = H0/100
+    
+    Ωm = ombh2/h**2 + omch2/h**2
+    ΩΛ = 1 - Ωm
+    ρcrit0 = 3*H0**2/(8*np.pi*G) # h^2 Msol/Mpc^3
+    
+    return Ωm*ρcrit0*(Ωm*a**(-3) + ΩΛ) 
+    
+    

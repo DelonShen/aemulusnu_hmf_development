@@ -30,37 +30,41 @@ for line in tqdm(f):
     
     vol = -1
     a = -1
-    
+    Mpart = -1
     for line in f:
         if('#a' in line):
             a = eval(line.split()[2])
+        if('Particle mass' in line):
+            Mpart = eval(line.split()[2])
         if('Box size' in line):
             vol = eval(line.split()[2])**3
             break
+            
     
-    nBins = 30
-    edges = np.logspace(np.log10(.9e11), np.log10(2e17), nBins, 10.)
+    
+    nBins = 15
+    edges = np.logspace(np.log10(100*Mpart), np.log10(2e16), nBins, 10.)
     color = plt.colormaps["rainbow"]((i+1)/N_snapshots)
     N, bin_edge, bin_idx = binned_statistic(snapshot_mass, np.ones_like(snapshot_mass), 
                                             statistic='count', bins=edges)
     bin_cnters = np.array([np.sqrt(bin_edge[i]*bin_edge[i+1]) for i in range(len(bin_edge)-1)])
     dM = np.array([(bin_edge[i+1]-bin_edge[i]) for i in range(len(bin_edge)-1)])
     
-    not0 = np.where(N>0)
+    Ngt10 = np.where(N>10)
     
-    dndM = (N[not0]/vol)/dM[not0]
+    dndM = (N[Ngt10]/vol)/dM[Ngt10]
 
-    ax.plot(bin_cnters[not0], dndM, c=color)
-    ax.scatter(bin_cnters[not0], dndM, c=color,
+    ax.plot(bin_cnters[Ngt10], dndM, c=color)
+    ax.scatter(bin_cnters[Ngt10], dndM, c=color,
               label=r'$a=%.2f$'%(a))
     i+=1
-    dndMs[a] = {'M':bin_cnters[not0], 'dndM':dndM}
+    dndMs[a] = {'M':bin_cnters[Ngt10], 'dndM':dndM}
 f.close()
 ax.set_title(curr_run_fname.split('/')[-2])
 ax.set_xscale('log')
 ax.set_yscale('log')
 ax.set_xlabel(r'Mass $[h^{-1}M_\odot]$')
-ax.set_ylabel(r'$dn/dM$')
+ax.set_ylabel(r'$dn/dM\ [h^4{\rm Mpc}^{-3}M_\odot^{-1}]$')
 ax.legend(frameon=False)
 
 plt.savefig('figures/'+curr_run_fname.split('/')[-2]+'_dndM.pdf', bbox_inches='tight')
