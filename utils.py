@@ -25,7 +25,7 @@ def sigma2(pk, R):
         W = (3 / x) * (np.sin(x) / x**2 - np.cos(x) / x)
         dσ2dk = W**2 * pk(k) * k**2 / 2 / np.pi**2
         return dσ2dk
-    res, err = fixed_quad(dσ2dk, 0, 20 / R)
+    res, err = quad(dσ2dk, 0, 20 / R)
     σ2 = res
     return σ2
 
@@ -39,6 +39,6 @@ def rhom_a(box, a):
     ΩΛ = 1 - Ωm
     ρcrit0 = 3*H0**2/(8*np.pi*G) # h^2 Msol/Mpc^3
     
-    return Ωm*ρcrit0*(Ωm*a**(-3) + ΩΛ) 
+    return Ωm*ρcrit0*(Ωm*a**(-3) + ΩΛ) * a**(3) #times a^3 bc rho in comoving(?) 
     
     

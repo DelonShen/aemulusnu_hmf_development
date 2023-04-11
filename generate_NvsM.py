@@ -43,7 +43,7 @@ for line in tqdm(f):
             
     
     
-    nBins = 15
+    nBins = 32
     edges = np.logspace(np.log10(100*Mpart), np.log10(2e16), nBins, 10.)
     color = plt.colormaps["rainbow"]((i+1)/N_snapshots)[:-1]
     N, bin_edge, bin_idx = binned_statistic(snapshot_mass, np.ones_like(snapshot_mass), 
