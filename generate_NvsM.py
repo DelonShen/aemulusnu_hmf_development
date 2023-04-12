@@ -44,11 +44,12 @@ for line in tqdm(f):
     
     
     nBins = 32
-    edges = np.logspace(np.log10(100*Mpart), np.log10(2e16), nBins, 10.)
+    edges = np.logspace(np.log10(100*Mpart), 17, nBins, 10.)
     color = plt.colormaps["rainbow"]((i+1)/N_snapshots)[:-1]
     N, bin_edge, bin_idx = binned_statistic(snapshot_mass, np.ones_like(snapshot_mass), 
                                             statistic='count', bins=edges)
     bin_cnters = np.array([np.sqrt(bin_edge[i]*bin_edge[i+1]) for i in range(len(bin_edge)-1)])
+    edge_pairs = np.array([[edges[i], edges[i+1]] for i in range(len(edges)-1)])
     
     Ngt10 = np.where(N>10)
     
@@ -57,7 +58,9 @@ for line in tqdm(f):
               label=r'$a=%.2f$'%(a))
     
     i+=1
-    NvMs[a] = {'M':bin_cnters[Ngt10], 'N':N[Ngt10], 'vol':vol, 'Mpart':Mpart, 'bin_edges':bin_edge}
+    assert(len(bin_cnters) == len(edge_pairs))
+    assert(len(edge_pairs) == len(N))
+    NvMs[a] = {'M':bin_cnters[Ngt10], 'N':N[Ngt10], 'vol':vol, 'Mpart':Mpart, 'edge_pairs':edge_pairs[Ngt10]}
 
 f.close()
 ax.set_title(curr_run_fname.split('/')[-2])

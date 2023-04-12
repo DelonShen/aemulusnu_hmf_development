@@ -3,6 +3,7 @@ from scipy.integrate import quad, fixed_quad
 import matplotlib.pyplot as plt
 import pickle 
 import numpy as np
+import functools
 
 G = 4.3009e-9 #km^2 Mpc/ (Msolar  s^2) weird units to make rhom_a good units 
 cosmo_params = pickle.load(open('cosmo_params.pkl', 'rb'))
@@ -19,6 +20,7 @@ def scaleToRedshift(a):
 def redshiftToScale(z):
     return 1/(1+z)
 
+@functools.cache
 def sigma2(pk, R):
     def dσ2dk(k):
         x = k * R
@@ -29,6 +31,7 @@ def sigma2(pk, R):
     σ2 = res
     return σ2
 
+@functools.cache
 def rhom_a(box, a):
     ombh2 = cosmo_params[box]['ombh2']
     omch2 = cosmo_params[box]['omch2']
@@ -41,4 +44,17 @@ def rhom_a(box, a):
     
     return Ωm*ρcrit0*(Ωm*a**(-3) + ΩΛ) * a**(3) #times a^3 bc rho in comoving(?) 
     
+@functools.cache
+def dsigma2dR(pk, R):
+    def dσ2dRdk(k):
+        x = k * R
+        W = (3 / x) * (np.sin(x) / x**2 - np.cos(x) / x)
+        dWdx = (-3 / x) * ((3 / x**2 - 1) * np.sin(x) / x - 3 * np.cos(x) / x**2)
+        dσ2dRdk = 2 * W * dWdx * pk(k) * k**3 / 2 / np.pi**2
+        return dσ2dRdk
+    res, err = quad(dσ2dRdk, 0, 20 / R)
+    return res
+
+def dRdM(M, box, a):
+    return 1/(6**(2/3)*np.pi**(1/3)*M**(2/3)*rhom_a(box, a)**(1/3))
     
