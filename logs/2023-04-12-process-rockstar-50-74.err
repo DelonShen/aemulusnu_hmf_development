@@ -1,0 +1,3 @@
+terminate called after throwing an instance of 'std::out_of_range'
+  what():  basic_string::substr: __pos (which is 1) > this->size() (which is 0)
+/var/spool/slurmd/job15860730/slurm_script: line 25: 174826 Aborted                 ./a.out Box63_1400
