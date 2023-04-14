@@ -124,7 +124,7 @@ for a in NvMs:
     edges += [edge_pairs[-1][1]]    
 
     #now lets get to spatial jackknife
-    N_DIVS = 10 #each axis is diided into N_DIVS parts so in total the box
+    N_DIVS = 8 #each axis is diided into N_DIVS parts so in total the box
                #is divided into N_DIVS**3 boxes
 
     #compute the size of each smaller cube

@@ -2,9 +2,8 @@ from scipy.special import gamma
 from scipy.optimize import curve_fit
 from utils import *
 
-d0 = 2.4
-def p(a, p0, p1, p2, p3):
-    oup = (p0)+(a-0.5)*(p1)+(a-0.5)**2*(p2)+(a-0.5)**3*(p3)
+def p(a, p0, p1):
+    oup = (p0)+(a-0.5)*(p1)
     return oup
 
 def B(a, M, σM, d, e, f, g):
@@ -21,18 +20,21 @@ def f_G(a, M, σM, d, e, f, g):
     return oup
 
 def tinker(a, M, 
-            d1, d2, d3,
-           e0, e1, e2, e3,
-           f0, f1, f2, f3,
-           g0, g1, g2, g3,
-           dlnσinvdM, Pk, R, rhobm):
-    d = p(a, d0, d1, d2, d3)
-    e = p(a, e0, e1, e2, e3)
-    f = p(a, f0, f1, f2, f3)
-    g = p(a, g0, g1, g2, g3)
+           d0, d1, 
+           e0, e1, 
+           f0, f1, 
+           g0, g1,
+           dlnσinvdM, Pk, R, 
+           rhobm, log10=False):
+    d = p(a, d0, d1,)
+    e = p(a, e0, e1,)
+    f = p(a, f0, f1,)
+    g = p(a, g0, g1,)
     
     σM = np.sqrt(sigma2(Pk, R))
     oup = f_G(a, M, σM, d, e, f, g)
     oup *= rhobm/M
     oup *= dlnσinvdM(M)
+    if(log10):
+        oup *= M*np.log(10)
     return oup

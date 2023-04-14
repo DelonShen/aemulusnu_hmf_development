@@ -1,0 +1,48 @@
+
+CommandNotFoundError: Your shell has not been properly configured to use 'conda activate'.
+To initialize your shell, run
+
+    $ conda init <SHELL_NAME>
+
+Currently supported shells are:
+  - bash
+  - fish
+  - tcsh
+  - xonsh
+  - zsh
+  - powershell
+
+See 'conda init --help' for more information and options.
+
+IMPORTANT: You may need to close and restart your shell after running 'conda init'.
+
+
+0it [00:00, ?it/s]/home/users/delon/aemulusnu_massfunction/spatial_jackknife_and_NvsM.py:78: UserWarning: *c* argument looks like a single numeric RGB or RGBA sequence, which should be avoided as value-mapping will have precedence in case its length matches with *x* & *y*.  Please use the *color* keyword-argument or provide a 2D array with a single row if you intend to specify the same RGB or RGBA value for all points.
+  ax.scatter(bin_cnters, N, s=50, marker='x', c=color)
+1it [00:02,  2.35s/it]/home/users/delon/aemulusnu_massfunction/spatial_jackknife_and_NvsM.py:78: UserWarning: *c* argument looks like a single numeric RGB or RGBA sequence, which should be avoided as value-mapping will have precedence in case its length matches with *x* & *y*.  Please use the *color* keyword-argument or provide a 2D array with a single row if you intend to specify the same RGB or RGBA value for all points.
+  ax.scatter(bin_cnters, N, s=50, marker='x', c=color)
+2it [00:04,  2.37s/it]/home/users/delon/aemulusnu_massfunction/spatial_jackknife_and_NvsM.py:78: UserWarning: *c* argument looks like a single numeric RGB or RGBA sequence, which should be avoided as value-mapping will have precedence in case its length matches with *x* & *y*.  Please use the *color* keyword-argument or provide a 2D array with a single row if you intend to specify the same RGB or RGBA value for all points.
+  ax.scatter(bin_cnters, N, s=50, marker='x', c=color)
+3it [00:07,  2.65s/it]/home/users/delon/aemulusnu_massfunction/spatial_jackknife_and_NvsM.py:78: UserWarning: *c* argument looks like a single numeric RGB or RGBA sequence, which should be avoided as value-mapping will have precedence in case its length matches with *x* & *y*.  Please use the *color* keyword-argument or provide a 2D array with a single row if you intend to specify the same RGB or RGBA value for all points.
+  ax.scatter(bin_cnters, N, s=50, marker='x', c=color)
+4it [00:10,  2.86s/it]/home/users/delon/aemulusnu_massfunction/spatial_jackknife_and_NvsM.py:78: UserWarning: *c* argument looks like a single numeric RGB or RGBA sequence, which should be avoided as value-mapping will have precedence in case its length matches with *x* & *y*.  Please use the *color* keyword-argument or provide a 2D array with a single row if you intend to specify the same RGB or RGBA value for all points.
+  ax.scatter(bin_cnters, N, s=50, marker='x', c=color)
+5it [00:14,  3.18s/it]/home/users/delon/aemulusnu_massfunction/spatial_jackknife_and_NvsM.py:78: UserWarning: *c* argument looks like a single numeric RGB or RGBA sequence, which should be avoided as value-mapping will have precedence in case its length matches with *x* & *y*.  Please use the *color* keyword-argument or provide a 2D array with a single row if you intend to specify the same RGB or RGBA value for all points.
+  ax.scatter(bin_cnters, N, s=50, marker='x', c=color)
+6it [00:18,  3.44s/it]/home/users/delon/aemulusnu_massfunction/spatial_jackknife_and_NvsM.py:78: UserWarning: *c* argument looks like a single numeric RGB or RGBA sequence, which should be avoided as value-mapping will have precedence in case its length matches with *x* & *y*.  Please use the *color* keyword-argument or provide a 2D array with a single row if you intend to specify the same RGB or RGBA value for all points.
+  ax.scatter(bin_cnters, N, s=50, marker='x', c=color)
+7it [00:22,  3.63s/it]/home/users/delon/aemulusnu_massfunction/spatial_jackknife_and_NvsM.py:78: UserWarning: *c* argument looks like a single numeric RGB or RGBA sequence, which should be avoided as value-mapping will have precedence in case its length matches with *x* & *y*.  Please use the *color* keyword-argument or provide a 2D array with a single row if you intend to specify the same RGB or RGBA value for all points.
+  ax.scatter(bin_cnters, N, s=50, marker='x', c=color)
+8it [00:26,  3.72s/it]/home/users/delon/aemulusnu_massfunction/spatial_jackknife_and_NvsM.py:78: UserWarning: *c* argument looks like a single numeric RGB or RGBA sequence, which should be avoided as value-mapping will have precedence in case its length matches with *x* & *y*.  Please use the *color* keyword-argument or provide a 2D array with a single row if you intend to specify the same RGB or RGBA value for all points.
+  ax.scatter(bin_cnters, N, s=50, marker='x', c=color)
+9it [00:30,  3.81s/it]/home/users/delon/aemulusnu_massfunction/spatial_jackknife_and_NvsM.py:78: UserWarning: *c* argument looks like a single numeric RGB or RGBA sequence, which should be avoided as value-mapping will have precedence in case its length matches with *x* & *y*.  Please use the *color* keyword-argument or provide a 2D array with a single row if you intend to specify the same RGB or RGBA value for all points.
+  ax.scatter(bin_cnters, N, s=50, marker='x', c=color)
+10it [00:34,  3.96s/it]/home/users/delon/aemulusnu_massfunction/spatial_jackknife_and_NvsM.py:78: UserWarning: *c* argument looks like a single numeric RGB or RGBA sequence, which should be avoided as value-mapping will have precedence in case its length matches with *x* & *y*.  Please use the *color* keyword-argument or provide a 2D array with a single row if you intend to specify the same RGB or RGBA value for all points.
+  ax.scatter(bin_cnters, N, s=50, marker='x', c=color)
+11it [00:38,  3.97s/it]/home/users/delon/aemulusnu_massfunction/spatial_jackknife_and_NvsM.py:78: UserWarning: *c* argument looks like a single numeric RGB or RGBA sequence, which should be avoided as value-mapping will have precedence in case its length matches with *x* & *y*.  Please use the *color* keyword-argument or provide a 2D array with a single row if you intend to specify the same RGB or RGBA value for all points.
+  ax.scatter(bin_cnters, N, s=50, marker='x', c=color)
+12it [00:43,  4.07s/it]/home/users/delon/aemulusnu_massfunction/spatial_jackknife_and_NvsM.py:78: UserWarning: *c* argument looks like a single numeric RGB or RGBA sequence, which should be avoided as value-mapping will have precedence in case its length matches with *x* & *y*.  Please use the *color* keyword-argument or provide a 2D array with a single row if you intend to specify the same RGB or RGBA value for all points.
+  ax.scatter(bin_cnters, N, s=50, marker='x', c=color)
+13it [00:47,  4.22s/it]/home/users/delon/aemulusnu_massfunction/spatial_jackknife_and_NvsM.py:78: UserWarning: *c* argument looks like a single numeric RGB or RGBA sequence, which should be avoided as value-mapping will have precedence in case its length matches with *x* & *y*.  Please use the *color* keyword-argument or provide a 2D array with a single row if you intend to specify the same RGB or RGBA value for all points.
+  ax.scatter(bin_cnters, N, s=50, marker='x', c=color)
+14it [00:52,  4.26s/it]

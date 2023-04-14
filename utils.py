@@ -43,7 +43,6 @@ def sigma2(pk, R):
     σ2 = res
     return σ2
 
-@functools.cache
 def rhom_a(box, a):
     ombh2 = cosmo_params[box]['ombh2']
     omch2 = cosmo_params[box]['omch2']
@@ -53,7 +52,6 @@ def rhom_a(box, a):
     Ωm = ombh2/h**2 + omch2/h**2
     ΩΛ = 1 - Ωm
     ρcrit0 = 3*H0**2/(8*np.pi*G) # h^2 Msol/Mpc^3
-    
     return Ωm*ρcrit0*(Ωm*a**(-3) + ΩΛ) 
     
 @functools.cache
