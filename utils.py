@@ -13,17 +13,28 @@ def M_to_R(M, box, a):
     Converts mass of top-hat filter to radius of top-hat filter
     
     Parameters:
-        - M (float): Mass of the top hat filter
+        - M (float): Mass of the top hat filter in units Msolor/h
         - box (string): Which Aemulus nu box we're considering 
         - a (float): Redshift 
 
     Returns:
-        - R (float): Corresponding radius of top hat filter
+        - R (float): Corresponding radius of top hat filter Mpc/h
     """
 
     return (M / (4/3 * math.pi * rhom_a(box, a))) ** (1/3) # h^-1 Mpc  
 
 def R_to_M(R,box, a):
+    """
+    Converts radius of top-hat filter to mass of top-hat filter
+    
+    Parameters:
+        - R (float): Radius of the top hat filter in units Mpc/h
+        - box (string): Which Aemulus nu box we're considering 
+        - a (float): Redshift 
+
+    Returns:
+        - M (float): Corresponding mass of top hat filter Msolar/h 
+    """
     return R ** 3 * 4/3 * math.pi * rhom_a(box, a)
 
 def scaleToRedshift(a):
@@ -34,6 +45,18 @@ def redshiftToScale(z):
 
 @functools.cache
 def sigma2(pk, R):
+    """
+    Adapated from https://github.com/komatsu5147/MatterPower.jl
+    Computes variance of mass fluctuations with top hat filter of radius R
+    For this function let k be the comoving wave number with units h/Mpc
+    
+    Parameters:
+        - pk (funtion): P(k), the matter power spectrum which has units Mpc^3 / h^3
+        - R (float): The smoothing scale in units Mpc/h
+    Returns:
+        - sigma2 (float): The variance of mass fluctuations
+    """
+
     def dσ2dk(k):
         x = k * R
         W = (3 / x) * (np.sin(x) / x**2 - np.cos(x) / x)
@@ -46,16 +69,28 @@ def sigma2(pk, R):
 def rhom_a(box, a):
     ombh2 = cosmo_params[box]['ombh2']
     omch2 = cosmo_params[box]['omch2']
-    H0 = cosmo_params[box]['H0'] #[km s^-1 Mpc-1]
-    h = H0/100
+    H0 = cosmo_params[box]['H0'] #[100h km s^-1 Mpc-1]
+    h = H0/100 
     
     Ωm = ombh2/h**2 + omch2/h**2
     ΩΛ = 1 - Ωm
     ρcrit0 = 3*H0**2/(8*np.pi*G) # h^2 Msol/Mpc^3
-    return Ωm*ρcrit0*(Ωm*a**(-3) + ΩΛ) 
+    return Ωm*ρcrit0*(Ωm*a**(-3) + ΩΛ) * a**3 # h^2 Msol/Mpc^3
     
 @functools.cache
 def dsigma2dR(pk, R):
+    """
+    Adapated from https://github.com/komatsu5147/MatterPower.jl
+    Computes deriative of variance of mass fluctuations wrt top hat filter of radius R
+    For this function let k be the comoving wave number with units h/Mpc
+    
+    Parameters:
+        - pk (funtion): P(k), the matter power spectrum which has units Mpc^3 / h^3
+        - R (float): The smoothing scale in units Mpc/h
+    Returns:
+        - dsigma2dR (float): The derivative of the variance of mass fluctuations wrt R
+    """
+
     def dσ2dRdk(k):
         x = k * R
         W = (3 / x) * (np.sin(x) / x**2 - np.cos(x) / x)
