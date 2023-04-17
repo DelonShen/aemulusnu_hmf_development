@@ -236,9 +236,10 @@ def log_likelihood(param_values):
     return lp + log_prob(param_values)
 
 from utils import *
-guess = np.random.uniform(size=(len(param_names)))
-while(not np.isfinite(log_likelihood(guess))):
-    guess = np.random.uniform(size=(len(param_names)))
+guess = [ 1.37850024,  0.48741841,  4.40085649, -2.37477071,  0.40872013, -0.52351264,
+  0.64074591,  0.82683589]
+# while(not np.isfinite(log_likelihood(guess))):
+#     guess = np.random.uniform(size=(len(param_names)))
 
 #Start by sampling with a maximum likelihood approach
 from scipy import optimize as optimize
