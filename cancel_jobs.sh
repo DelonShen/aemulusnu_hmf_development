@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Get the list of job IDs containing "compute-ml-fit"
-job_ids=$(squeue -u delon -o "%i %j" | grep "compute-ml-fit" | awk '{print $1}')
+job_ids=$(squeue -u delon -o "%i %j" | grep "spatial" | awk '{print $1}')
 
 # Check if any jobs match the criteria
 if [[ -z $job_ids ]]; then

@@ -65,11 +65,6 @@ for line in tqdm(f):
     bin_cnters = np.array([np.sqrt(bin_edge[i]*bin_edge[i+1]) for i in range(len(bin_edge)-1)])
     edge_pairs = np.array([[edges[i], edges[i+1]] for i in range(len(edges)-1)])
     
-    #we'll look at only the bins with more than 10 halos in them
-    Ngt10 = np.where(N>=10)
-    bin_cnters = bin_cnters[Ngt10]
-    edge_pairs = edge_pairs[Ngt10]
-    N = N[Ngt10]
     
     #redefine the edges that we'll jackknife on 
     edges = [edge[0] for edge in edge_pairs]
@@ -90,7 +85,7 @@ for line in tqdm(f):
     i+=1
     assert(len(bin_cnters) == len(edge_pairs))
     assert(len(edge_pairs) == len(N))
-    NvMs[a] = {'M':bin_cnters, 'N':N, 'vol':vol, 'Mpart':Mpart, 'edge_pairs':edge_pairs, 'bin_idx':bin_idx, 'Ngt10':Ngt10}
+    NvMs[a] = {'M':bin_cnters, 'N':N, 'vol':vol, 'Mpart':Mpart, 'edge_pairs':edge_pairs, 'bin_idx':bin_idx}
 
     
 f.close()
@@ -116,7 +111,6 @@ for a in NvMs:
     Mpart = NvMs[a]['Mpart']
     edge_pairs = NvMs[a]['edge_pairs']
     bin_idx = NvMs[a]['bin_idx']
-    Ngt10 = NvMs[a]['Ngt10']
     print(a, np.min(bin_idx), np.max(bin_idx))
     print(len(bin_idx), len(N))
     #redefine the edges that we'll jackknife on 
@@ -141,17 +135,15 @@ for a in NvMs:
     
     jackknife_data = []
     
-    idx_to_bin = dict(zip(np.array(Ngt10)[0], range(len(N))))
     print(len(cube_assignment), len(bin_idx))
     for i in trange(N_DIVS**3):
         current_cube = np.where(cube_assignment == i)
         curr_N = np.zeros_like(N)
         for halo in bin_idx[current_cube]:
-            #bin_idx=1 corresponds to first bin (e.g. 0 in idx_to_bin)
-            #bin_idx-1 = idx of bin
-            if(halo-1 not in idx_to_bin.keys()): 
+            #halo=1 corresponds to first bin 
+            if(halo==0): #not in any bin 
                 continue
-            curr_N[idx_to_bin[halo-1]] += 1
+            curr_N[halo-1] += 1
         #get the number count of halos in the mass bins
         jackknife_data += [[a-b for (a,b) in zip(N, curr_N)]]
     jackknife_data = np.array(jackknife_data).T
