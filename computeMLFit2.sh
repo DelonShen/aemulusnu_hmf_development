@@ -3,8 +3,8 @@
 # Set the batch size
 batch_size=10
 
-# Loop from 0 to 9 to generate the job scripts
-for i in {0..4}; do
+ for i in {0..4}; do
+
   # Generate the job script file name
   job_script="job_n50_${i}.sh"
 
@@ -23,7 +23,8 @@ for i in {0..4}; do
   echo "conda activate massfunction" >> "${job_script}"
 
   # Loop to generate the Python commands for the batch
-  for j in {0..9}; do
+   for j in {0..9}; do
+
     # Calculate the file number
     file_number=$((i * batch_size + j))
 

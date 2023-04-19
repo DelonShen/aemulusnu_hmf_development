@@ -1,0 +1,43 @@
+
+CommandNotFoundError: Your shell has not been properly configured to use 'conda activate'.
+To initialize your shell, run
+
+    $ conda init <SHELL_NAME>
+
+Currently supported shells are:
+  - bash
+  - fish
+  - tcsh
+  - xonsh
+  - zsh
+  - powershell
+
+See 'conda init --help' for more information and options.
+
+IMPORTANT: You may need to close and restart your shell after running 'conda init'.
+
+
+  0%|                                                                                              | 0/16 [00:00<?, ?it/s]/home/users/delon/aemulusnu_massfunction/utils.py:65: IntegrationWarning: The maximum number of subdivisions (50) has been achieved.
+  If increasing the limit yields no improvement it is advised to analyze 
+  the integrand in order to determine the difficulties.  If the position of a 
+  local difficulty can be determined (singularity, discontinuity) one will 
+  probably gain from splitting up the interval and calling the integrator 
+  on the subranges.  Perhaps a special-purpose integrator should be used.
+  res, err = quad(dσ2dk, 0, 20 / R)
+/home/users/delon/aemulusnu_massfunction/utils.py:100: IntegrationWarning: The maximum number of subdivisions (50) has been achieved.
+  If increasing the limit yields no improvement it is advised to analyze 
+  the integrand in order to determine the difficulties.  If the position of a 
+  local difficulty can be determined (singularity, discontinuity) one will 
+  probably gain from splitting up the interval and calling the integrator 
+  on the subranges.  Perhaps a special-purpose integrator should be used.
+  res, err = quad(dσ2dRdk, 0, 20 / R)
+  6%|█████▍                                                                                | 1/16 [00:02<00:42,  2.84s/it] 12%|██████████▊                                                                           | 2/16 [00:05<00:40,  2.88s/it] 19%|████████████████▏                                                                     | 3/16 [00:08<00:37,  2.92s/it]/home/users/delon/aemulusnu_massfunction/utils.py:65: IntegrationWarning: The occurrence of roundoff error is detected, which prevents 
+  the requested tolerance from being achieved.  The error may be 
+  underestimated.
+  res, err = quad(dσ2dk, 0, 20 / R)
+ 25%|█████████████████████▌                                                                | 4/16 [00:11<00:35,  2.95s/it]/home/users/delon/aemulusnu_massfunction/utils.py:100: IntegrationWarning: The occurrence of roundoff error is detected, which prevents 
+  the requested tolerance from being achieved.  The error may be 
+  underestimated.
+  res, err = quad(dσ2dRdk, 0, 20 / R)
+ 31%|██████████████████████████▉                                                           | 5/16 [00:14<00:32,  2.98s/it] 38%|████████████████████████████████▎                                                     | 6/16 [00:17<00:30,  3.01s/it] 44%|█████████████████████████████████████▋                                                | 7/16 [00:20<00:27,  3.04s/it] 50%|███████████████████████████████████████████                                           | 8/16 [00:24<00:24,  3.07s/it] 56%|████████████████████████████████████████████████▍                                     | 9/16 [00:27<00:21,  3.08s/it] 62%|█████████████████████████████████████████████████████▏                               | 10/16 [00:30<00:18,  3.09s/it] 69%|██████████████████████████████████████████████████████████▍                          | 11/16 [00:33<00:15,  3.12s/it] 75%|███████████████████████████████████████████████████████████████▊                     | 12/16 [00:36<00:12,  3.13s/it] 81%|█████████████████████████████████████████████████████████████████████                | 13/16 [00:39<00:09,  3.17s/it] 88%|██████████████████████████████████████████████████████████████████████████▍          | 14/16 [00:43<00:06,  3.20s/it] 94%|███████████████████████████████████████████████████████████████████████████████▋     | 15/16 [00:46<00:03,  3.22s/it]100%|█████████████████████████████████████████████████████████████████████████████████████| 16/16 [00:49<00:00,  3.24s/it]100%|█████████████████████████████████████████████████████████████████████████████████████| 16/16 [00:49<00:00,  3.11s/it]
+  0%|                                                                                            | 0/1000 [00:00<?, ?it/s]  0%|                                                                                  | 1/1000 [00:03<1:00:23,  3.63s/it]  0%|▏                                                                                 | 2/1000 [00:07<1:04:12,  3.86s/it]  0%|▏                                                                                 | 3/1000 [00:11<1:03:03,  3.80s/it]  0%|▎                                                                                 | 4/1000 [00:14<1:01:45,  3.72s/it]  0%|▍                                                                                   | 5/1000 [00:18<59:44,  3.60s/it]  1%|▍                                                                                 | 6/1000 [00:22<1:00:08,  3.63s/it]  1%|▌                                                                                 | 7/1000 [00:25<1:00:44,  3.67s/it]  1%|▋                                                                                   | 8/1000 [00:29<59:25,  3.59s/it]  1%|▊                                                                                   | 9/1000 [00:32<58:37,  3.55s/it]  1%|▊                                                                                  | 10/1000 [00:36<57:47,  3.50s/it]  1%|▉                                                                                  | 11/1000 [00:39<57:17,  3.48s/it]  1%|▉                                                                                  | 12/1000 [00:42<57:10,  3.47s/it]  1%|█                                                                                  | 13/1000 [00:46<58:27,  3.55s/it]  1%|█▏                                                                                 | 14/1000 [00:50<57:11,  3.48s/it]  2%|█▏                                                                                 | 15/1000 [00:53<56:52,  3.46s/it]  2%|█▎                                                                                 | 16/1000 [00:56<56:26,  3.44s/it]  2%|█▍                                                                                 | 17/1000 [01:00<55:56,  3.41s/it]

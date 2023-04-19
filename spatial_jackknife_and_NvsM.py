@@ -133,7 +133,7 @@ for a in NvMs:
     #ravel_multi_index indexes the voxels in 3D with a single integer
     cube_assignment = np.ravel_multi_index(cube_indices.T, (N_DIVS, N_DIVS, N_DIVS), order='F')
     
-    jackknife_data = []
+    bin_counts = []
     
     print(len(cube_assignment), len(bin_idx))
     for i in trange(N_DIVS**3):
@@ -144,13 +144,34 @@ for a in NvMs:
             if(halo==0): #not in any bin 
                 continue
             curr_N[halo-1] += 1
-        #get the number count of halos in the mass bins
-        jackknife_data += [[a-b for (a,b) in zip(N, curr_N)]]
-    jackknife_data = np.array(jackknife_data).T
-    jackknife_covariance = np.cov(jackknife_data)
-    print(len(N), jackknife_data.shape, jackknife_covariance.shape)
-    jackknife[a] = [jackknife_data, jackknife_covariance]
-    
+        #get the number count of halos in the mass bins in this subcube
+        bin_counts += [curr_N]
+    bin_counts = np.array(bin_counts)
+    mean_counts = np.mean(bin_counts, axis=0)
+    dev_counts = bin_counts - mean_counts
+#     print('aaaa')
+#     print(np.shape(bin_counts))
+#     print(np.shape(dev_counts))
+#     print(np.shape(mean_counts))
+#     print('aaaa')
+
+    cov_counts = np.zeros((len(mean_counts), len(mean_counts)))    
+
+    for i in range(N_DIVS**3):
+        # Remove the i-th sub-cube from the sample and calculate the jackknife estimate
+        leave_out_idx = np.where(np.arange(N_DIVS**3) != i)
+        jackknife_counts = np.mean(bin_counts[leave_out_idx], axis=0)
+        dev_jackknife = jackknife_counts - mean_counts
+#         print(np.shape(dev_jackknife))
+#         print(np.shape(dev_counts[i]))
+
+        cov_counts += np.outer(dev_counts[i], dev_jackknife)
+
+    jackknife_covariance = (N_DIVS**3 - 1)/N_DIVS**3 * cov_counts
+
+
+#     print(len(N), jackknife_covariance.shape)
+    jackknife[a] = [bin_counts, jackknife_covariance]
 f_pos.close()
 
 jackknife_covs_fname = '/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/'+curr_run_fname.split('/')[-2]+'_jackknife_covs.pkl'

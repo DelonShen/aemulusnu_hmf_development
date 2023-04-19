@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH --job-name=spatial-jackknife-and-NvsM-n50-2
-#SBATCH --output=logs/2023-04-18-jack-and-NvsM-n50-2.out
-#SBATCH --error=logs/2023-04-18-jack-and-NvsM-n50-2.err
+#SBATCH --job-name=compute-ml-fit-2
+#SBATCH --output=logs/2023-04-19-compute-ml-fit-2.out
+#SBATCH --error=logs/2023-04-19-compute-ml-fit-2.err
 #SBATCH --time=600:00
 #SBATCH -p kipac
 #SBATCH --nodes=1
@@ -10,13 +10,13 @@
 
 conda init
 conda activate massfunction
-python spatial_jackknife_and_NvsM.py Box_n50_20_1400
-python spatial_jackknife_and_NvsM.py Box_n50_21_1400
-python spatial_jackknife_and_NvsM.py Box_n50_22_1400
-python spatial_jackknife_and_NvsM.py Box_n50_23_1400
-python spatial_jackknife_and_NvsM.py Box_n50_24_1400
-python spatial_jackknife_and_NvsM.py Box_n50_25_1400
-python spatial_jackknife_and_NvsM.py Box_n50_26_1400
-python spatial_jackknife_and_NvsM.py Box_n50_27_1400
-python spatial_jackknife_and_NvsM.py Box_n50_28_1400
-python spatial_jackknife_and_NvsM.py Box_n50_29_1400
+python computeMLFit.py Box20_1400
+python computeMLFit.py Box21_1400
+python computeMLFit.py Box22_1400
+python computeMLFit.py Box23_1400
+python computeMLFit.py Box24_1400
+python computeMLFit.py Box25_1400
+python computeMLFit.py Box26_1400
+python computeMLFit.py Box27_1400
+python computeMLFit.py Box28_1400
+python computeMLFit.py Box29_1400

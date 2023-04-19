@@ -34,8 +34,9 @@ z_to_a = dict(zip(Pkz.keys(), NvMs.keys()))
 # LOOKING_AT = [1]
 from utils import *
 
-N_data = {}
-M_data = {}
+N_data = []
+M_data = []
+aux_data = []
 from scipy.interpolate import interp1d
 
 dlnσinvdMs = {}
@@ -65,8 +66,10 @@ for z in tqdm(Pkz.keys()):
         Mpart = c_data['Mpart']
     assert(Mpart == c_data['Mpart'])
 
-    N_data[a] = N
-    M_data[a] = Ms
+    for N_curr, M_curr, edge_pair in zip(N, Ms, edge_pairs):
+        N_data += [N_curr]
+        M_data += [M_curr]
+        aux_data += [{'a':a, 'edge_pair':edge_pair}]
     
     M_numerics = np.logspace(np.log10(100*Mpart), 17, 50) #h^-1 Msolar
     
@@ -89,10 +92,15 @@ for z in tqdm(Pkz.keys()):
     dlnσinvdMs[a] = f_dlnsinvdM
     
     f_M = np.logspace(np.log10(np.min(Ms)), np.log10(np.max(Ms)-1),100)
+    
+    
+N_data = np.array(N_data)
+print(N_data.shape)
+M_data = np.array(M_data)
+print(M_data.shape)
+aux_data = np.array(aux_data)
 
-for a in N_data:
-    N_data[a] = np.array(N_data[a])
-    M_data[a] = np.array(M_data[a])
+
 
 from scipy.special import gamma
 from scipy.optimize import curve_fit
@@ -150,18 +158,6 @@ FIXED_VALS = {
 # 'f1':f1,
 }
 
-def log_prior(param_values):
-    #uniform prior
-    params = dict(zip(param_names, param_values))
-    for param in FIXED_VALS:
-        params[param] = FIXED_VALS[param]
-    for a in a_list:
-        curr_params = [p(a, params['%s0'%l], params['%s1'%l]) for l in ['d','e','f','g']]
-        for curr_param in curr_params:
-            if(curr_param< 0 or curr_param>5):
-                return -np.inf
-    return 0
-
 M_numerics = np.logspace(np.log10(100*Mpart), 17, 50)
 
 jackknife_covs_fname = '/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/'+box+'_jackknife_covs.pkl'
@@ -169,29 +165,63 @@ jackknife_covs_f = open(jackknife_covs_fname, 'rb')
 jackknife = pickle.load(jackknife_covs_f)
 jackknife_covs_f.close()
 
-def calculate_inner_product(X, K_X):
-    """
-    Calculates -1/2 X^T (K_X)^(-1) X.
-    
-    Args:
-        X (np.ndarray): Input array of shape (n,).
-        K_X (np.ndarray): Input array of shape (n, n).
-        
-    Returns:
-        float: Resulting scalar value.
-    """
-    # Ensure X and K_X have compatible shapes
-    assert X.shape[0] == K_X.shape[0], "Number of rows in X must be equal to the number of rows in K_X"
-    assert K_X.shape[0] == K_X.shape[1], "K_X must be a square matrix"
-    
-    # Calculate (K_X)^(-1)
-    K_X_inv = np.linalg.inv(K_X)
-    
-    # Calculate X^T (K_X)^(-1) X
-    inner_product = -0.5 * np.dot(np.dot(X.T, K_X_inv), X)
-    
-    return inner_product
 
+# full_data = []
+# for a in jackknife:
+#     if(a_to_z[a]>=2):
+#         continue
+# #     print(np.shape(jackknife[a][0]))
+#     full_data += (jackknife[a][0]).tolist()
+# full_data = np.array(full_data)
+# full_cov = np.cov(full_data)
+# print(np.shape(full_cov))
+n_rows = sum([jackknife[a_c][1].shape[0] for a_c in jackknife if a_to_z[a_c]<2])
+
+# stack the matrices diagonally
+K = np.zeros((n_rows, n_rows))
+offset_row = 0
+offset_col = 0
+for a in jackknife:
+    if(a_to_z[a]>=2):
+        continue
+    K_i = jackknife[a][1]
+    n_rows_i, n_cols_i = K_i.shape
+#     print(n_rows_i, n_cols_i)
+#     print(K_i.shape)
+#     print(K.shape)
+    K[offset_row:offset_row+n_rows_i, offset_col:offset_col+n_cols_i] = K_i
+    offset_row += n_rows_i
+    offset_col += n_cols_i
+
+# print the resulting stacked covariance matrix
+print(np.shape(K))
+full_cov = K
+
+
+def log_prior(param_values):
+    #uniform prior
+    params = dict(zip(param_names, param_values))
+    for param in FIXED_VALS:
+        params[param] = FIXED_VALS[param]
+    for a in a_to_z:
+        curr_params = [p(a, params['%s0'%l], params['%s1'%l]) for l in ['d','e','f','g']]
+        for curr_param in curr_params:
+            if(curr_param< 0 or curr_param>5):
+                return -np.inf
+    return 0
+
+
+
+use_for_fit = np.array([a_to_z[c_aux['a']] < 2.0 for c_aux in aux_data])
+# Compute the Poisson errors (assuming counts data)
+poisson_err = np.sqrt(N_data[use_for_fit])
+poisson_err[poisson_err <1e-10] = 1e-10 #for numerics
+# Compute the weighted covariance matrix
+weighted_cov = np.diag(poisson_err**2) + full_cov
+
+inv_weighted_cov = np.linalg.inv(weighted_cov)  # Inverse of the weighted covariance matrix
+
+print(poisson_err.shape)
 def log_prob(param_values):   
     """
     Calculates the probability of the given tinker parameters 
@@ -209,31 +239,41 @@ def log_prob(param_values):
     params = dict(zip(param_names, param_values))
     tinker_fs = {}
     
-    for a in N_data:
+    for a in a_to_z:
         tinker_eval = [tinker(a, M_c,**params,)*vol for M_c in M_numerics]
         f_dndlogM = interp1d(M_numerics, tinker_eval, kind='linear', bounds_error=False, fill_value=0.)
         tinker_fs[a] = f_dndlogM
         
-    model_vals = {}
-    for a in N_data:
-        if(a_to_z[a] >=2):
-#             print(1)
-            continue
-        model_vals[a] = np.array([quad(tinker_fs[a], edge_pair[0], edge_pair[1], epsabs=1e-1)[0]
-            for edge_pair in NvMs[a]['edge_pairs']
-        ])
-    
+    model_vals = []
+    for (N_curr, c_aux) in zip(N_data[use_for_fit], aux_data[use_for_fit]):
+        model_vals += [quad(tinker_fs[c_aux['a']], c_aux['edge_pair'][0], c_aux['edge_pair'][1], epsabs=1e-1)[0]]
         
-    log_probs = [calculate_inner_product(model_vals[a]-N_data[a], jackknife[a][1]) for a in model_vals]
-    if not np.isfinite(np.sum(log_probs)): 
+    assert(len(model_vals) == len(N_data[use_for_fit]))    
+        
+    
+    # Compute the residuals
+    residuals = N_data[use_for_fit] - model_vals
+    
+    # Compute the chi-square statistic
+    chi2 = np.dot(residuals.T, np.dot(inv_weighted_cov, residuals))
+    
+#     print(weighted_cov)
+#     print(np.linalg.det(weighted_cov))
+    ret = -0.5 * chi2 #+ np.log(np.linalg.det(weighted_cov))
+    
+    if not np.isfinite(ret):
         return -np.inf
-    return np.sum(log_probs)
+    
+    # Return the log-likelihood
+    return ret
+    
 
 def log_likelihood(param_values):
     lp = log_prior(param_values)
     if not np.isfinite(lp):
         return -1e22
     return lp + log_prob(param_values)
+
 
 from utils import *
 
@@ -275,7 +315,7 @@ params_final = dict(zip(param_names,np.percentile(samples,  50,axis=0)))
 
 from scipy.interpolate import interp1d
 i=0
-for a in reversed(N_data.keys()):
+for a in reversed(a_to_z):
     z = a_to_z[a]
     
     fig, axs = plt.subplots(nrows=2, ncols=1, sharex=True, figsize=(13,16))
@@ -297,8 +337,11 @@ for a in reversed(N_data.keys()):
 
     tinker_eval = [tinker(a, M_c,**params_final,) for M_c in Ms]
     tinker_eval_ML = [tinker(a, M_c,**MLE_params,) for M_c in Ms]
+    
+    yerr = np.array( [jackknife[a][1][i][i]+poisson_err[i]**2 for i in range(len(jackknife[a][1]))])
+    yerr = np.sqrt(yerr)
 
-    axs[1].plot(Ms, dndM, 'x-', color='black', label='Data')
+    axs[1].errorbar(Ms, dndM, fmt='x-',yerr=yerr/vol/dM, color='black', label='Data')
     axs[1].plot(Ms, tinker_eval, 'o-', color='blue', label='Tinker ML+MCMC Fit')
     axs[1].plot(Ms, tinker_eval_ML, '+-', color='red', label='Tinker ML Fit')
 
@@ -317,11 +360,10 @@ for a in reversed(N_data.keys()):
 
     edge_centers = [np.sqrt(edge[0]*edge[1]) for edge in edge_pairs]
     
-    axs[0].scatter(Ms, N, s=50, marker='x', c='black')
-    axs[0].scatter(edge_centers, tinker_eval, s=50 , marker='o', c='blue')
-    axs[0].scatter(edge_centers, tinker_eval_ML, s=50 , marker='+', c='red')
 
-    axs[0].bar(x=edges[:-1], height=N, width=np.diff(edges), align='edge', fill=False, ec='black', label='Data')
+    axs[0].bar(x=edges[:-1], height=N, width=np.diff(edges), 
+               yerr = yerr,
+               align='edge', fill=False, ec='black', label='Data')
     axs[0].bar(x=edges[:-1], height=tinker_eval, width=np.diff(edges), align='edge', fill=False, ec='blue', label='Tinker ML+MCMC Fit')
     axs[0].bar(x=edges[:-1], height=tinker_eval_ML, width=np.diff(edges), align='edge', fill=False, ec='red', label='Tinker ML Fit')
 
