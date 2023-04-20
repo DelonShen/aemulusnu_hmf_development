@@ -95,86 +95,54 @@ NvM_f = open(NvM_fname, 'wb')
 pickle.dump(NvMs, NvM_f)
 NvM_f.close()
 
-jackknife = {}
+jackknife_NEW = {}
 
-f_pos = open('/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/'+box+'_pos', 'r')
-
-
-for a in NvMs:
-    snapshot_pos  = f_pos.readline().strip().split(',')
-    snapshot_pos  = [np.array(pos.split(), dtype=np.float32) for pos in snapshot_pos if pos != '']
-    snapshot_pos  = np.array(snapshot_pos)
-
-    bin_cnters = NvMs[a]['M']
-    N = NvMs[a]['N']
-    vol = NvMs[a]['vol']
-    Mpart = NvMs[a]['Mpart']
-    edge_pairs = NvMs[a]['edge_pairs']
-    bin_idx = NvMs[a]['bin_idx']
-    print(a, np.min(bin_idx), np.max(bin_idx))
-    print(len(bin_idx), len(N))
-    #redefine the edges that we'll jackknife on 
-    edges = [edge[0] for edge in edge_pairs]
-    edges += [edge_pairs[-1][1]]    
-
-    #now lets get to spatial jackknife
-    N_DIVS = 8 #each axis is diided into N_DIVS parts so in total the box
-               #is divided into N_DIVS**3 boxes
-
-    #compute the size of each smaller cube
-    ϵ = vol*10**(-6)
-    cube_vol = (vol+ε) / N_DIVS**3 #need ϵ to properly handle halos directly on boundary 
-    cube_size = np.cbrt(cube_vol)
-
-    #compute the indices of the smaller cube that each point belongs to
-    cube_indices = (snapshot_pos / cube_size).astype(int)
-
-    #cube_indices has assignment of halo to 3d position of a voxel
-    #ravel_multi_index indexes the voxels in 3D with a single integer
-    cube_assignment = np.ravel_multi_index(cube_indices.T, (N_DIVS, N_DIVS, N_DIVS), order='F')
+tot_bin_idx = []
+tot_N = []
+offsets = {}
+for a in tqdm(NvMs):
+    offsets[a] = len(tot_N)
+    tot_N += [n for n in NvMs[a]['N']]
+    tot_bin_idx += [bi+offsets[a]-1 for bi in NvMs[a]['bin_idx'] if bi != 0] #if bi=0 then mass below min mass threshold
+tot_bin_idx = np.array(tot_bin_idx)
+tot_N = np.array(tot_N)
+print(tot_bin_idx.shape, tot_N.shape)
     
-    bin_counts = []
-    
-    print(len(cube_assignment), len(bin_idx))
-    for i in trange(N_DIVS**3):
-        current_cube = np.where(cube_assignment == i)
-        curr_N = np.zeros_like(N)
-        for halo in bin_idx[current_cube]:
-            #halo=1 corresponds to first bin 
-            if(halo==0): #not in any bin 
-                continue
-            curr_N[halo-1] += 1
-        #get the number count of halos in the mass bins in this subcube
-        bin_counts += [curr_N]
-    bin_counts = np.array(bin_counts)
-    mean_counts = np.mean(bin_counts, axis=0)
-    dev_counts = bin_counts - mean_counts
-#     print('aaaa')
-#     print(np.shape(bin_counts))
-#     print(np.shape(dev_counts))
-#     print(np.shape(mean_counts))
-#     print('aaaa')
-
-    cov_counts = np.zeros((len(mean_counts), len(mean_counts)))    
-
-    for i in range(N_DIVS**3):
-        # Remove the i-th sub-cube from the sample and calculate the jackknife estimate
-        leave_out_idx = np.where(np.arange(N_DIVS**3) != i)
-        jackknife_counts = np.mean(bin_counts[leave_out_idx], axis=0)
-        dev_jackknife = jackknife_counts - mean_counts
-#         print(np.shape(dev_jackknife))
-#         print(np.shape(dev_counts[i]))
-
-        cov_counts += np.outer(dev_counts[i], dev_jackknife)
-
-    jackknife_covariance = (N_DIVS**3 - 1)/N_DIVS**3 * cov_counts
+bin_counts = []
 
 
-#     print(len(N), jackknife_covariance.shape)
-    jackknife[a] = [bin_counts, jackknife_covariance]
-f_pos.close()
+N_subsamples = int(2**19)
+
+#compute the indices of the smaller cube that each point belongs to
+shuffled = np.copy(tot_bin_idx)
+np.random.shuffle(shuffled)
+
+sample_size = len(shuffled) // N_subsamples  # Number of points in each subsample
+
+for i in trange(N_subsamples):
+    curr_N = np.zeros_like(tot_N)
+    start_idx = i * sample_size
+    end_idx = start_idx + sample_size
+    if i == N_subsamples - 1:
+        end_idx = len(shuffled)  # For the last subsample, adjust end index to include remaining points
+    for halo in shuffled[start_idx:end_idx]:
+        curr_N[halo] += 1
+    #get the number count of halos in the mass bins when leaving out this subsample
+    bin_counts += [tot_N-curr_N]
+
+# Calculate the mean mass histogram over all random partitions
+mean_histogram = np.mean(bin_counts, axis=0)
+
+# Calculate the deviations from the mean for each mass bin for each random partition
+deviations = bin_counts - mean_histogram
+print(np.shape(deviations))
+# Calculate the covariance matrix using the deviations from the mean for all random partitions
+covariance = np.cov(deviations.T)
+
+correction_factor =  N_subsamples/(N_subsamples - 1) 
+covariance *= correction_factor
 
 jackknife_covs_fname = '/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/'+curr_run_fname.split('/')[-2]+'_jackknife_covs.pkl'
 jackknife_covs_f = open(jackknife_covs_fname, 'wb')
-pickle.dump(jackknife, jackknife_covs_f)
+pickle.dump(covariance, jackknife_covs_f)
 jackknife_covs_f.close()

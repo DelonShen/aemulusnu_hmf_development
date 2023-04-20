@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Set the batch size
-batch_size=10
+batch_size=1
 
 # Loop from 0 to 9 to generate the job scripts
 for i in {0..9}; do

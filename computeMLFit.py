@@ -166,39 +166,26 @@ jackknife_covs_f = open(jackknife_covs_fname, 'rb')
 jackknife = pickle.load(jackknife_covs_f)
 jackknife_covs_f.close()
 
+full_cov = jackknife
 
-# full_data = []
-# for a in jackknife:
-#     if(a_to_z[a]>=2):
-#         continue
-# #     print(np.shape(jackknife[a][0]))
-#     full_data += (jackknife[a][0]).tolist()
-# full_data = np.array(full_data)
-# full_cov = np.cov(full_data)
-# print(np.shape(full_cov))
+use_for_fit = np.array([a_to_z[c_aux['a']] < 2.0 for c_aux in aux_data])
+# Compute the Poisson errors (assuming counts data)
+# poisson_err = np.sqrt(N_data[use_for_fit])
+poisson_err = np.sqrt(N_data)
+poisson_err[poisson_err <1e-10] = 1e-10 #for numerics
+poisson_err_restricted = poisson_err[use_for_fit]
+
+print(poisson_err.shape)
+print(np.outer(use_for_fit, use_for_fit))
+full_cov_restricted = [[full_cov[i][j] for j in range(len(use_for_fit)) if use_for_fit[j]==True] for i in range(len(use_for_fit)) if use_for_fit[i]==True]
 
 
-n_rows = sum([jackknife[a_c][1].shape[0] for a_c in jackknife if a_to_z[a_c]<2])
+# Compute the weighted covariance matrix
+weighted_cov = np.diag(poisson_err_restricted**2) + full_cov_restricted
 
-#stack the matrices diagonally
-K = np.zeros((n_rows, n_rows))
-offset_row = 0
-offset_col = 0
-for a in jackknife:
-    if(a_to_z[a]>=2):
-        continue
-    K_i = jackknife[a][1]
-    n_rows_i, n_cols_i = K_i.shape
-#     print(n_rows_i, n_cols_i)
-#     print(K_i.shape)
-#     print(K.shape)
-    K[offset_row:offset_row+n_rows_i, offset_col:offset_col+n_cols_i] = K_i
-    offset_row += n_rows_i
-    offset_col += n_cols_i
-full_cov=K
+inv_weighted_cov = np.linalg.inv(weighted_cov)  # Inverse of the weighted covariance matrix
 
-# print the resulting stacked covariance matrix
-print(np.shape(K))
+
 
 
 def log_prior(param_values):
@@ -215,16 +202,6 @@ def log_prior(param_values):
 
 
 
-use_for_fit = np.array([a_to_z[c_aux['a']] < 2.0 for c_aux in aux_data])
-# Compute the Poisson errors (assuming counts data)
-poisson_err = np.sqrt(N_data[use_for_fit])
-poisson_err[poisson_err <1e-10] = 1e-10 #for numerics
-# Compute the weighted covariance matrix
-weighted_cov = np.diag(poisson_err**2) + full_cov
-
-inv_weighted_cov = np.linalg.inv(weighted_cov)  # Inverse of the weighted covariance matrix
-
-print(poisson_err.shape)
 def log_prob(param_values):   
     """
     Calculates the probability of the given tinker parameters 
@@ -243,6 +220,8 @@ def log_prob(param_values):
     tinker_fs = {}
     
     for a in a_to_z:
+        if(a_to_z[a] >= 2):
+            continue
         tinker_eval = [tinker(a, M_c,**params,)*vol for M_c in M_numerics]
         f_dndlogM = interp1d(M_numerics, tinker_eval, kind='linear', bounds_error=False, fill_value=0.)
         tinker_fs[a] = f_dndlogM
@@ -277,7 +256,6 @@ def log_likelihood(param_values):
         return -1e22
     return lp + log_prob(param_values)
 
-
 from utils import *
 guess = [ 1.37850024,  0.48741841,  4.40085649, -2.37477071,  0.40872013, -0.52351264,
   0.64074591,  0.82683589]
@@ -287,7 +265,9 @@ guess = [ 1.37850024,  0.48741841,  4.40085649, -2.37477071,  0.40872013, -0.523
 #Start by sampling with a maximum likelihood approach
 from scipy import optimize as optimize
 nll = lambda *args: -log_likelihood(*args)
-result = optimize.minimize(nll, guess, method="Nelder-Mead")
+result = optimize.minimize(nll, guess, method="Nelder-Mead", options={
+    'maxiter': len(guess)*1000
+})
 result['param_names'] = param_names
 print(box)
 print(result)
@@ -300,6 +280,13 @@ result_fname = '/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/'+bo
 result_f = open(result_fname, 'wb')
 pickle.dump(result, result_f)
 result_f.close()
+
+offsets = {}
+tot_N = []
+for a in tqdm(NvMs):
+    offsets[a] = len(tot_N)
+    tot_N += [n for n in NvMs[a]['N']]
+
 
 
 from scipy.interpolate import interp1d
@@ -326,7 +313,8 @@ for a in reversed(a_to_z):
 
     tinker_eval = [tinker(a, M_c,**MLE_params) for M_c in Ms]
     
-    yerr = np.array( [jackknife[a][1][i][i]+poisson_err[i]**2 for i in range(len(jackknife[a][1]))])
+    off = offsets[a]
+    yerr = np.array( [full_cov[off+i][off+i]+poisson_err[off+i]**2 for i in range(len(Ms))])
     yerr = np.sqrt(yerr)
 
 
@@ -349,7 +337,6 @@ for a in reversed(a_to_z):
 #     axs[0].scatter(Ms, N, s=50, marker='x', c='black')
 #     axs[0].scatter(edge_centers, tinker_eval, s=50 , marker='o', c='red')
     
-
 
     assert(len(yerr) == len(N))
 #     print(list(zip(yerr/N)))

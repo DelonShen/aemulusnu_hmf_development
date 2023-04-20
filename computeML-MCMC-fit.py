@@ -175,27 +175,47 @@ jackknife_covs_f.close()
 # full_data = np.array(full_data)
 # full_cov = np.cov(full_data)
 # print(np.shape(full_cov))
-n_rows = sum([jackknife[a_c][1].shape[0] for a_c in jackknife if a_to_z[a_c]<2])
+# n_rows = sum([jackknife[a_c][1].shape[0] for a_c in jackknife if a_to_z[a_c]<2])
 
-# stack the matrices diagonally
-K = np.zeros((n_rows, n_rows))
-offset_row = 0
-offset_col = 0
-for a in jackknife:
-    if(a_to_z[a]>=2):
-        continue
-    K_i = jackknife[a][1]
-    n_rows_i, n_cols_i = K_i.shape
-#     print(n_rows_i, n_cols_i)
-#     print(K_i.shape)
-#     print(K.shape)
-    K[offset_row:offset_row+n_rows_i, offset_col:offset_col+n_cols_i] = K_i
-    offset_row += n_rows_i
-    offset_col += n_cols_i
+# # stack the matrices diagonally
+# K = np.zeros((n_rows, n_rows))
+# offset_row = 0
+# offset_col = 0
+# for a in jackknife:
+#     if(a_to_z[a]>=2):
+#         continue
+#     K_i = jackknife[a][1]
+#     n_rows_i, n_cols_i = K_i.shape
+# #     print(n_rows_i, n_cols_i)
+# #     print(K_i.shape)
+# #     print(K.shape)
+#     K[offset_row:offset_row+n_rows_i, offset_col:offset_col+n_cols_i] = K_i
+#     offset_row += n_rows_i
+#     offset_col += n_cols_i
 
-# print the resulting stacked covariance matrix
-print(np.shape(K))
-full_cov = K
+# # print the resulting stacked covariance matrix
+# print(np.shape(K))
+# full_cov = K
+
+full_cov = jackknife
+use_for_fit = np.array([a_to_z[c_aux['a']] < 2.0 for c_aux in aux_data])
+# Compute the Poisson errors (assuming counts data)
+# poisson_err = np.sqrt(N_data[use_for_fit])
+poisson_err = np.sqrt(N_data)
+poisson_err[poisson_err <1e-10] = 1e-10 #for numerics
+poisson_err_restricted = poisson_err[use_for_fit]
+
+print(poisson_err.shape)
+print(np.outer(use_for_fit, use_for_fit))
+full_cov_restricted = [[full_cov[i][j] for j in range(len(use_for_fit)) if use_for_fit[j]==True] for i in range(len(use_for_fit)) if use_for_fit[i]==True]
+
+
+# Compute the weighted covariance matrix
+weighted_cov = np.diag(poisson_err_restricted**2) + full_cov_restricted
+
+inv_weighted_cov = np.linalg.inv(weighted_cov)  # Inverse of the weighted covariance matrix
+
+
 
 
 def log_prior(param_values):
@@ -212,16 +232,6 @@ def log_prior(param_values):
 
 
 
-use_for_fit = np.array([a_to_z[c_aux['a']] < 2.0 for c_aux in aux_data])
-# Compute the Poisson errors (assuming counts data)
-poisson_err = np.sqrt(N_data[use_for_fit])
-poisson_err[poisson_err <1e-10] = 1e-10 #for numerics
-# Compute the weighted covariance matrix
-weighted_cov = np.diag(poisson_err**2) + full_cov
-
-inv_weighted_cov = np.linalg.inv(weighted_cov)  # Inverse of the weighted covariance matrix
-
-print(poisson_err.shape)
 def log_prob(param_values):   
     """
     Calculates the probability of the given tinker parameters 
@@ -240,6 +250,8 @@ def log_prob(param_values):
     tinker_fs = {}
     
     for a in a_to_z:
+        if(a_to_z[a] >= 2):
+            continue
         tinker_eval = [tinker(a, M_c,**params,)*vol for M_c in M_numerics]
         f_dndlogM = interp1d(M_numerics, tinker_eval, kind='linear', bounds_error=False, fill_value=0.)
         tinker_fs[a] = f_dndlogM
@@ -274,7 +286,6 @@ def log_likelihood(param_values):
         return -1e22
     return lp + log_prob(param_values)
 
-
 from utils import *
 
 
@@ -300,10 +311,24 @@ sampler = emcee.EnsembleSampler(
     pool=Pool()
 )
 
-sampler.run_mcmc(initialpos, 1000, progress=True);
+sampler.run_mcmc(initialpos, 8000, progress=True);
 
+fig, axes = plt.subplots(ndim, figsize=(10, 30), sharex=True)
+samples = sampler.get_chain()
+labels = param_names
+
+for i in range(ndim):
+    ax = axes[i]
+    ax.plot(samples[:, :, i], "k", alpha=0.3)
+    ax.set_xlim(0, len(samples))
+    ax.set_ylabel(labels[i])
+    ax.yaxis.set_label_coords(-0.1, 0.5)
+    
+plt.savefig('figures/%s_ML+MCMCFits_convergence.pdf'%(box), bbox_inches='tight')
+
+axes[-1].set_xlabel("step number");
 import corner
-samples = sampler.chain[:, 750:, :].reshape((-1, ndim))
+samples = sampler.chain[:, 7000:, :].reshape((-1, ndim))
 
 chain = sampler.flatchain
 np.savetxt( "/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/" + box + "_MCMC_chain", chain)
@@ -312,6 +337,13 @@ np.savetxt("/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/" + box 
 
 
 params_final = dict(zip(param_names,np.percentile(samples,  50,axis=0)))
+
+
+offsets = {}
+tot_N = []
+for a in tqdm(NvMs):
+    offsets[a] = len(tot_N)
+    tot_N += [n for n in NvMs[a]['N']]
 
 from scipy.interpolate import interp1d
 i=0
@@ -337,8 +369,9 @@ for a in reversed(a_to_z):
 
     tinker_eval = [tinker(a, M_c,**params_final,) for M_c in Ms]
     tinker_eval_ML = [tinker(a, M_c,**MLE_params,) for M_c in Ms]
-    
-    yerr = np.array( [jackknife[a][1][i][i]+poisson_err[i]**2 for i in range(len(jackknife[a][1]))])
+
+    off = offsets[a]
+    yerr = np.array( [full_cov[off+i][off+i]+poisson_err[off+i]**2 for i in range(len(Ms))])
     yerr = np.sqrt(yerr)
 
     axs[1].errorbar(Ms, dndM, fmt='x-',yerr=yerr/vol/dM, color='black', label='Data')

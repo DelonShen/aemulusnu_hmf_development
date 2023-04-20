@@ -1,0 +1,42 @@
+
+CommandNotFoundError: Your shell has not been properly configured to use 'conda activate'.
+To initialize your shell, run
+
+    $ conda init <SHELL_NAME>
+
+Currently supported shells are:
+  - bash
+  - fish
+  - tcsh
+  - xonsh
+  - zsh
+  - powershell
+
+See 'conda init --help' for more information and options.
+
+IMPORTANT: You may need to close and restart your shell after running 'conda init'.
+
+
+  0%|                                                                                              | 0/16 [00:00<?, ?it/s]/home/users/delon/aemulusnu_massfunction/utils.py:65: IntegrationWarning: The maximum number of subdivisions (50) has been achieved.
+  If increasing the limit yields no improvement it is advised to analyze 
+  the integrand in order to determine the difficulties.  If the position of a 
+  local difficulty can be determined (singularity, discontinuity) one will 
+  probably gain from splitting up the interval and calling the integrator 
+  on the subranges.  Perhaps a special-purpose integrator should be used.
+  res, err = quad(dσ2dk, 0, 20 / R)
+/home/users/delon/aemulusnu_massfunction/utils.py:100: IntegrationWarning: The maximum number of subdivisions (50) has been achieved.
+  If increasing the limit yields no improvement it is advised to analyze 
+  the integrand in order to determine the difficulties.  If the position of a 
+  local difficulty can be determined (singularity, discontinuity) one will 
+  probably gain from splitting up the interval and calling the integrator 
+  on the subranges.  Perhaps a special-purpose integrator should be used.
+  res, err = quad(dσ2dRdk, 0, 20 / R)
+  6%|█████▍                                                                                | 1/16 [00:02<00:40,  2.73s/it] 12%|██████████▊                                                                           | 2/16 [00:05<00:39,  2.80s/it]/home/users/delon/aemulusnu_massfunction/utils.py:65: IntegrationWarning: The occurrence of roundoff error is detected, which prevents 
+  the requested tolerance from being achieved.  The error may be 
+  underestimated.
+  res, err = quad(dσ2dk, 0, 20 / R)
+ 19%|████████████████▏                                                                     | 3/16 [00:08<00:36,  2.81s/it] 25%|█████████████████████▌                                                                | 4/16 [00:11<00:34,  2.85s/it] 31%|██████████████████████████▉                                                           | 5/16 [00:14<00:32,  2.92s/it] 38%|████████████████████████████████▎                                                     | 6/16 [00:17<00:29,  2.96s/it]/home/users/delon/aemulusnu_massfunction/utils.py:100: IntegrationWarning: The occurrence of roundoff error is detected, which prevents 
+  the requested tolerance from being achieved.  The error may be 
+  underestimated.
+  res, err = quad(dσ2dRdk, 0, 20 / R)
+ 44%|█████████████████████████████████████▋                                                | 7/16 [00:20<00:27,  3.00s/it] 50%|███████████████████████████████████████████                                           | 8/16 [00:23<00:24,  3.02s/it] 56%|████████████████████████████████████████████████▍                                     | 9/16 [00:26<00:21,  3.04s/it] 62%|█████████████████████████████████████████████████████▏                               | 10/16 [00:29<00:18,  3.07s/it] 69%|██████████████████████████████████████████████████████████▍                          | 11/16 [00:33<00:15,  3.12s/it] 75%|███████████████████████████████████████████████████████████████▊                     | 12/16 [00:36<00:12,  3.13s/it] 81%|█████████████████████████████████████████████████████████████████████                | 13/16 [00:39<00:09,  3.15s/it] 88%|██████████████████████████████████████████████████████████████████████████▍          | 14/16 [00:42<00:06,  3.20s/it] 94%|███████████████████████████████████████████████████████████████████████████████▋     | 15/16 [00:45<00:03,  3.22s/it]100%|█████████████████████████████████████████████████████████████████████████████████████| 16/16 [00:49<00:00,  3.23s/it]100%|█████████████████████████████████████████████████████████████████████████████████████| 16/16 [00:49<00:00,  3.08s/it]
