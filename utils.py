@@ -6,7 +6,7 @@ import numpy as np
 import functools
 
 G = 4.3009e-9 #km^2 Mpc/ (Msolar  s^2) weird units to make rhom_a good units 
-cosmo_params = pickle.load(open('cosmo_params.pkl', 'rb'))
+cosmo_params = pickle.load(open('data/cosmo_params.pkl', 'rb'))
 
 def M_to_R(M, box, a):
     """
@@ -69,12 +69,12 @@ def sigma2(pk, R):
 def rhom_a(box, a):
     ombh2 = cosmo_params[box]['ombh2']
     omch2 = cosmo_params[box]['omch2']
-    H0 = cosmo_params[box]['H0'] #[100h km s^-1 Mpc-1]
+    H0 = cosmo_params[box]['H0'] #[km s^-1 Mpc-1]
     h = H0/100 
     
     Ωm = ombh2/h**2 + omch2/h**2
     ΩΛ = 1 - Ωm
-    ρcrit0 = 3*H0**2/(8*np.pi*G) # h^2 Msol/Mpc^3
+    ρcrit0 = 3*H0**2/(8*np.pi*G)/h**2 # h^2 Msol/Mpc^3
     return Ωm*ρcrit0*(Ωm*a**(-3) + ΩΛ) * a**3 # h^2 Msol/Mpc^3
     
 @functools.cache

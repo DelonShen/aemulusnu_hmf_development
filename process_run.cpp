@@ -31,10 +31,13 @@ int main(int argc, char** argv) {
     
     string oup_fname = "/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/" + string(argv[1]) + "_M200b";
     string oup_pos_fname = "/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/" + string(argv[1]) + "_pos";
+    string oup_Np_fname = "/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/" + string(argv[1]) + "_Np";
+
 
 
     ofstream oup_f (oup_fname);
     ofstream oup_pos_f (oup_pos_fname);
+    ofstream oup_Np_f (oup_Np_fname);
     clock_t MtStart = clock();
     for (int i = 0; i < N_snapshots; i++) {
         clock_t tStart = clock();
@@ -49,6 +52,7 @@ int main(int argc, char** argv) {
         int i_X = -1;
         int i_Y = -1;
         int i_Z = -1; 
+        int i_Np = -1;
 
         int i_tmp = 0;
         while (ss >> col) {
@@ -64,6 +68,9 @@ int main(int argc, char** argv) {
             }
             if(col=="Z"){
                 i_Z = i_tmp;
+            }
+            if(col=="Np"){
+                i_Np = i_tmp;
             }
             i_tmp ++;
         }
@@ -88,11 +95,16 @@ int main(int argc, char** argv) {
                 if(i==i_Z){
                     oup_pos_f << value << " ";
                 }
+                if(i==i_Np){
+                    oup_Np_f << value << " ";
+                }
+
             }
             oup_pos_f << ", ";
         }
         oup_f << endl; 
         oup_pos_f << endl;
+        oup_Np_f << endl;
         printf("Time taken: %.2fs\n", (double)(clock() - tStart)/CLOCKS_PER_SEC);
         cout << endl;
         f.close();

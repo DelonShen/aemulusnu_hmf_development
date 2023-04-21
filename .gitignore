@@ -2,4 +2,6 @@
 .ipynb*
 *.sbatch
 figures/
+garbage/*
 __pycache*
+scripts/
