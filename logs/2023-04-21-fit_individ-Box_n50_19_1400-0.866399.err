@@ -1,0 +1,33 @@
+
+CommandNotFoundError: Your shell has not been properly configured to use 'conda activate'.
+To initialize your shell, run
+
+    $ conda init <SHELL_NAME>
+
+Currently supported shells are:
+  - bash
+  - fish
+  - tcsh
+  - xonsh
+  - zsh
+  - powershell
+
+See 'conda init --help' for more information and options.
+
+IMPORTANT: You may need to close and restart your shell after running 'conda init'.
+
+
+  0%|                                                                                              | 0/16 [00:00<?, ?it/s]/home/users/delon/aemulusnu_massfunction/utils.py:65: IntegrationWarning: The maximum number of subdivisions (50) has been achieved.
+  If increasing the limit yields no improvement it is advised to analyze 
+  the integrand in order to determine the difficulties.  If the position of a 
+  local difficulty can be determined (singularity, discontinuity) one will 
+  probably gain from splitting up the interval and calling the integrator 
+  on the subranges.  Perhaps a special-purpose integrator should be used.
+  res, err = quad(dσ2dk, 0, 20 / R)
+ 88%|██████████████████████████████████████████████████████████████████████████▍          | 14/16 [00:06<00:00,  2.33it/s]100%|█████████████████████████████████████████████████████████████████████████████████████| 16/16 [00:06<00:00,  2.66it/s]
+Traceback (most recent call last):
+  File "/home/users/delon/aemulusnu_massfunction/fit_individual.py", line 148, in <module>
+    jack_covs = {a:jackknife[a][1] for a in N_data}
+  File "/home/users/delon/aemulusnu_massfunction/fit_individual.py", line 148, in <dictcomp>
+    jack_covs = {a:jackknife[a][1] for a in N_data}
+IndexError: only integers, slices (`:`), ellipsis (`...`), numpy.newaxis (`None`) and integer or boolean arrays are valid indices

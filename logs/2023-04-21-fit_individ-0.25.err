@@ -1,0 +1,42 @@
+
+CommandNotFoundError: Your shell has not been properly configured to use 'conda activate'.
+To initialize your shell, run
+
+    $ conda init <SHELL_NAME>
+
+Currently supported shells are:
+  - bash
+  - fish
+  - tcsh
+  - xonsh
+  - zsh
+  - powershell
+
+See 'conda init --help' for more information and options.
+
+IMPORTANT: You may need to close and restart your shell after running 'conda init'.
+
+
+  0%|                                                                                              | 0/16 [00:00<?, ?it/s]/home/users/delon/aemulusnu_massfunction/utils.py:65: IntegrationWarning: The maximum number of subdivisions (50) has been achieved.
+  If increasing the limit yields no improvement it is advised to analyze 
+  the integrand in order to determine the difficulties.  If the position of a 
+  local difficulty can be determined (singularity, discontinuity) one will 
+  probably gain from splitting up the interval and calling the integrator 
+  on the subranges.  Perhaps a special-purpose integrator should be used.
+  res, err = quad(dσ2dk, 0, 20 / R)
+/home/users/delon/aemulusnu_massfunction/utils.py:65: IntegrationWarning: The occurrence of roundoff error is detected, which prevents 
+  the requested tolerance from being achieved.  The error may be 
+  underestimated.
+  res, err = quad(dσ2dk, 0, 20 / R)
+  6%|█████▍                                                                                | 1/16 [00:05<01:29,  5.99s/it]100%|█████████████████████████████████████████████████████████████████████████████████████| 16/16 [00:05<00:00,  2.67it/s]
+Traceback (most recent call last):
+  File "/home/users/delon/aemulusnu_massfunction/fit_individual.py", line 156, in <module>
+    inv_weighted_cov = {a:np.linalg.inv(weighted_cov[a]) for a in weighted_cov}  
+  File "/home/users/delon/aemulusnu_massfunction/fit_individual.py", line 156, in <dictcomp>
+    inv_weighted_cov = {a:np.linalg.inv(weighted_cov[a]) for a in weighted_cov}  
+  File "<__array_function__ internals>", line 200, in inv
+  File "/home/users/delon/.local/lib/python3.9/site-packages/numpy/linalg/linalg.py", line 538, in inv
+    ainv = _umath_linalg.inv(a, signature=signature, extobj=extobj)
+  File "/home/users/delon/.local/lib/python3.9/site-packages/numpy/linalg/linalg.py", line 89, in _raise_linalgerror_singular
+    raise LinAlgError("Singular matrix")
+numpy.linalg.LinAlgError: Singular matrix

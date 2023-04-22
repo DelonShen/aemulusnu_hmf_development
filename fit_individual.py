@@ -14,9 +14,10 @@ cosmos_f = open('data/cosmo_params.pkl', 'rb')
 cosmo_params = pickle.load(cosmos_f) #cosmo_params is a dict
 cosmos_f.close()
 
-
 box = sys.argv[1]
+a_RUN = float(sys.argv[2])
 
+# box = 'Box0_1400'
 
 h = cosmo_params[box]['H0']/100
 
@@ -34,7 +35,7 @@ NvM_f.close()
 a_to_z = dict(zip(NvMs.keys(), Pkz.keys()))
 z_to_a = dict(zip(Pkz.keys(), NvMs.keys()))
 
-# LOOKING_AT = [a_RUN]
+LOOKING_AT = [a_RUN]
 
 
 N_data = {}
@@ -49,8 +50,8 @@ Mpart = -1
 
 for z in tqdm(Pkz.keys()):
     a = z_to_a[z]
-#     if(a not in LOOKING_AT):
-#         continue
+    if(a not in LOOKING_AT):
+        continue
     Pk = Pkz[z]
     c_data = NvMs[a]
     
@@ -98,7 +99,6 @@ for z in tqdm(Pkz.keys()):
     dlnσinvdMs[a] = f_dlnsinvdM
     
     
-
 from scipy.special import gamma
 from scipy.optimize import curve_fit
 from utils import *
@@ -121,15 +121,7 @@ def f_G(a, M, σM, d, e, f, g):
     return oup
 
 def tinker(a, M, 
-           d0, d1,
-          e0, e1,
-          f0, f1,
-          g0,g1):
-    d = p(a, d0, d1)
-    e = p(a, e0, e1)
-    f = p(a, f0, f1)
-    g = p(a, g0, g1)
-    
+           d,e,f,g):
     R = M_to_R(M, box, a) #Mpc/h
     σM = np.sqrt(sigma2(Pkz[a_to_z[a]], R))  
     oup = f_G(a, M, σM, d, e, f, g)
@@ -143,11 +135,10 @@ from utils import *
 a_list = list(NvMs.keys())
 
 from scipy.stats import poisson
-param_names = [ 'd0', 'd1',
-               'e0', 'e1',
-               'f0', 'f1',
-               'g0','g1']
-
+param_names = [ 'd',
+               'e',
+               'f',
+               'g',]
 
 M_numerics = np.logspace(np.log10(100*Mpart), 17, 50)
 
@@ -155,7 +146,6 @@ jackknife_covs_fname = '/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunct
 jackknife_covs_f = open(jackknife_covs_fname, 'rb')
 jackknife = pickle.load(jackknife_covs_f)
 jackknife_covs_f.close()
-
 
 jack_covs = {a:jackknife[a][1] for a in N_data}
 
@@ -165,22 +155,15 @@ poisson_err = {a:np.sqrt(N_data[a]) for a in N_data}
 weighted_cov = {a:np.diag(poisson_err[a]**2) + jack_covs[a] for a in jack_covs}
 
 # Inverse of the weighted covariance matrix
-inv_weighted_cov = {a:np.linalg.inv(weighted_cov[a]) for a in weighted_cov if a_to_z[a]<2}  
+inv_weighted_cov = {a:np.linalg.inv(weighted_cov[a]) for a in weighted_cov}  
 
 scale_cov = {a:np.log(np.linalg.det(weighted_cov[a])) for a in weighted_cov}
 
-
 def log_prior(param_values):
     #uniform prior
-    for a in N_data:
-        d = p(a, param_values[0], param_values[1])
-        e = p(a, param_values[2], param_values[3])
-        f = p(a, param_values[4], param_values[5])
-        g = p(a, param_values[6], param_values[7])
-        ps = [d,e,f,g]
-        for param in ps:
-            if(param < 0 or param > 5):
-                return -np.inf
+    for param in param_values:
+        if(param< 0 or param>5):
+            return -np.inf
     return 0
 
 def log_prob(param_values):   
@@ -207,9 +190,9 @@ def log_prob(param_values):
         
     model_vals = {}
     for a in N_data:
-        if(a_to_z[a] >=2):
-#             print(1)
-            continue
+#         if(a_to_z[a] >=2):
+# #             print(1)
+#             continue
         model_vals[a] = np.array([quad(tinker_fs[a], edge_pair[0], edge_pair[1], epsabs=1e-1)[0]
             for edge_pair in NvMs[a]['edge_pairs']
         ])
@@ -228,12 +211,13 @@ def log_likelihood(param_values):
         return -np.inf
     return lp + log_prob(param_values)
 
+
 guess = np.random.uniform(size=(len(param_names)))
 while(not np.isfinite(log_likelihood(guess))):
     guess = np.random.uniform(size=(len(param_names)))
 
 
-print('Starting ML Fit')
+
 #Start by sampling with a maximum likelihood approach
 from scipy import optimize as optimize
 nll = lambda *args: -log_likelihood(*args)
@@ -247,6 +231,10 @@ print(result['x'])
 
 MLE_params = dict(zip(param_names, result['x']))
 
+result_fname = '/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/'+box+'_MLFit_%.2f_individ.pkl'%(a_RUN)
+result_f = open(result_fname, 'wb')
+pickle.dump(result, result_f)
+result_f.close()
 
 from scipy.interpolate import interp1d
 i=0
@@ -309,20 +297,13 @@ for a in N_data:
     axs[1].set_ylabel(r'$dn/dM\ [h^4{\rm Mpc}^{-3}M_\odot^{-1}]$')
     axs[0].set_title('%s, a=%.2f, z=%.2f'%(box, a, a_to_z[a]))
     i+=1
-    plt.savefig('/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/figures/%s_MLFits_a%.2f.pdf'%(box, a), bbox_inches='tight')
-    plt.show()
+    plt.savefig('/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/figures/%s_MLFits_a%.2f_individ.pdf'%(box, a_RUN), bbox_inches='tight')
 
     
-result_fname = '/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/'+box+'_MLFit.pkl'
-result_f = open(result_fname, 'wb')
-pickle.dump(result, result_f)
-result_f.close()
-
-nwalkers = 64
+nwalkers = 32
 ndim = len(param_names)
 
 initialpos = np.array([result['x'] for _ in range(nwalkers)]) + 1e-2 * np.random.normal(size=(nwalkers, ndim))
-
 
 from multiprocessing import Pool
 
@@ -333,20 +314,21 @@ sampler = emcee.EnsembleSampler(
     pool=Pool()
 )
 
-sampler.run_mcmc(initialpos, 10000, progress=True);
+sampler.run_mcmc(initialpos, 5000, progress=True);
 
-with open("/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/%s_MCMC_sampler.pkl"%(box), "wb") as f:
+with open("/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/%s_%.2f_individ_MCMC_sampler.pkl"%(box,a_RUN), "wb") as f:
     pickle.dump(sampler, f)
+
     
+import corner
 labels = param_names
 
-import corner
-samples = sampler.chain[:, 9000:, :].reshape((-1, ndim))
+samples = sampler.chain[:, 4000:, :].reshape((-1, ndim))
 final_param_vals = np.percentile(samples,  50,axis=0)
 params_final = dict(zip(param_names, final_param_vals))
 fig = corner.corner(samples, labels=labels, quantiles=[0.16, 0.5, 0.84],show_titles=True,)
 
-plt.savefig('/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/figures/%s_MCMC_corner.pdf'%(box), bbox_inches='tight')
+plt.savefig('/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/figures/%s_%.2f_individ_MCMC_corner.pdf'%(box,a_RUN), bbox_inches='tight')
 
 
 fig, axes = plt.subplots(ndim, figsize=(10, 30), sharex=True)
@@ -362,7 +344,8 @@ for i in range(ndim):
     ax.axhline(final_param_vals[i], color='blue')
 axes[-1].set_xlabel("step number");
 
-plt.savefig('/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/figures/%s_MCMC_convergence.pdf'%(box), bbox_inches='tight')
+plt.savefig('/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/figures/%s_%.2f_individ_MCMC_convergence.pdf'%(box,a_RUN), bbox_inches='tight')
+
 
 from scipy.interpolate import interp1d
 i=0
@@ -434,6 +417,4 @@ for a in N_data:
     axs[1].set_ylabel(r'$dn/dM\ [h^4{\rm Mpc}^{-3}M_\odot^{-1}]$')
     axs[0].set_title('%s, a=%.2f, z=%.2f'%(box, a, a_to_z[a]))
     i+=1
-    plt.savefig('/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/figures/%s_ML+MCMCFits_a%.2f.pdf'%(box, a), bbox_inches='tight')
-    plt.show()
-print('Done with %s'%(box))
+    plt.savefig('/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/figures/%s_ML+MCMCFits_a%.2f_individ.pdf'%(box, a), bbox_inches='tight')

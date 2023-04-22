@@ -71,11 +71,14 @@ def rhom_a(box, a):
     omch2 = cosmo_params[box]['omch2']
     H0 = cosmo_params[box]['H0'] #[km s^-1 Mpc-1]
     h = H0/100 
-    
+
     Ωm = ombh2/h**2 + omch2/h**2
-    ΩΛ = 1 - Ωm
+    
+    ΩDE = 1 - Ωm
+    wDE = cosmo_params[box]['w0'] #'wa' is zero for us
+
     ρcrit0 = 3*H0**2/(8*np.pi*G)/h**2 # h^2 Msol/Mpc^3
-    return Ωm*ρcrit0*(Ωm*a**(-3) + ΩΛ) * a**3 # h^2 Msol/Mpc^3
+    return Ωm*ρcrit0*(Ωm*a**(-3) + ΩDE*a**(-3*(1+wDE))) * a**3 # h^2 Msol/Mpc^3
     
 @functools.cache
 def dsigma2dR(pk, R):
