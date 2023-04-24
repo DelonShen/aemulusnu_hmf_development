@@ -49,7 +49,7 @@ def sigma2(pk, R):
     Adapated from https://github.com/komatsu5147/MatterPower.jl
     Computes variance of mass fluctuations with top hat filter of radius R
     For this function let k be the comoving wave number with units h/Mpc
-    
+    Modified to match Tinker convetion of only one factor of W
     Parameters:
         - pk (funtion): P(k), the matter power spectrum which has units Mpc^3 / h^3
         - R (float): The smoothing scale in units Mpc/h
@@ -60,7 +60,7 @@ def sigma2(pk, R):
     def dσ2dk(k):
         x = k * R
         W = (3 / x) * (np.sin(x) / x**2 - np.cos(x) / x)
-        dσ2dk = W**2 * pk(k) * k**2 / 2 / np.pi**2
+        dσ2dk = W * pk(k) * k**2 / 2 / np.pi**2
         return dσ2dk
     res, err = quad(dσ2dk, 0, 20 / R)
     σ2 = res

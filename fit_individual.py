@@ -84,20 +84,15 @@ for z in tqdm(Pkz.keys()):
     R = [M_to_R(m, box, a) for m in M_numerics] #h^-1 Mpc
     
     
-    sigma2s = np.array([sigma2(Pk, r) for r in R])
+    sigma2s = [sigma2(Pk, r) for r in R]
     sigma = np.sqrt(sigma2s)
-    ds2dR = np.array([dsigma2dR(Pk, r) for r in R])
-    dRdMs = np.array([dRdM(m, box, a) for m in M_numerics])
-    ds2dM = ds2dR * dRdMs
-    dlnsinvds2 = -1/(2*sigma2s)
-    dlnsinvdM = ds2dM*dlnsinvds2
+    lnsigmainv = -np.log(sigma)
+    dlnsinvdM = np.gradient(lnsigmainv, M_numerics)
     
-    f_dlnsinvdM_log = interp1d(np.log10(M_numerics), dlnsinvdM, kind='cubic')
-    f_dlnsinvdM = lambda x:f_dlnsinvdM_log(np.log10(x))
-    
-    
-    dlnσinvdMs[a] = f_dlnsinvdM
-    
+    f_dlnsinvdM_log = interp1d(np.log10(M_numerics), dlnsinvdM,kind='cubic')
+    f_dlnsinvdM = lambda x: f_dlnsinvdM_log(np.log10(x))
+
+    dlnσinvdMs[a] = f_dlnsinvdM    
     
 from scipy.special import gamma
 from scipy.optimize import curve_fit
@@ -162,7 +157,7 @@ scale_cov = {a:np.log(np.linalg.det(weighted_cov[a])) for a in weighted_cov}
 def log_prior(param_values):
     #uniform prior
     for param in param_values:
-        if(param< 0 or param>5):
+        if(param< 0 or param>15):
             return -np.inf
     return 0
 
@@ -314,7 +309,7 @@ sampler = emcee.EnsembleSampler(
     pool=Pool()
 )
 
-sampler.run_mcmc(initialpos, 5000, progress=True);
+sampler.run_mcmc(initialpos, 10000, progress=True);
 
 with open("/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/%s_%.2f_individ_MCMC_sampler.pkl"%(box,a_RUN), "wb") as f:
     pickle.dump(sampler, f)
@@ -323,7 +318,7 @@ with open("/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/%s_%.2f_i
 import corner
 labels = param_names
 
-samples = sampler.chain[:, 4000:, :].reshape((-1, ndim))
+samples = sampler.chain[:, 9000:, :].reshape((-1, ndim))
 final_param_vals = np.percentile(samples,  50,axis=0)
 params_final = dict(zip(param_names, final_param_vals))
 fig = corner.corner(samples, labels=labels, quantiles=[0.16, 0.5, 0.84],show_titles=True,)

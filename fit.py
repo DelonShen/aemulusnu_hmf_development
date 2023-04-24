@@ -83,20 +83,15 @@ for z in tqdm(Pkz.keys()):
     R = [M_to_R(m, box, a) for m in M_numerics] #h^-1 Mpc
     
     
-    sigma2s = np.array([sigma2(Pk, r) for r in R])
+    sigma2s = [sigma2(Pk, r) for r in R]
     sigma = np.sqrt(sigma2s)
-    ds2dR = np.array([dsigma2dR(Pk, r) for r in R])
-    dRdMs = np.array([dRdM(m, box, a) for m in M_numerics])
-    ds2dM = ds2dR * dRdMs
-    dlnsinvds2 = -1/(2*sigma2s)
-    dlnsinvdM = ds2dM*dlnsinvds2
+    lnsigmainv = -np.log(sigma)
+    dlnsinvdM = np.gradient(lnsigmainv, M_numerics)
     
-    f_dlnsinvdM_log = interp1d(np.log10(M_numerics), dlnsinvdM, kind='cubic')
-    f_dlnsinvdM = lambda x:f_dlnsinvdM_log(np.log10(x))
-    
-    
-    dlnσinvdMs[a] = f_dlnsinvdM
-    
+    f_dlnsinvdM_log = interp1d(np.log10(M_numerics), dlnsinvdM,kind='cubic')
+    f_dlnsinvdM = lambda x: f_dlnsinvdM_log(np.log10(x))
+
+    dlnσinvdMs[a] = f_dlnsinvdM    
     
 
 from scipy.special import gamma
