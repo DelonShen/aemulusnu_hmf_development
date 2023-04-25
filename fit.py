@@ -83,13 +83,14 @@ for z in tqdm(Pkz.keys()):
     R = [M_to_R(m, box, a) for m in M_numerics] #h^-1 Mpc
     
     
+    M_log10 = np.log10(M_numerics)
     sigma2s = [sigma2(Pk, r) for r in R]
     sigma = np.sqrt(sigma2s)
     lnsigmainv = -np.log(sigma)
-    dlnsinvdM = np.gradient(lnsigmainv, M_numerics)
+    dlnsinvdlogM = np.gradient(lnsigmainv, M_log10)
     
-    f_dlnsinvdM_log = interp1d(np.log10(M_numerics), dlnsinvdM,kind='cubic')
-    f_dlnsinvdM = lambda x: f_dlnsinvdM_log(np.log10(x))
+    f_dlnsinvdlogM_log = interp1d(M_log10, dlnsinvdlogM,kind='cubic')
+    f_dlnsinvdM = lambda M: f_dlnsinvdlogM_log(np.log10(M)) / (M * np.log(10)) 
 
     dlnσinvdMs[a] = f_dlnsinvdM    
     
@@ -174,7 +175,7 @@ def log_prior(param_values):
         g = p(a, param_values[6], param_values[7])
         ps = [d,e,f,g]
         for param in ps:
-            if(param < 0 or param > 5):
+            if(param < 0 or param > 15):
                 return -np.inf
     return 0
 

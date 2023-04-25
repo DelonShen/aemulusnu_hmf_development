@@ -84,16 +84,16 @@ for z in tqdm(Pkz.keys()):
     R = [M_to_R(m, box, a) for m in M_numerics] #h^-1 Mpc
     
     
+    M_log10 = np.log10(M_numerics)
     sigma2s = [sigma2(Pk, r) for r in R]
     sigma = np.sqrt(sigma2s)
     lnsigmainv = -np.log(sigma)
-    dlnsinvdM = np.gradient(lnsigmainv, M_numerics)
+    dlnsinvdlogM = np.gradient(lnsigmainv, M_log10)
     
-    f_dlnsinvdM_log = interp1d(np.log10(M_numerics), dlnsinvdM,kind='cubic')
-    f_dlnsinvdM = lambda x: f_dlnsinvdM_log(np.log10(x))
+    f_dlnsinvdlogM_log = interp1d(M_log10, dlnsinvdlogM,kind='cubic')
+    f_dlnsinvdM = lambda M: f_dlnsinvdlogM_log(np.log10(M)) / (M * np.log(10)) 
 
     dlnσinvdMs[a] = f_dlnsinvdM    
-    
 from scipy.special import gamma
 from scipy.optimize import curve_fit
 from utils import *
@@ -309,7 +309,7 @@ sampler = emcee.EnsembleSampler(
     pool=Pool()
 )
 
-sampler.run_mcmc(initialpos, 10000, progress=True);
+sampler.run_mcmc(initialpos, 5000, progress=True);
 
 with open("/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/%s_%.2f_individ_MCMC_sampler.pkl"%(box,a_RUN), "wb") as f:
     pickle.dump(sampler, f)
@@ -318,7 +318,7 @@ with open("/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/%s_%.2f_i
 import corner
 labels = param_names
 
-samples = sampler.chain[:, 9000:, :].reshape((-1, ndim))
+samples = sampler.chain[:, 4500:, :].reshape((-1, ndim))
 final_param_vals = np.percentile(samples,  50,axis=0)
 params_final = dict(zip(param_names, final_param_vals))
 fig = corner.corner(samples, labels=labels, quantiles=[0.16, 0.5, 0.84],show_titles=True,)

@@ -62,7 +62,7 @@ def sigma2(pk, R):
         W = (3 / x) * (np.sin(x) / x**2 - np.cos(x) / x)
         dσ2dk = W * pk(k) * k**2 / 2 / np.pi**2
         return dσ2dk
-    res, err = quad(dσ2dk, 0, 20 / R)
+    res, err = quad(dσ2dk, 0, np.inf)
     σ2 = res
     return σ2
 
