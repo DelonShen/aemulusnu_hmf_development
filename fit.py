@@ -83,17 +83,19 @@ for z in tqdm(Pkz.keys()):
     R = [M_to_R(m, box, a) for m in M_numerics] #h^-1 Mpc
     
     
-    M_log10 = np.log10(M_numerics)
-    sigma2s = [sigma2(Pk, r) for r in R]
+    sigma2s = np.array([sigma2(Pk, r) for r in R])
     sigma = np.sqrt(sigma2s)
-    lnsigmainv = -np.log(sigma)
-    dlnsinvdlogM = np.gradient(lnsigmainv, M_log10)
+    ds2dR = np.array([dsigma2dR(Pk, r) for r in R])
+    dRdMs = np.array([dRdM(m, box, a) for m in M_numerics])
+    ds2dM = ds2dR * dRdMs
+    dlnsinvds2 = -1/(2*sigma2s)
+    dlnsinvdM = ds2dM*dlnsinvds2
     
-    f_dlnsinvdlogM_log = interp1d(M_log10, dlnsinvdlogM,kind='cubic')
-    f_dlnsinvdM = lambda M: f_dlnsinvdlogM_log(np.log10(M)) / (M * np.log(10)) 
-
+    f_dlnsinvdM_log = interp1d(np.log10(M_numerics), dlnsinvdM, kind='cubic')
+    f_dlnsinvdM = lambda x:f_dlnsinvdM_log(np.log10(x))
+    
+    
     dlnσinvdMs[a] = f_dlnsinvdM    
-    
 
 from scipy.special import gamma
 from scipy.optimize import curve_fit
@@ -155,13 +157,13 @@ jackknife_covs_f.close()
 
 jack_covs = {a:jackknife[a][1] for a in N_data}
 
-poisson_err = {a:np.sqrt(N_data[a]) for a in N_data}
+# poisson_err = {a:np.sqrt(N_data[a]) for a in N_data}
 
 # Compute the weighted covariance matrix incorporating jackknife and poisson
-weighted_cov = {a:np.diag(poisson_err[a]**2) + jack_covs[a] for a in jack_covs}
+weighted_cov = {a: jack_covs[a] for a in jack_covs}
 
 # Inverse of the weighted covariance matrix
-inv_weighted_cov = {a:np.linalg.inv(weighted_cov[a]) for a in weighted_cov if a_to_z[a]<2}  
+inv_weighted_cov = {a:np.linalg.inv(weighted_cov[a]) for a in weighted_cov}  
 
 scale_cov = {a:np.log(np.linalg.det(weighted_cov[a])) for a in weighted_cov}
 
@@ -246,67 +248,67 @@ MLE_params = dict(zip(param_names, result['x']))
 
 from scipy.interpolate import interp1d
 i=0
-for a in N_data:
-    z = a_to_z[a]
+# for a in N_data:
+#     z = a_to_z[a]
     
-    fig, axs = plt.subplots(nrows=2, ncols=1, sharex=True, figsize=(13,16))
-    plt.subplots_adjust(wspace=0, hspace=0)
-    Pk = Pkz[z]
-    c_data = NvMs[a]
+#     fig, axs = plt.subplots(nrows=2, ncols=1, sharex=True, figsize=(13,16))
+#     plt.subplots_adjust(wspace=0, hspace=0)
+#     Pk = Pkz[z]
+#     c_data = NvMs[a]
     
-    Ms = M_data[a]
-    N = N_data[a]
-    edge_pairs = c_data['edge_pairs']
+#     Ms = M_data[a]
+#     N = N_data[a]
+#     edge_pairs = c_data['edge_pairs']
     
-    edges = [edge[0] for edge in edge_pairs]
-    edges += [edge_pairs[-1][1]]
+#     edges = [edge[0] for edge in edge_pairs]
+#     edges += [edge_pairs[-1][1]]
 
 
-    dM = np.array([edges[1]-edges[0] for edges in edge_pairs])
-    dndM = (np.array(N)/vol)/dM
+#     dM = np.array([edges[1]-edges[0] for edges in edge_pairs])
+#     dndM = (np.array(N)/vol)/dM
 
-    tinker_eval = [tinker(a, M_c,**MLE_params) for M_c in Ms]
-    yerr = np.sqrt(np.diagonal(weighted_cov[a])) #jackknife + poisson added in quadrature
+#     tinker_eval = [tinker(a, M_c,**MLE_params) for M_c in Ms]
+#     yerr = np.sqrt(np.diagonal(weighted_cov[a])) #jackknife + poisson added in quadrature
 
-    axs[1].errorbar(Ms, dndM, yerr/(vol)/dM, fmt='o-', color='black', label='Data')
-    axs[1].plot(Ms, tinker_eval, 'x-', color='red', label='Tinker')
+#     axs[1].errorbar(Ms, dndM, yerr/(vol)/dM, fmt='o-', color='black', label='Data')
+#     axs[1].plot(Ms, tinker_eval, 'x-', color='red', label='Tinker')
 
 
 
-    tinker_eval = [tinker(a, M_c,**MLE_params,)*vol for M_c in M_numerics]
+#     tinker_eval = [tinker(a, M_c,**MLE_params,)*vol for M_c in M_numerics]
     
-    f_dndM = interp1d(M_numerics, tinker_eval, kind='linear', bounds_error=False, fill_value=0.)
+#     f_dndM = interp1d(M_numerics, tinker_eval, kind='linear', bounds_error=False, fill_value=0.)
     
-    tinker_eval = np.array([quad(f_dndM, edge[0],  edge[1])[0] for edge in edge_pairs])
+#     tinker_eval = np.array([quad(f_dndM, edge[0],  edge[1])[0] for edge in edge_pairs])
 
-    color = plt.colormaps["rainbow"]((i+1)/len(Pkz.keys()))[:-1]
+#     color = plt.colormaps["rainbow"]((i+1)/len(Pkz.keys()))[:-1]
 
     
-    axs[0].errorbar(Ms, N, yerr, fmt='o', c='black')
-    axs[0].scatter(Ms, tinker_eval, s=50 , marker='x', c='red')
+#     axs[0].errorbar(Ms, N, yerr, fmt='o', c='black')
+#     axs[0].scatter(Ms, tinker_eval, s=50 , marker='x', c='red')
     
     
-    edges = np.array(edges)
-    tmp = edges[:-1]*10**(0.01)-edges[:-1]
-    axs[0].bar(x=edges[:-1], height=N, width=np.diff(edges),
-               align='edge', fill=False, ec='black', label='Data')
-    axs[0].bar(x=edges[:-1]+tmp, height=tinker_eval, width=np.diff(edges), align='edge', fill=False, ec='red', label='Tinker')
+#     edges = np.array(edges)
+#     tmp = edges[:-1]*10**(0.01)-edges[:-1]
+#     axs[0].bar(x=edges[:-1], height=N, width=np.diff(edges),
+#                align='edge', fill=False, ec='black', label='Data')
+#     axs[0].bar(x=edges[:-1]+tmp, height=tinker_eval, width=np.diff(edges), align='edge', fill=False, ec='red', label='Tinker')
 
-    axs[0].set_xscale('log')
-    axs[0].set_yscale('log')
-    axs[0].legend(frameon=False)
-    axs[0].set_ylabel('N')
+#     axs[0].set_xscale('log')
+#     axs[0].set_yscale('log')
+#     axs[0].legend(frameon=False)
+#     axs[0].set_ylabel('N')
 
-    axs[1].set_xscale('log')
-    axs[1].set_yscale('log')
-    axs[1].legend(frameon=False)
-    axs[1].set_ylabel('N')
-    axs[1].set_xlabel(r'Mass $[h^{-1}M_\odot]$')
-    axs[1].set_ylabel(r'$dn/dM\ [h^4{\rm Mpc}^{-3}M_\odot^{-1}]$')
-    axs[0].set_title('%s, a=%.2f, z=%.2f'%(box, a, a_to_z[a]))
-    i+=1
-    plt.savefig('/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/figures/%s_MLFits_a%.2f.pdf'%(box, a), bbox_inches='tight')
-    plt.show()
+#     axs[1].set_xscale('log')
+#     axs[1].set_yscale('log')
+#     axs[1].legend(frameon=False)
+#     axs[1].set_ylabel('N')
+#     axs[1].set_xlabel(r'Mass $[h^{-1}M_\odot]$')
+#     axs[1].set_ylabel(r'$dn/dM\ [h^4{\rm Mpc}^{-3}M_\odot^{-1}]$')
+#     axs[0].set_title('%s, a=%.2f, z=%.2f'%(box, a, a_to_z[a]))
+#     i+=1
+#     plt.savefig('/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/figures/%s_MLFits_a%.2f.pdf'%(box, a), bbox_inches='tight')
+#     plt.show()
 
     
 result_fname = '/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/'+box+'_MLFit.pkl'
@@ -364,8 +366,9 @@ from scipy.interpolate import interp1d
 i=0
 for a in N_data:
     z = a_to_z[a]
-    
-    fig, axs = plt.subplots(nrows=2, ncols=1, sharex=True, figsize=(13,16))
+    fig1 = plt.figure(figsize =(12, 7))
+
+    axs=[fig1.add_axes((0.2,0.4,.75,.6)), fig1.add_axes((0.2,0.0,.75,.4))]
     plt.subplots_adjust(wspace=0, hspace=0)
     Pk = Pkz[z]
     c_data = NvMs[a]
@@ -387,10 +390,6 @@ for a in N_data:
     
     yerr = np.sqrt(np.diagonal(weighted_cov[a])) #jackknife + poisson added in quadrature
 
-    axs[1].errorbar(Ms, dndM, yerr/(vol*dM), fmt= '+-', color='black', label='Data')
-    axs[1].plot(Ms, tinker_eval, 'o-', color='red', label='Tinker ML')
-    axs[1].plot(Ms, tinker_eval_MCMC, 'x-', color='blue', label='Tinker ML+MCMC')
-
 
 
     tinker_eval = [tinker(a, M_c,**MLE_params,)*vol for M_c in M_numerics]
@@ -407,15 +406,39 @@ for a in N_data:
     
 
     axs[0].errorbar(Ms, N, yerr, fmt='+', c='black')
-    axs[0].scatter(Ms, tinker_eval, s=50 , marker='o', c='red')
+#     axs[0].scatter(Ms, tinker_eval, s=50 , marker='o', c='red')
     axs[0].scatter(Ms, tinker_eval_MCMC, s=50 , marker='x', c='blue')
 
     edges = np.array(edges)
     tmp = edges[:-1]*10**(0.01)-edges[:-1]
     axs[0].bar(x=edges[:-1], height=N, width=np.diff(edges),
                align='edge', fill=False, ec='black', label='Data')
-    axs[0].bar(x=edges[:-1]+tmp, height=tinker_eval, width=np.diff(edges), align='edge', fill=False, ec='red', label='Tinker ML')
+#     axs[0].bar(x=edges[:-1]+tmp, height=tinker_eval, width=np.diff(edges), align='edge', fill=False, ec='red', label='Tinker ML')
     axs[0].bar(x=edges[:-1]-tmp, height=tinker_eval_MCMC, width=np.diff(edges), align='edge', fill=False, ec='blue', label='Tinker ML+MCMC')
+    axs[1].errorbar(Ms, (N-tinker_eval_MCMC), yerr, fmt='x', color='blue')
+    
+    y1 = 0.1*np.array(N)
+    y1 = np.append(y1, y1[-1])
+    y1 = np.append(y1[0], y1)
+
+    y2 = -0.1*np.array(N)
+    y2 = np.append(y2, y2[-1])
+    y2 = np.append(y2[0], y2)
+
+    c_Ms = np.append(Ms, edges[-1])
+    c_Ms = np.append(edges[0], c_Ms)
+    axs[1].fill_between(c_Ms, y1, y2, alpha=1, color='0.95',label='10% Error')
+
+    y1 = 0.01*np.array(N)
+    y1 = np.append(y1, y1[-1])
+    y1 = np.append(y1[0], y1)
+
+    y2 = -0.01*np.array(N)
+    y2 = np.append(y2, y2[-1])
+    y2 = np.append(y2[0], y2)
+    
+    axs[1].fill_between(c_Ms, y1, y2, alpha=1, color='0.85',label='1% Error')
+    
 
     axs[0].set_xscale('log')
     axs[0].set_yscale('log')
@@ -423,13 +446,17 @@ for a in N_data:
     axs[0].set_ylabel('N')
 
     axs[1].set_xscale('log')
-    axs[1].set_yscale('log')
+    axs[1].set_yscale('symlog', linthresh=1)    
     axs[1].legend(frameon=False)
+    axs[1].axhline(0, c='black')
     axs[1].set_ylabel('N')
     axs[1].set_xlabel(r'Mass $[h^{-1}M_\odot]$')
-    axs[1].set_ylabel(r'$dn/dM\ [h^4{\rm Mpc}^{-3}M_\odot^{-1}]$')
+    axs[1].set_ylabel(r'${N_{\rm data}-N_{\rm Tinker}} $')
     axs[0].set_title('%s, a=%.2f, z=%.2f'%(box, a, a_to_z[a]))
     i+=1
-    plt.savefig('/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/figures/%s_ML+MCMCFits_a%.2f.pdf'%(box, a), bbox_inches='tight')
+    
+    axs[0].set_xlim((200*Mpart, np.max(edges)))
+    axs[1].set_xlim((200*Mpart, np.max(edges)))
+
+    plt.savefig('/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/figures/%s_ML+MCMCFits_a%.2f_individ.pdf'%(box, a), bbox_inches='tight')
     plt.show()
-print('Done with %s'%(box))

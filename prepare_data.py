@@ -25,7 +25,7 @@ f = open('/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/'+box+'_M2
 
 TMP=0
 for line in tqdm(f):
-    fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(13,8))
+#     fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(13,8))
 
     #extract the masses and position of halos for a given snapshot 
     snapshot_mass = line.strip().split()
@@ -55,35 +55,58 @@ for line in tqdm(f):
     nBins = 16
     
     #we'll only consider halos with more than 200 particles
-    edges = np.logspace(np.log10(200*Mpart), np.log10(np.max(snapshot_mass)), nBins, 10.)
-    color = plt.colormaps["rainbow"]((i+1)/N_snapshots)[:-1]
-    
+    edges_log10 = np.arange(np.log10(200*Mpart), 1+np.log10(np.max(snapshot_mass)), 0.1)
+    edges = np.array([10**el10 for el10 in edges_log10])
+
     #get the number count of halos in the mass bins
     N, bin_edge, bin_idx = binned_statistic(snapshot_mass, np.ones_like(snapshot_mass), 
                                             statistic='count', bins=edges)
-    edge_pairs = np.array([[edges[i], edges[i+1]] for i in range(len(edges)-1)])
-    
+    c_i = len(N)-1
+    while(N[c_i] == 0):
+        N = N[:c_i]
+        bin_edge = bin_edge[:(c_i+1)]
+        c_i -= 1
+#         print('---')
+#         print(N)
+#         print(bin_edge)
+#         print('---')
+
+        
+    #make large mass bin have at least 20 halos
+    while(N[c_i] < 20):
+        N[c_i-1] += N[c_i]
+        halos_here = np.where(bin_idx==c_i+1)
+        bin_idx[halos_here] = c_i
+        N = N[:c_i]
+        bin_edge = np.delete(bin_edge,c_i)
+        c_i -= 1
+#         print('---')
+#         print(N)
+#         print(bin_edge)
+#         print('---')
+
+        
     M_means = []
     correction = np.zeros_like(N)
     
     for j in range(len(N)):
         this_bin = np.where(bin_idx == j+1)
         M_means += [np.mean(snapshot_mass[this_bin])]
+#         print(N[j], len(snapshot_mass[this_bin]))
         assert(len(snapshot_mass[this_bin]) == N[j])
             
-    edges = [edge[0] for edge in edge_pairs]
-    edges += [edge_pairs[-1][1]]    
-    
-    ax.bar(x=edges[:-1], height=N, width=np.diff(edges), align='edge', fill=False, ec=color, label=r'$a=%.2f$'%(a))
+    edge_pairs = [[bin_edge[i], bin_edge[i+1]] for i in range(len(bin_edge)-1)]
+    assert(len(edge_pairs) == len(N))
+#     ax.bar(x=bin_edge[:-1], height=N, width=np.diff(bin_edge), align='edge', fill=False, label=r'$a=%.2f$'%(a))
 
-    ax.set_title(curr_run_fname.split('/')[-2])
-    ax.set_xscale('log')
-    ax.set_yscale('log')
-    ax.set_xlabel(r'Mass $[h^{-1}M_\odot]$')
-    ax.set_ylabel(r'$N$')
-    ax.legend(frameon=False)
+#     ax.set_title(curr_run_fname.split('/')[-2])
+#     ax.set_xscale('log')
+#     ax.set_yscale('log')
+#     ax.set_xlabel(r'Mass $[h^{-1}M_\odot]$')
+#     ax.set_ylabel(r'$N$')
+#     ax.legend(frameon=False)
 
-    plt.savefig('/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/figures/'+curr_run_fname.split('/')[-2]+'_NvsM_a%.1f.pdf'%(a), bbox_inches='tight')
+#     plt.savefig('/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/figures/'+curr_run_fname.split('/')[-2]+'_NvsM_a%.1f.pdf'%(a), bbox_inches='tight')
 
     i+=1
     assert(len(edge_pairs) == len(N))
@@ -101,6 +124,7 @@ NvM_f = open(NvM_fname, 'wb')
 pickle.dump(NvMs, NvM_f)
 NvM_f.close()
 
+
 jackknife = {}
 f_pos = open('/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/'+box+'_pos', 'r')
 for a in tqdm(NvMs):
@@ -115,7 +139,7 @@ for a in tqdm(NvMs):
 
     assert(len(bin_idx) == len(snapshot_pos))
     #now lets get to spatial jackknife
-    N_DIVS = 8 #each axis is diided into N_DIVS parts so in total the box
+    N_DIVS = 4 #each axis is diided into N_DIVS parts so in total the box
                #is divided into N_DIVS**3 boxes
 
     #compute the size of each smaller cube
@@ -153,7 +177,6 @@ for a in tqdm(NvMs):
     
     jackknife[a] = [jackknife_data, jackknife_covariance]
 f_pos.close()
-
 
 jackknife_covs_fname = '/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/'+curr_run_fname.split('/')[-2]+'_jackknife_covs.pkl'
 jackknife_covs_f = open(jackknife_covs_fname, 'wb')
