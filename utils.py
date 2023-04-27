@@ -4,109 +4,139 @@ import matplotlib.pyplot as plt
 import pickle 
 import numpy as np
 import functools
+from scipy import optimize as optimize
+import emcee
+from multiprocessing import Pool
+from Cosmo import *
 
 ρcrit0 = 2.77533742639e+11 #h^2 Msol / Mpc^3
 cosmo_params = pickle.load(open('data/cosmo_params.pkl', 'rb'))
 
-def M_to_R(M, box, a):
-    """
-    Converts mass of top-hat filter to radius of top-hat filter
+global cosmo
+
+def set_cosmo(cosmo_instance):
+    global cosmo
+    cosmo = cosmo_instance
     
-    Parameters:
-        - M (float): Mass of the top hat filter in units Msolor/h
-        - box (string): Which Aemulus nu box we're considering 
-        - a (float): Redshift 
-
-    Returns:
-        - R (float): Corresponding radius of top hat filter Mpc/h
-    """
-
-    return (M / (4/3 * math.pi * rhom_a(box, a))) ** (1/3) # h^-1 Mpc  
-
-def R_to_M(R,box, a):
-    """
-    Converts radius of top-hat filter to mass of top-hat filter
-    
-    Parameters:
-        - R (float): Radius of the top hat filter in units Mpc/h
-        - box (string): Which Aemulus nu box we're considering 
-        - a (float): Redshift 
-
-    Returns:
-        - M (float): Corresponding mass of top hat filter Msolar/h 
-    """
-    return R ** 3 * 4/3 * math.pi * rhom_a(box, a)
-
 def scaleToRedshift(a):
     return 1/a-1
 
 def redshiftToScale(z):
     return 1/(1+z)
 
-@functools.cache
-def sigma2(pk, R):
-    """
-    Adapated from https://github.com/komatsu5147/MatterPower.jl
-    Computes variance of mass fluctuations with top hat filter of radius R
-    For this function let k be the comoving wave number with units h/Mpc
-
-    Parameters:
-        - pk (funtion): P(k), the matter power spectrum which has units Mpc^3 / h^3
-        - R (float): The smoothing scale in units Mpc/h
-    Returns:
-        - sigma2 (float): The variance of mass fluctuations
-    """
-
-    def dσ2dk(k):
-        x = k * R
-        W = (3 / x) * (np.sin(x) / x**2 - np.cos(x) / x)
-        dσ2dk = W**2 * pk(k) * k**2 / 2 / np.pi**2
-        return dσ2dk
-    res, err = quad(dσ2dk, 0, np.inf)
-    σ2 = res
-    return σ2
-
-def rhom_a(box, a):
-    ombh2 = cosmo_params[box]['ombh2']
-    omch2 = cosmo_params[box]['omch2']
-    H0 = cosmo_params[box]['H0'] #[km s^-1 Mpc-1]
-    h = H0/100 
-
-    Ωm = ombh2/h**2 + omch2/h**2
-    
-    ΩDE = 1 - Ωm
-    wDE = cosmo_params[box]['w0'] #'wa' is zero for us
-
-    return Ωm*ρcrit0*(Ωm*a**(-3) + ΩDE*a**(-3*(1+wDE))) * a**3 # h^2 Msol/Mpc^3
-    
-@functools.cache
-def dsigma2dR(pk, R):
-    """
-    Adapated from https://github.com/komatsu5147/MatterPower.jl
-    Computes deriative of variance of mass fluctuations wrt top hat filter of radius R
-    For this function let k be the comoving wave number with units h/Mpc
-    
-    Parameters:
-        - pk (funtion): P(k), the matter power spectrum which has units Mpc^3 / h^3
-        - R (float): The smoothing scale in units Mpc/h
-    Returns:
-        - dsigma2dR (float): The derivative of the variance of mass fluctuations wrt R
-    """
-
-    def dσ2dRdk(k):
-        x = k * R
-        W = (3 / x) * (np.sin(x) / x**2 - np.cos(x) / x)
-        dWdx = (-3 / x) * ((3 / x**2 - 1) * np.sin(x) / x - 3 * np.cos(x) / x**2)
-        dσ2dRdk = 2 * W * dWdx * pk(k) * k**3 / 2 / np.pi**2
-        return dσ2dRdk
-    res, err = quad(dσ2dRdk, 0, np.inf)
-    return res
-
 def dRdM(M, box, a):
-    return 1/(6**(2/3)*np.pi**(1/3)*M**(2/3)*rhom_a(box, a)**(1/3))
+    return 1/(6**(2/3)*np.pi**(1/3)*M**(2/3)*cosmo.rhom_a(a)**(1/3))
 
 
+#Below is a bit ugly, basically for multiprocessing 
+#if the data isnt global, emcee pickles the entire 
+#dataset every evaluation which slows things down
+#significantly. So I am assuming we have a global
+#Cosmo object called global to speed things up 400x
+#in MCMC chain
+
+def log_prior(param_values):
+    #uniform prior
+    for a in cosmo.N_data:
+        d = param_values[0]
+        e = param_values[1]
+        f = param_values[2]
+        g = param_values[3]
+
+        if(len(param_values)==8):
+            d = cosmo.p(a, param_values[0], param_values[1])
+            e = cosmo.p(a, param_values[2], param_values[3])
+            f = cosmo.p(a, param_values[4], param_values[5])
+            g = cosmo.p(a, param_values[6], param_values[7])
+
+        ps = [d,e,f,g]
+        for param in ps:
+            if(param < 0 or param > 5):
+                return -np.inf
+    return 0
+
+def log_prob(param_values):   
+    """
+    Calculates the probability of the given tinker parameters (d, e, f, g)
+
+    Args:
+        param_values (np.ndarray): Input array of shape (number of params).
+
+    Returns:
+        float: Resulting log probability
+    """
+
+    if(log_prior(param_values) == -np.inf):
+        return -np.inf
+
+    tinker_fs = {}
 
 
+    for a in cosmo.N_data:
+        params = dict(zip(['d', 'e', 'f', 'g'], param_values))
+        
+        if(len(param_values)== 8):
+            d = cosmo.p(a, param_values[0], param_values[1])
+            e = cosmo.p(a, param_values[2], param_values[3])
+            f = cosmo.p(a, param_values[4], param_values[5])
+            g = cosmo.p(a, param_values[6], param_values[7])
+            ps = [d,e,f,g]
+            params = dict(zip(['d', 'e', 'f', 'g'], ps))
+            
+        tinker_eval = [cosmo.tinker(a, M_c,**params)*cosmo.vol for M_c in cosmo.M_numerics]
+        f_dndlogM_LOG = interp1d(np.log10(cosmo.M_numerics), tinker_eval, kind='cubic', bounds_error=False, fill_value=0.)
+        f_dndlogM = lambda x:f_dndlogM_LOG(np.log10(x))
+        tinker_fs[a] = f_dndlogM
 
-    
+    model_vals = {}
+    for a in cosmo.N_data:
+        model_vals[a] = np.array([quad(tinker_fs[a], edge_pair[0], edge_pair[1], epsabs=1e-1)[0]
+            for edge_pair in cosmo.NvMs[a]['edge_pairs']
+        ])
+
+
+    residuals = {a: model_vals[a]-cosmo.N_data[a] for a in model_vals}
+    log_probs = [ -0.5 * (np.dot(np.dot(residuals[a].T, cosmo.inv_weighted_cov[a]), residuals[a]) + cosmo.scale_cov[a]) 
+                 for a in model_vals]
+    if not np.isfinite(np.sum(log_probs)): 
+        return -np.inf
+    return np.sum(log_probs)
+
+def log_likelihood(param_values):     
+    lp = log_prior(param_values)
+    if not np.isfinite(lp):
+        return -np.inf
+    return lp + log_prob(param_values)
+
+
+def fit(param_names = ['d0', 'd1',
+                       'e0', 'e1',
+                       'f0', 'f1',
+                       'g0', 'g1'],
+       maxiter=int(8e4)):
+    guess = np.random.uniform(size=(len(param_names)))
+    while(not np.isfinite(log_likelihood(guess))):
+        guess = np.random.uniform(size=(len(param_names)))
+
+    #Start by sampling with a maximum likelihood approach
+    nll = lambda *args: -log_likelihood(*args)
+    result = optimize.minimize(nll, guess, method="Nelder-Mead", options={
+        'maxiter': maxiter
+    })
+    return result
+
+def fit_MCMC(nwalkers = 32, ndim = 8, n_jumps = 4000, result=None): 
+    if(result==None):
+        result = fit_individ()
+    initialpos = np.array([result['x'] for _ in range(nwalkers)]) + 1e-2 * np.random.normal(size=(nwalkers, ndim))
+    sampler = emcee.EnsembleSampler(
+        nwalkers = nwalkers,
+        ndim = ndim,
+        log_prob_fn = log_likelihood,
+        pool=Pool()
+    )
+
+    sampler.run_mcmc(initialpos, n_jumps, progress=True)
+    cosmo.sampler = sampler
+    return result, sampler
+

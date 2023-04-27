@@ -83,18 +83,15 @@ for z in tqdm(Pkz.keys()):
     R = [M_to_R(m, box, a) for m in M_numerics] #h^-1 Mpc
     
     
-    sigma2s = np.array([sigma2(Pk, r) for r in R])
+    M_log10 = np.log10(M_numerics)
+    sigma2s = [sigma2(Pk, r) for r in R]
     sigma = np.sqrt(sigma2s)
-    ds2dR = np.array([dsigma2dR(Pk, r) for r in R])
-    dRdMs = np.array([dRdM(m, box, a) for m in M_numerics])
-    ds2dM = ds2dR * dRdMs
-    dlnsinvds2 = -1/(2*sigma2s)
-    dlnsinvdM = ds2dM*dlnsinvds2
+    lnsigmainv = -np.log(sigma)
+    dlnsinvdlogM = np.gradient(lnsigmainv, M_log10)
     
-    f_dlnsinvdM_log = interp1d(np.log10(M_numerics), dlnsinvdM, kind='cubic')
-    f_dlnsinvdM = lambda x:f_dlnsinvdM_log(np.log10(x))
-    
-    
+    f_dlnsinvdlogM_log = interp1d(M_log10, dlnsinvdlogM,kind='cubic')
+    f_dlnsinvdM = lambda M: f_dlnsinvdlogM_log(np.log10(M)) / (M * np.log(10)) 
+
     dlnσinvdMs[a] = f_dlnsinvdM    
 
 from scipy.special import gamma
@@ -177,7 +174,7 @@ def log_prior(param_values):
         g = p(a, param_values[6], param_values[7])
         ps = [d,e,f,g]
         for param in ps:
-            if(param < 0 or param > 15):
+            if(param < 0 or param > 5):
                 return -np.inf
     return 0
 
@@ -200,7 +197,8 @@ def log_prob(param_values):
     
     for a in N_data:
         tinker_eval = [tinker(a, M_c,**params,)*vol for M_c in M_numerics]
-        f_dndlogM = interp1d(M_numerics, tinker_eval, kind='linear', bounds_error=False, fill_value=0.)
+        f_dndlogM_LOG = interp1d(np.log10(M_numerics), tinker_eval, kind='cubic', bounds_error=False, fill_value=0.)
+        f_dndlogM = lambda x:f_dndlogM_LOG(np.log10(x))
         tinker_fs[a] = f_dndlogM
         
     model_vals = {}
@@ -385,8 +383,6 @@ for a in N_data:
     dM = np.array([edges[1]-edges[0] for edges in edge_pairs])
     dndM = (np.array(N)/vol)/dM
 
-    tinker_eval = [tinker(a, M_c,**MLE_params) for M_c in Ms]
-    tinker_eval_MCMC = [tinker(a, M_c,**params_final) for M_c in Ms]
     
     yerr = np.sqrt(np.diagonal(weighted_cov[a])) #jackknife + poisson added in quadrature
 
@@ -396,7 +392,8 @@ for a in N_data:
     tinker_eval_MCMC = [tinker(a, M_c,**params_final,)*vol for M_c in M_numerics]
 
     f_dndM = interp1d(M_numerics, tinker_eval, kind='linear', bounds_error=False, fill_value=0.)
-    f_dndM_MCMC = interp1d(M_numerics, tinker_eval_MCMC, kind='linear', bounds_error=False, fill_value=0.)
+    f_dndM_MCMC_LOG = interp1d(np.log10(M_numerics), tinker_eval_MCMC, kind='cubic', bounds_error=False, fill_value=0.)
+    f_dndM_MCMC = lambda x:f_dndM_MCMC_LOG(np.log10(x))
 
     tinker_eval = np.array([quad(f_dndM, edge[0],  edge[1])[0] for edge in edge_pairs])
     tinker_eval_MCMC = np.array([quad(f_dndM_MCMC, edge[0],  edge[1])[0] for edge in edge_pairs])
@@ -458,5 +455,5 @@ for a in N_data:
     axs[0].set_xlim((200*Mpart, np.max(edges)))
     axs[1].set_xlim((200*Mpart, np.max(edges)))
 
-    plt.savefig('/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/figures/%s_ML+MCMCFits_a%.2f_individ.pdf'%(box, a), bbox_inches='tight')
+    plt.savefig('/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/figures/%s_ML+MCMCFits_a%.2f.pdf'%(box, a), bbox_inches='tight')
     plt.show()
