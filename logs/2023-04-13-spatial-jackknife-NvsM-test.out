@@ -1,0 +1,77 @@
+no change     /home/users/delon/miniconda3/condabin/conda
+no change     /home/users/delon/miniconda3/bin/conda
+no change     /home/users/delon/miniconda3/bin/conda-env
+no change     /home/users/delon/miniconda3/bin/activate
+no change     /home/users/delon/miniconda3/bin/deactivate
+no change     /home/users/delon/miniconda3/etc/profile.d/conda.sh
+no change     /home/users/delon/miniconda3/etc/fish/conf.d/conda.fish
+no change     /home/users/delon/miniconda3/shell/condabin/Conda.psm1
+no change     /home/users/delon/miniconda3/shell/condabin/conda-hook.ps1
+no change     /home/users/delon/miniconda3/lib/python3.10/site-packages/xontrib/conda.xsh
+no change     /home/users/delon/miniconda3/etc/profile.d/conda.csh
+no change     /home/users/delon/.bashrc
+No action taken.
+0.25 0 15
+2563611 12
+2563611 2563611
+12 (12, 512) (12, 12)
+0.302679 0 15
+4826323 14
+4826323 4826323
+14 (14, 512) (14, 14)
+0.366459 0 15
+7226867 14
+7226867 7226867
+14 (14, 512) (14, 14)
+0.403224 0 15
+8301764 14
+8301764 8301764
+14 (14, 512) (14, 14)
+0.488191 0 15
+9968366 14
+9968366 9968366
+14 (14, 512) (14, 14)
+0.512095 0 15
+10273161 14
+10273161 10273161
+14 (14, 512) (14, 14)
+0.537169 0 15
+10533319 14
+10533319 10533319
+14 (14, 512) (14, 14)
+0.563471 0 15
+10748013 14
+10748013 10748013
+14 (14, 512) (14, 14)
+0.591061 0 15
+10925144 14
+10925144 10925144
+14 (14, 512) (14, 14)
+0.620002 0 15
+11062522 14
+11062522 11062522
+14 (14, 512) (14, 14)
+0.65036 0 15
+11157727 14
+11157727 11157727
+14 (14, 512) (14, 14)
+0.715608 0 15
+11260820 14
+11260820 11260820
+14 (14, 512) (14, 14)
+0.787402 0 15
+11258212 14
+11258212 11258212
+14 (14, 512) (14, 14)
+0.866399 0 15
+11173361 14
+11173361 11173361
+14 (14, 512) (14, 14)
+0.953321 0 15
+11040411 14
+11040411 11040411
+14 (14, 512) (14, 14)
+1.0 0 15
+10960490 14
+10960490 10960490
+14 (14, 512) (14, 14)

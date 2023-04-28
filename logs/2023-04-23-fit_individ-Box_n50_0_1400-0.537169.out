@@ -1,0 +1,30 @@
+no change     /home/users/delon/miniconda3/condabin/conda
+no change     /home/users/delon/miniconda3/bin/conda
+no change     /home/users/delon/miniconda3/bin/conda-env
+no change     /home/users/delon/miniconda3/bin/activate
+no change     /home/users/delon/miniconda3/bin/deactivate
+no change     /home/users/delon/miniconda3/etc/profile.d/conda.sh
+no change     /home/users/delon/miniconda3/etc/fish/conf.d/conda.fish
+no change     /home/users/delon/miniconda3/shell/condabin/Conda.psm1
+no change     /home/users/delon/miniconda3/shell/condabin/conda-hook.ps1
+no change     /home/users/delon/miniconda3/lib/python3.10/site-packages/xontrib/conda.xsh
+no change     /home/users/delon/miniconda3/etc/profile.d/conda.csh
+no change     /home/users/delon/.bashrc
+No action taken.
+Box_n50_0_1400
+       message: Optimization terminated successfully.
+       success: True
+        status: 0
+           fun: 14246.954783109377
+             x: [ 1.281e-01  2.287e-63  5.033e-01  5.988e-01]
+           nit: 949
+          nfev: 1817
+ final_simplex: (array([[ 1.281e-01,  2.287e-63,  5.033e-01,  5.988e-01],
+                       [ 1.281e-01,  5.568e-63,  5.033e-01,  5.988e-01],
+                       ...,
+                       [ 1.281e-01,  3.266e-62,  5.033e-01,  5.988e-01],
+                       [ 1.281e-01,  4.081e-62,  5.033e-01,  5.988e-01]]), array([ 1.425e+04,  1.425e+04,  1.425e+04,  1.425e+04,
+                        1.425e+04]))
+   param_names: ['d', 'e', 'f', 'g']
+[1.28107198e-01 2.28655000e-63 5.03338057e-01 5.98750503e-01]
+(10000, 32, 4)

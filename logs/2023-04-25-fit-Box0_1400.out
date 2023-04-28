@@ -1,0 +1,38 @@
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/condabin/conda
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/bin/conda
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/bin/conda-env
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/bin/activate
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/bin/deactivate
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/etc/profile.d/conda.sh
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/etc/fish/conf.d/conda.fish
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/shell/condabin/Conda.psm1
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/shell/condabin/conda-hook.ps1
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/lib/python3.10/site-packages/xontrib/conda.xsh
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/etc/profile.d/conda.csh
+no change     /home/users/delon/.bashrc
+No action taken.
+Starting ML Fit
+Box0_1400
+       message: Optimization terminated successfully.
+       success: True
+        status: 0
+           fun: 10276630.173009645
+             x: [ 1.592e-01  6.368e-01  3.552e-01 -7.065e-01  1.799e+00
+                 -1.731e+00  5.998e-01  4.225e-01]
+           nit: 1750
+          nfev: 2745
+ final_simplex: (array([[ 1.592e-01,  6.368e-01, ...,  5.998e-01,
+                         4.225e-01],
+                       [ 1.592e-01,  6.368e-01, ...,  5.998e-01,
+                         4.225e-01],
+                       ...,
+                       [ 1.592e-01,  6.368e-01, ...,  5.998e-01,
+                         4.225e-01],
+                       [ 1.592e-01,  6.368e-01, ...,  5.998e-01,
+                         4.225e-01]]), array([ 1.028e+07,  1.028e+07,  1.028e+07,  1.028e+07,
+                        1.028e+07,  1.028e+07,  1.028e+07,  1.028e+07,
+                        1.028e+07]))
+   param_names: ['d0', 'd1', 'e0', 'e1', 'f0', 'f1', 'g0', 'g1']
+[ 0.15918917  0.6367567   0.35520252 -0.70647741  1.79890319 -1.73092983
+  0.59976921  0.42251445]
+(10000, 64, 8)

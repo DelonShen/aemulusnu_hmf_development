@@ -1,0 +1,33 @@
+no change     /home/users/delon/miniconda3/condabin/conda
+no change     /home/users/delon/miniconda3/bin/conda
+no change     /home/users/delon/miniconda3/bin/conda-env
+no change     /home/users/delon/miniconda3/bin/activate
+no change     /home/users/delon/miniconda3/bin/deactivate
+no change     /home/users/delon/miniconda3/etc/profile.d/conda.sh
+no change     /home/users/delon/miniconda3/etc/fish/conf.d/conda.fish
+no change     /home/users/delon/miniconda3/shell/condabin/Conda.psm1
+no change     /home/users/delon/miniconda3/shell/condabin/conda-hook.ps1
+no change     /home/users/delon/miniconda3/lib/python3.10/site-packages/xontrib/conda.xsh
+no change     /home/users/delon/miniconda3/etc/profile.d/conda.csh
+no change     /home/users/delon/.bashrc
+No action taken.
+Box4_1400
+     message: Desired error not necessarily achieved due to precision loss.
+     success: False
+      status: 2
+         fun: 19192600.81761764
+           x: [ 1.351e+00  4.991e-01  4.406e+00 -2.368e+00  3.321e-01
+               -4.753e-01  6.234e-01  8.295e-01]
+         nit: 2
+         jac: [ 7.719e+07  1.429e+07  1.858e+07  5.511e+06  3.809e+08
+                1.261e+08  4.160e+07  1.164e+07]
+    hess_inv: [[ 3.220e-01  1.179e-01 ... -7.591e-02  5.038e-02]
+               [ 1.179e-01  1.263e+00 ... -2.919e-01  6.317e-02]
+               ...
+               [-7.591e-02 -2.919e-01 ...  1.295e+00 -7.584e-02]
+               [ 5.038e-02  6.317e-02 ... -7.584e-02  1.014e+00]]
+        nfev: 373
+        njev: 40
+ param_names: ['d0', 'd1', 'e0', 'e1', 'f0', 'f1', 'g0', 'g1']
+[ 1.35092171  0.49912093  4.40643262 -2.36793361  0.33208263 -0.4753456
+  0.62336901  0.82950843]

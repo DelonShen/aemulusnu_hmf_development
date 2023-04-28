@@ -1,0 +1,213 @@
+no change     /home/users/delon/miniconda3/condabin/conda
+no change     /home/users/delon/miniconda3/bin/conda
+no change     /home/users/delon/miniconda3/bin/conda-env
+no change     /home/users/delon/miniconda3/bin/activate
+no change     /home/users/delon/miniconda3/bin/deactivate
+no change     /home/users/delon/miniconda3/etc/profile.d/conda.sh
+no change     /home/users/delon/miniconda3/etc/fish/conf.d/conda.fish
+no change     /home/users/delon/miniconda3/shell/condabin/Conda.psm1
+no change     /home/users/delon/miniconda3/shell/condabin/conda-hook.ps1
+no change     /home/users/delon/miniconda3/lib/python3.10/site-packages/xontrib/conda.xsh
+no change     /home/users/delon/miniconda3/etc/profile.d/conda.csh
+no change     /home/users/delon/.bashrc
+No action taken.
+Box50_1400
+     message: Desired error not necessarily achieved due to precision loss.
+     success: False
+      status: 2
+         fun: 9271586.606339857
+           x: [ 8.150e-01 -1.032e+00  4.682e-02 -4.468e-02  1.812e+00
+               -9.094e-01  8.973e-01 -6.842e-02]
+         nit: 14
+         jac: [-1.178e+07 -1.674e+06  1.401e+07  2.870e+06  1.868e+07
+                3.496e+06 -4.627e+07 -1.240e+07]
+    hess_inv: [[ 4.845e-09 -1.122e-08 ...  1.026e-08 -5.549e-08]
+               [-1.122e-08  2.870e-08 ... -2.312e-08  1.247e-07]
+               ...
+               [ 1.026e-08 -2.312e-08 ...  2.642e-08 -1.410e-07]
+               [-5.549e-08  1.247e-07 ... -1.410e-07  7.719e-07]]
+        nfev: 1690
+        njev: 184
+ param_names: ['d0', 'd1', 'e0', 'e1', 'f0', 'f1', 'g0', 'g1']
+[ 0.81498921 -1.03203364  0.04682383 -0.04468345  1.81188594 -0.90943265
+  0.89731756 -0.06841853]
+Box51_1400
+     message: Desired error not necessarily achieved due to precision loss.
+     success: False
+      status: 2
+         fun: 4372997.556858756
+           x: [ 9.127e-01 -1.124e+00  4.862e-01 -9.681e-01  1.336e+00
+               -1.934e+00  5.525e-01  8.066e-02]
+         nit: 30
+         jac: [ 7.074e+05  1.096e+05  1.095e+05  1.972e+05 -2.112e+05
+               -9.317e+04  2.439e+06 -1.731e+05]
+    hess_inv: [[ 1.146e-06 -2.828e-06 ... -8.013e-08  1.515e-07]
+               [-2.828e-06  7.004e-06 ...  1.961e-07 -3.569e-07]
+               ...
+               [-8.013e-08  1.961e-07 ...  7.105e-09 -1.383e-08]
+               [ 1.515e-07 -3.569e-07 ... -1.383e-08  4.773e-08]]
+        nfev: 685
+        njev: 74
+ param_names: ['d0', 'd1', 'e0', 'e1', 'f0', 'f1', 'g0', 'g1']
+[ 0.91266464 -1.12355752  0.48624183 -0.96814095  1.33596545 -1.93433286
+  0.55253815  0.08066301]
+Box52_1400
+     message: Desired error not necessarily achieved due to precision loss.
+     success: False
+      status: 2
+         fun: 10054412.464011475
+           x: [ 2.363e-01  6.910e-01  6.399e-01  1.095e-01  7.965e-01
+               -6.524e-01  4.306e-01  3.997e-01]
+         nit: 6
+         jac: [-3.512e+07  6.491e+06  3.075e+06  5.309e+05  1.702e+07
+                1.400e+07  3.207e+07 -9.494e+06]
+    hess_inv: [[ 4.502e-03  3.127e-02 ...  6.641e-04  3.803e-03]
+               [ 3.127e-02  3.180e-01 ...  4.114e-03  2.929e-02]
+               ...
+               [ 6.641e-04  4.114e-03 ...  1.004e-04  5.467e-04]
+               [ 3.803e-03  2.929e-02 ...  5.467e-04  3.294e-03]]
+        nfev: 814
+        njev: 89
+ param_names: ['d0', 'd1', 'e0', 'e1', 'f0', 'f1', 'g0', 'g1']
+[ 0.23627849  0.69102989  0.63991695  0.1095433   0.7965027  -0.65241908
+  0.43055224  0.39970693]
+Box53_1400
+     message: Optimization terminated successfully.
+     success: True
+      status: 0
+         fun: 1e+22
+           x: [ 6.491e-01  7.225e-03  5.672e-01  6.629e-01  1.669e-01
+                9.509e-01  1.890e-01  6.058e-01]
+         nit: 0
+         jac: [ 0.000e+00  0.000e+00  0.000e+00  0.000e+00  0.000e+00
+                0.000e+00  0.000e+00  0.000e+00]
+    hess_inv: [[1 0 ... 0 0]
+               [0 1 ... 0 0]
+               ...
+               [0 0 ... 1 0]
+               [0 0 ... 0 1]]
+        nfev: 9
+        njev: 1
+ param_names: ['d0', 'd1', 'e0', 'e1', 'f0', 'f1', 'g0', 'g1']
+[0.64912731 0.00722485 0.56719249 0.66290454 0.16687101 0.95092347
+ 0.18899856 0.6057965 ]
+Box54_1400
+     message: Desired error not necessarily achieved due to precision loss.
+     success: False
+      status: 2
+         fun: 5767776.39597936
+           x: [ 4.896e-01 -3.389e-01  2.928e-01  2.060e-01  1.012e+00
+               -8.732e-02  5.150e-01  5.440e-01]
+         nit: 4
+         jac: [-4.793e+06  7.499e+06  3.757e+06 -3.028e+05 -9.313e+06
+               -3.457e+05  2.131e+07  1.770e+06]
+    hess_inv: [[ 2.870e-03 -4.665e-02 ...  1.272e-03 -2.583e-02]
+               [-4.665e-02  8.766e-01 ... -4.078e-02  1.841e-01]
+               ...
+               [ 1.272e-03 -4.078e-02 ...  4.322e-03  1.819e-02]
+               [-2.583e-02  1.841e-01 ...  1.819e-02  1.090e+00]]
+        nfev: 368
+        njev: 40
+ param_names: ['d0', 'd1', 'e0', 'e1', 'f0', 'f1', 'g0', 'g1']
+[ 0.48955617 -0.33890923  0.29284001  0.20595521  1.01248836 -0.08731886
+  0.51498653  0.54402332]
+Box55_1400
+     message: Desired error not necessarily achieved due to precision loss.
+     success: False
+      status: 2
+         fun: 36547831.71892825
+           x: [ 3.498e-01 -3.205e-01  1.810e-01  5.361e-01  6.303e-01
+               -1.318e-01  5.695e-01  9.347e-02]
+         nit: 4
+         jac: [ 1.357e+08  1.012e+08  1.168e+07 -2.339e+06 -6.116e+07
+               -4.686e+06  1.196e+08  2.333e+07]
+    hess_inv: [[ 2.926e-03  3.462e-03 ...  1.954e-03 -8.257e-02]
+               [ 3.462e-03  8.053e-03 ... -3.831e-04 -9.420e-02]
+               ...
+               [ 1.954e-03 -3.831e-04 ...  5.247e-03 -3.422e-02]
+               [-8.257e-02 -9.420e-02 ... -3.422e-02  2.700e+00]]
+        nfev: 537
+        njev: 59
+ param_names: ['d0', 'd1', 'e0', 'e1', 'f0', 'f1', 'g0', 'g1']
+[ 0.34983994 -0.32054165  0.18104315  0.53613674  0.63026472 -0.13183947
+  0.56953439  0.09347415]
+Box56_1400
+     message: Desired error not necessarily achieved due to precision loss.
+     success: False
+      status: 2
+         fun: 21495553.722613316
+           x: [ 5.067e-01 -3.160e-01  7.228e-02  2.804e-01  5.333e-01
+               -8.159e-01  4.091e-01  5.928e-01]
+         nit: 7
+         jac: [-2.639e+07 -4.685e+06 -8.393e+06 -3.116e+06 -1.864e+08
+               -6.060e+07 -4.984e+06  1.079e+07]
+    hess_inv: [[ 5.017e-02 -2.288e-02 ... -3.894e-04  5.929e-03]
+               [-2.288e-02  1.044e-02 ...  1.776e-04 -2.704e-03]
+               ...
+               [-3.894e-04  1.776e-04 ...  3.024e-06 -4.603e-05]
+               [ 5.929e-03 -2.704e-03 ... -4.603e-05  7.007e-04]]
+        nfev: 709
+        njev: 77
+ param_names: ['d0', 'd1', 'e0', 'e1', 'f0', 'f1', 'g0', 'g1']
+[ 0.50667122 -0.31600537  0.07228236  0.28039886  0.53329949 -0.81593166
+  0.40909594  0.5928169 ]
+Box57_1400
+     message: Desired error not necessarily achieved due to precision loss.
+     success: False
+      status: 2
+         fun: 90603005.10025573
+           x: [ 3.929e-01 -7.804e-01  1.011e+00  7.557e-01  4.952e-01
+               -9.901e-01  7.256e-01  6.714e-01]
+         nit: 4
+         jac: [-2.497e+08 -6.992e+07  1.139e+06  8.842e+04 -5.157e+08
+               -2.211e+08  1.620e+08  1.640e+07]
+    hess_inv: [[ 1.146e-01 -2.499e-01 ...  9.474e-02 -1.737e-01]
+               [-2.499e-01  1.016e+00 ...  1.591e-01  3.004e-01]
+               ...
+               [ 9.474e-02  1.591e-01 ...  3.679e-01 -1.874e-01]
+               [-1.737e-01  3.004e-01 ... -1.874e-01  3.299e-01]]
+        nfev: 713
+        njev: 77
+ param_names: ['d0', 'd1', 'e0', 'e1', 'f0', 'f1', 'g0', 'g1']
+[ 0.39294531 -0.78037736  1.01145482  0.75573195  0.49515484 -0.99009084
+  0.72557408  0.67141585]
+Box58_1400
+     message: Optimization terminated successfully.
+     success: True
+      status: 0
+         fun: 1e+22
+           x: [ 6.832e-01  7.462e-02  2.260e-01  6.757e-01  8.022e-02
+                6.010e-01  3.509e-01  9.880e-01]
+         nit: 0
+         jac: [ 0.000e+00  0.000e+00  0.000e+00  0.000e+00  0.000e+00
+                0.000e+00  0.000e+00  0.000e+00]
+    hess_inv: [[1 0 ... 0 0]
+               [0 1 ... 0 0]
+               ...
+               [0 0 ... 1 0]
+               [0 0 ... 0 1]]
+        nfev: 9
+        njev: 1
+ param_names: ['d0', 'd1', 'e0', 'e1', 'f0', 'f1', 'g0', 'g1']
+[0.68322417 0.07461795 0.2259924  0.67570084 0.08022287 0.60101984
+ 0.35087592 0.98804243]
+Box59_1400
+     message: Desired error not necessarily achieved due to precision loss.
+     success: False
+      status: 2
+         fun: 1072635.994883259
+           x: [ 7.547e-01 -9.866e-01  3.402e+00 -5.889e+00  3.083e+00
+               -9.400e-01  6.776e-01  5.545e-01]
+         nit: 47
+         jac: [ 1.350e+06  4.813e+05 -8.164e+04 -1.050e+04  7.157e+04
+                3.559e+03 -2.514e+05 -5.757e+04]
+    hess_inv: [[ 4.729e-07 -7.512e-07 ...  1.161e-07 -1.641e-07]
+               [-7.512e-07  1.238e-06 ... -1.648e-07  2.761e-07]
+               ...
+               [ 1.161e-07 -1.648e-07 ...  4.742e-08 -5.091e-08]
+               [-1.641e-07  2.761e-07 ... -5.091e-08  2.631e-07]]
+        nfev: 739
+        njev: 81
+ param_names: ['d0', 'd1', 'e0', 'e1', 'f0', 'f1', 'g0', 'g1']
+[ 0.75467755 -0.98660809  3.4019577  -5.88889193  3.08256508 -0.9399667
+  0.67758096  0.55451779]

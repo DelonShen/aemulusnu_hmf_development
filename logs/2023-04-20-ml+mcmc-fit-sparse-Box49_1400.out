@@ -1,0 +1,56 @@
+no change     /home/users/delon/miniconda3/condabin/conda
+no change     /home/users/delon/miniconda3/bin/conda
+no change     /home/users/delon/miniconda3/bin/conda-env
+no change     /home/users/delon/miniconda3/bin/activate
+no change     /home/users/delon/miniconda3/bin/deactivate
+no change     /home/users/delon/miniconda3/etc/profile.d/conda.sh
+no change     /home/users/delon/miniconda3/etc/fish/conf.d/conda.fish
+no change     /home/users/delon/miniconda3/shell/condabin/Conda.psm1
+no change     /home/users/delon/miniconda3/shell/condabin/conda-hook.ps1
+no change     /home/users/delon/miniconda3/lib/python3.10/site-packages/xontrib/conda.xsh
+no change     /home/users/delon/miniconda3/etc/profile.d/conda.csh
+no change     /home/users/delon/.bashrc
+No action taken.
+(240,)
+(240,)
+(240,)
+[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ...  True  True  True]
+ [False False False ...  True  True  True]
+ [False False False ...  True  True  True]]
+Box49_1400
+       message: Optimization terminated successfully.
+       success: True
+        status: 0
+           fun: 14111.849862676354
+             x: [ 9.734e-01  5.098e-01  3.731e+00 -5.076e+00  3.941e-01
+                 -4.072e-01  5.014e-01  4.513e-01]
+           nit: 1162
+          nfev: 1764
+ final_simplex: (array([[ 9.734e-01,  5.098e-01, ...,  5.014e-01,
+                         4.513e-01],
+                       [ 9.734e-01,  5.098e-01, ...,  5.014e-01,
+                         4.513e-01],
+                       ...,
+                       [ 9.734e-01,  5.098e-01, ...,  5.014e-01,
+                         4.513e-01],
+                       [ 9.734e-01,  5.098e-01, ...,  5.014e-01,
+                         4.513e-01]]), array([ 1.411e+04,  1.411e+04,  1.411e+04,  1.411e+04,
+                        1.411e+04,  1.411e+04,  1.411e+04,  1.411e+04,
+                        1.411e+04]))
+   param_names: ['d0', 'd1', 'e0', 'e1', 'f0', 'f1', 'g0', 'g1']
+[ 0.97340277  0.50975141  3.73095873 -5.07616506  0.39408565 -0.40718217
+  0.50138118  0.45129034]
+(240,)
+(240,)
+(240,)
+[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ...  True  True  True]
+ [False False False ...  True  True  True]
+ [False False False ...  True  True  True]]

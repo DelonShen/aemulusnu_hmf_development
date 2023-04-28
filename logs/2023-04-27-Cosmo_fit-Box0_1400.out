@@ -1,0 +1,57 @@
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/condabin/conda
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/bin/conda
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/bin/conda-env
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/bin/activate
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/bin/deactivate
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/etc/profile.d/conda.sh
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/etc/fish/conf.d/conda.fish
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/shell/condabin/Conda.psm1
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/shell/condabin/conda-hook.ps1
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/lib/python3.10/site-packages/xontrib/conda.xsh
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/etc/profile.d/conda.csh
+no change     /home/users/delon/.bashrc
+No action taken.
+0.59729599
+       message: Optimization terminated successfully.
+       success: True
+        status: 0
+           fun: 9165905.077512782
+             x: [ 3.989e-02  2.987e-01  4.891e-01 -9.781e-01  3.251e-01
+                  1.954e+00  4.172e+00  1.605e+00]
+           nit: 2824
+          nfev: 4282
+ final_simplex: (array([[ 3.989e-02,  2.987e-01, ...,  4.172e+00,
+                         1.605e+00],
+                       [ 3.989e-02,  2.987e-01, ...,  4.172e+00,
+                         1.605e+00],
+                       ...,
+                       [ 3.989e-02,  2.987e-01, ...,  4.172e+00,
+                         1.605e+00],
+                       [ 3.989e-02,  2.987e-01, ...,  4.172e+00,
+                         1.605e+00]]), array([ 9.166e+06,  9.166e+06,  9.166e+06,  9.166e+06,
+                        9.166e+06,  9.166e+06,  9.166e+06,  9.166e+06,
+                        9.166e+06]))
+   param_names: ['d0', 'd1', 'e0', 'e1', 'f0', 'f1', 'g0', 'g1']
+starting rotated fit
+       message: Optimization terminated successfully.
+       success: True
+        status: 0
+           fun: 9338350.823058175
+             x: [-2.369e-01  2.459e+00 -5.753e-01  3.865e-02  3.727e+00
+                  2.351e+00 -3.469e-01  4.220e+00]
+           nit: 2041
+          nfev: 3254
+ final_simplex: (array([[-2.369e-01,  2.459e+00, ..., -3.469e-01,
+                         4.220e+00],
+                       [-2.369e-01,  2.459e+00, ..., -3.469e-01,
+                         4.220e+00],
+                       ...,
+                       [-2.369e-01,  2.459e+00, ..., -3.469e-01,
+                         4.220e+00],
+                       [-2.369e-01,  2.459e+00, ..., -3.469e-01,
+                         4.220e+00]]), array([ 9.338e+06,  9.338e+06,  9.338e+06,  9.338e+06,
+                        9.338e+06,  9.338e+06,  9.338e+06,  9.338e+06,
+                        9.338e+06]))
+   param_names: ['d0_rot', 'd1_rot', 'e0_rot', 'e1_rot', 'f0_rot', 'f1_rot', 'g0_rot', 'g1_rot']
+[4.95762195 0.0847561  0.20977109 0.76066864 0.16820473 1.23660341
+ 3.96664438 1.13481368]

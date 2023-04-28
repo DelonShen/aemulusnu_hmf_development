@@ -1,0 +1,35 @@
+no change     /home/users/delon/miniconda3/condabin/conda
+no change     /home/users/delon/miniconda3/bin/conda
+no change     /home/users/delon/miniconda3/bin/conda-env
+no change     /home/users/delon/miniconda3/bin/activate
+no change     /home/users/delon/miniconda3/bin/deactivate
+no change     /home/users/delon/miniconda3/etc/profile.d/conda.sh
+no change     /home/users/delon/miniconda3/etc/fish/conf.d/conda.fish
+no change     /home/users/delon/miniconda3/shell/condabin/Conda.psm1
+no change     /home/users/delon/miniconda3/shell/condabin/conda-hook.ps1
+no change     /home/users/delon/miniconda3/lib/python3.10/site-packages/xontrib/conda.xsh
+no change     /home/users/delon/miniconda3/etc/profile.d/conda.csh
+no change     /home/users/delon/.bashrc
+No action taken.
+
+CommandNotFoundError: Your shell has not been properly configured to use 'conda activate'.
+To initialize your shell, run
+
+    $ conda init <SHELL_NAME>
+
+Currently supported shells are:
+  - bash
+  - fish
+  - tcsh
+  - xonsh
+  - zsh
+  - powershell
+
+See 'conda init --help' for more information and options.
+
+IMPORTANT: You may need to close and restart your shell after running 'conda init'.
+
+
+0it [00:00, ?it/s]/home/users/delon/aemulusnu_massfunction/generate-nvsM.py:48: UserWarning: *c* argument looks like a single numeric RGB or RGBA sequence, which should be avoided as value-mapping will have precedence in case its length matches with *x* & *y*.  Please use the *color* keyword-argument or provide a 2D array with a single row if you intend to specify the same RGB or RGBA value for all points.
+  ax.scatter(bin_cnters[not0], N[not0]/vol, c=color,
+1it [00:01,  1.05s/it]2it [00:02,  1.21s/it]3it [00:04,  1.55s/it]4it [00:06,  1.80s/it]5it [00:09,  2.07s/it]6it [00:11,  2.21s/it]7it [00:14,  2.32s/it]8it [00:16,  2.39s/it]9it [00:19,  2.44s/it]10it [00:21,  2.48s/it]11it [00:24,  2.52s/it]12it [00:26,  2.54s/it]13it [00:29,  2.56s/it]14it [00:32,  2.55s/it]15it [00:34,  2.55s/it]16it [00:37,  2.57s/it]16it [00:37,  2.33s/it]
