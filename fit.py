@@ -147,8 +147,9 @@ def get_mass_function_plots(yerr_dict, params):
             tinker_eval_MCMC = [tinker(a, M_c,**params,)*vol for M_c in M_numerics]
 #             print(tinker_eval_MCMC)
 
-            f_dndM_MCMC_LOG = interp1d(np.log10(M_numerics), tinker_eval_MCMC, kind='cubic', bounds_error=False, fill_value=0.)
-            f_dndM_MCMC = lambda x:f_dndM_MCMC_LOG(np.log10(x))
+#             f_dndM_MCMC_LOG = interp1d(np.log10(M_numerics), tinker_eval_MCMC, kind='linear', bounds_error=False, fill_value=0.)
+#             f_dndM_MCMC = lambda x:f_dndM_MCMC_LOG(np.log10(x))
+            f_dndM_MCMC =  interp1d(M_numerics, tinker_eval_MCMC, kind='linear', bounds_error=False, fill_value=0.)
 
             tinker_eval_MCMC = np.array([quad(f_dndM_MCMC, edge[0],  edge[1])[0] for edge in edge_pairs])
             color = plt.colormaps["rainbow"]((i+1)/len(Pkz.keys()))[:-1]
@@ -243,88 +244,78 @@ from tqdm import tqdm, trange
 from classy import Class
 import pickle
 
-pbar = tqdm(cosmos)
+#get power specturm
+key = box
 
-for key in pbar:
-    if('63' in key):
-        continue
-    if(key != 'Box_n50_0_1400' and key != 'Box0_1400' and key !=box):
-        continue
-    pbar.set_description(key)
+cosmo = cosmos[key]
+h = cosmo['H0']/100
+cosmo_dict = {
+    'h': h,
+    'Omega_b': cosmo['ombh2'] / h**2,
+    'Omega_cdm': cosmo['omch2'] / h**2,
+    'N_ur': 0.00641,
+    'N_ncdm': 1,
+    'output': 'mPk mTk',
+    'z_pk': '0.0,99',
+    'P_k_max_h/Mpc': 20.,
+    'm_ncdm': cosmo['nu_mass_ev']/3,
+    'deg_ncdm': 3,
+    'T_cmb': 2.7255,
+    'A_s': cosmo['As'] * 10**-9,
+    'n_s': cosmo['ns'],
+    'Omega_Lambda': 0.0,
+    'w0_fld': cosmo['w0'],
+    'wa_fld': 0.0,
+    'cs2_fld': 1.0,
+    'fluid_equation_of_state': "CLP"
+}
+pkclass = Class()
+pkclass.set(cosmo_dict)
+pkclass.compute()
 
-    cosmo = cosmos[key]
-    h = cosmo['H0']/100
-    cosmo_dict = {
-        'h': h,
-        'Omega_b': cosmo['ombh2'] / h**2,
-        'Omega_cdm': cosmo['omch2'] / h**2,
-        'N_ur': 0.00641,
-        'N_ncdm': 1,
-        'output': 'mPk mTk',
-        'z_pk': '0.0,99',
-        'P_k_max_h/Mpc': 20.,
-        'm_ncdm': cosmo['nu_mass_ev']/3,
-        'deg_ncdm': 3,
-        'T_cmb': 2.7255,
-        'A_s': cosmo['As'] * 10**-9,
-        'n_s': cosmo['ns'],
-        'Omega_Lambda': 0.0,
-        'w0_fld': cosmo['w0'],
-        'wa_fld': 0.0,
-        'cs2_fld': 1.0,
-        'fluid_equation_of_state': "CLP"
-    }
-    pkclass = Class()
-    pkclass.set(cosmo_dict)
-    pkclass.compute()
-    
-    curr_run_fname = '/oak/stanford/orgs/kipac/aemulus/aemulus_nu/%s/'%(key)
-    rockstar_dir = curr_run_fname+'output/rockstar/'
+curr_run_fname = '/oak/stanford/orgs/kipac/aemulus/aemulus_nu/%s/'%(key)
+rockstar_dir = curr_run_fname+'output/rockstar/'
 
-    f = open(rockstar_dir+'savelist.txt', 'r')
-    savelist = f.read().split()
-    f.close()
+f = open(rockstar_dir+'savelist.txt', 'r')
+savelist = f.read().split()
+f.close()
 
-    N_snapshots = len(savelist)
-    a = []
-    for i in range(N_snapshots):
-        f = open(rockstar_dir+'out_%d.list'%(i), 'r')
+N_snapshots = len(savelist)
+a = []
+for i in range(N_snapshots):
+    f = open(rockstar_dir+'out_%d.list'%(i), 'r')
 
-        for line in f:
-            if('#a' in line):
-                a+= [eval(line.split()[2])]
-                break
+    for line in f:
+        if('#a' in line):
+            a+= [eval(line.split()[2])]
+            break
 
 
-    zs = [scaleToRedshift(a_curr) for a_curr in a]
+zs = [scaleToRedshift(a_curr) for a_curr in a]
 
-    Pkz = {}
-    for z in  zs:
-        kt = np.logspace(-3, 1, 100) # h/Mpc
-        pk_m_lin = np.array(
-            [
-                pkclass.pk_lin(ki, np.array([z]))*h**3 #units of Mpc^3/h^3
-                for ki in kt * h # 1 / Mpc
-            ]
-        )
-        from scipy.interpolate import interp1d
-        #given k in units of h/Mpc gives Pk in units of Mpc^3/h^3 
-        Pk = interp1d(kt, pk_m_lin, kind='linear', bounds_error=False, fill_value=0.)
+Pkz = {}
+for z in  zs:
+    kt = np.logspace(-3, 1, 100) # h/Mpc
+    pk_m_lin = np.array(
+        [
+            pkclass.pk_lin(ki, np.array([z]))*h**3 #units of Mpc^3/h^3
+            for ki in kt * h # 1 / Mpc
+        ]
+    )
+    from scipy.interpolate import interp1d
+    #given k in units of h/Mpc gives Pk in units of Mpc^3/h^3 
+    Pk = interp1d(kt, pk_m_lin, kind='linear', bounds_error=False, fill_value=0.)
 
-        Pkz[z] = Pk    
-        class_sigma8 = pkclass.sigma(8, z, h_units=True)
-        my_sigma8 = np.sqrt(sigma2(Pk, 8)) # 8 h^-1 Mpc
+    Pkz[z] = Pk    
+    class_sigma8 = pkclass.sigma(8, z, h_units=True)
+    my_sigma8 = np.sqrt(sigma2(Pk, 8)) # 8 h^-1 Mpc
 #         print(class_sigma8, my_sigma8)
-        assert(np.abs(class_sigma8-my_sigma8)<0.01*class_sigma8)
+    assert(np.abs(class_sigma8-my_sigma8)<0.01*class_sigma8)
 #         plt.plot(kt, Pk(kt))
 #         plt.xscale('log')
 #         plt.yscale('log')
 #         plt.show()
-    
-    Pk_fname = '/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/'+key+'_Pk%s.pkl'%(SUFFIX)
-    Pk_f = open(Pk_fname, 'wb')
-    pickle.dump(Pkz, Pk_f)
-    Pk_f.close()
+
     
     
 import numpy as np
@@ -345,11 +336,6 @@ cosmos_f.close()
 
 
 h = cosmo_params[box]['H0']/100
-
-Pk_fname = '/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/'+box+'_Pk.pkl'
-Pk_f = open(Pk_fname, 'rb')
-Pkz = pickle.load(Pk_f) #Pkz is a dictonary of functions
-Pk_f.close()
 
 NvM_fname = '/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/'+box+'_NvsM.pkl'
 NvM_f = open(NvM_fname, 'rb')
@@ -408,31 +394,31 @@ for z in tqdm(Pkz.keys()):
     
     
     #xx0
-#     sigma2s = np.array([sigma2(Pk, r) for r in R])
-#     sigma = np.sqrt(sigma2s)
-#     ds2dR = np.array([dsigma2dR(Pk, r) for r in R])
-#     dRdMs = np.array([dRdM(m, box, a) for m in M_numerics])
-#     ds2dM = ds2dR * dRdMs
-#     dlnsinvds2 = -1/(2*sigma2s)
-#     dlnsinvdM = ds2dM*dlnsinvds2
-    
-#     f_dlnsinvdM_log = interp1d(np.log10(M_numerics), dlnsinvdM, kind='cubic')
-#     f_dlnsinvdM = lambda x:f_dlnsinvdM_log(np.log10(x))
-    
-    
-#     dlnσinvdMs[a] = f_dlnsinvdM    
-    
-    #xx1
-    M_log10 = np.log10(M_numerics)
-    sigma2s = [sigma2(Pk, r) for r in R]
+    sigma2s = np.array([sigma2(Pk, r) for r in R])
     sigma = np.sqrt(sigma2s)
-    lnsigmainv = -np.log(sigma)
-    dlnsinvdlogM = np.gradient(lnsigmainv, M_log10)
+    ds2dR = np.array([dsigma2dR(Pk, r) for r in R])
+    dRdMs = np.array([dRdM(m, box, a) for m in M_numerics])
+    ds2dM = ds2dR * dRdMs
+    dlnsinvds2 = -1/(2*sigma2s)
+    dlnsinvdM = ds2dM*dlnsinvds2
     
-    f_dlnsinvdlogM_log = interp1d(M_log10, dlnsinvdlogM,kind='cubic')
-    f_dlnsinvdM = lambda M: f_dlnsinvdlogM_log(np.log10(M)) / (M * np.log(10)) 
+    f_dlnsinvdM_log = interp1d(np.log10(M_numerics), dlnsinvdM, kind='linear')
+    f_dlnsinvdM = lambda x:f_dlnsinvdM_log(np.log10(x))
+    
     
     dlnσinvdMs[a] = f_dlnsinvdM    
+    
+    #xx1
+#     M_log10 = np.log10(M_numerics)
+#     sigma2s = [sigma2(Pk, r) for r in R]
+#     sigma = np.sqrt(sigma2s)
+#     lnsigmainv = -np.log(sigma)
+#     dlnsinvdlogM = np.gradient(lnsigmainv, M_log10)
+    
+#     f_dlnsinvdlogM_log = interp1d(M_log10, dlnsinvdlogM,kind='linear')
+#     f_dlnsinvdM = lambda M: f_dlnsinvdlogM_log(np.log10(M)) / (M * np.log(10)) 
+    
+#     dlnσinvdMs[a] = f_dlnsinvdM    
     
 from scipy.special import gamma
 from scipy.optimize import curve_fit
@@ -504,6 +490,9 @@ scale_cov = {a:np.log(np.linalg.det(weighted_cov[a])) for a in weighted_cov}
 
 def log_prior(param_values):
     #uniform prior
+    for param in param_values:
+        if(np.abs(param) >= 5):
+            return -np.inf
     for a in N_data:
         d = p(a, param_values[0], param_values[1])
         e = p(a, param_values[2], param_values[3])
@@ -511,7 +500,7 @@ def log_prior(param_values):
         g = p(a, param_values[6], param_values[7])
         ps = [d,e,f,g]
         for param in ps:
-            if(param < 0 or param > 15):
+            if(param < 0 or param > 5):
                 return -np.inf
     return 0
 
@@ -535,15 +524,15 @@ def log_prob(param_values):
     for a in N_data:
         
         #x0x
-#         tinker_eval = [tinker(a, M_c,**params,)*vol for M_c in M_numerics]
-#         f_dndlogM = interp1d(M_numerics, tinker_eval, kind='linear', bounds_error=False, fill_value=0.)
-#         tinker_fs[a] = f_dndlogM
+        tinker_eval = [tinker(a, M_c,**params,)*vol for M_c in M_numerics]
+        f_dndlogM = interp1d(M_numerics, tinker_eval, kind='linear', bounds_error=False, fill_value=0.)
+        tinker_fs[a] = f_dndlogM
         
         #x1x
-        tinker_eval = [tinker(a, M_c,**params,)*vol for M_c in M_numerics]
-        f_dndlogM_LOG = interp1d(np.log10(M_numerics), tinker_eval, kind='cubic', bounds_error=False, fill_value=0.)
-        f_dndlogM = lambda x:f_dndlogM_LOG(np.log10(x))
-        tinker_fs[a] = f_dndlogM
+#         tinker_eval = [tinker(a, M_c,**params,)*vol for M_c in M_numerics]
+#         f_dndlogM_LOG = interp1d(np.log10(M_numerics), tinker_eval, kind='linear', bounds_error=False, fill_value=0.)
+#         f_dndlogM = lambda x:f_dndlogM_LOG(np.log10(x))
+#         tinker_fs[a] = f_dndlogM
 
         
     model_vals = {}
@@ -613,13 +602,13 @@ sampler = emcee.EnsembleSampler(
     pool=Pool()
 )
 
-sampler.run_mcmc(initialpos, 10000, progress=True);
+sampler.run_mcmc(initialpos, 50000, progress=True);
 
 with open("/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/%s_MCMC_sampler%s.pkl"%(box,SUFFIX), "wb") as f:
     pickle.dump(sampler, f)
 
 import corner
-samples = sampler.chain[:, 9000:, :].reshape((-1, ndim))
+samples = sampler.chain[:, 40000:, :].reshape((-1, ndim))
 final_param_vals = np.percentile(samples,  50,axis=0)
 params_final = dict(zip(param_names, final_param_vals))
 fig = corner.corner(samples, labels=labels, quantiles=[0.16, 0.5, 0.84],show_titles=True,)

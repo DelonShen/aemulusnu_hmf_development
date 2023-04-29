@@ -40,3 +40,6 @@ IMPORTANT: You may need to close and restart your shell after running 'conda ini
   on the subranges.  Perhaps a special-purpose integrator should be used.
   res, err = quad(dσ2dRdk, 0, np.inf)
   6%|▋         | 1/16 [00:09<02:23,  9.60s/it] 12%|█▎        | 2/16 [00:19<02:15,  9.65s/it] 19%|█▉        | 3/16 [00:28<02:05,  9.65s/it] 25%|██▌       | 4/16 [00:38<01:55,  9.61s/it] 31%|███▏      | 5/16 [00:48<01:45,  9.60s/it] 38%|███▊      | 6/16 [00:57<01:35,  9.57s/it] 44%|████▍     | 7/16 [01:07<01:26,  9.57s/it] 50%|█████     | 8/16 [01:16<01:16,  9.56s/it] 56%|█████▋    | 9/16 [01:26<01:06,  9.56s/it] 62%|██████▎   | 10/16 [01:35<00:57,  9.58s/it] 69%|██████▉   | 11/16 [01:45<00:48,  9.61s/it] 75%|███████▌  | 12/16 [01:55<00:38,  9.62s/it] 81%|████████▏ | 13/16 [02:04<00:28,  9.61s/it] 88%|████████▊ | 14/16 [02:14<00:19,  9.63s/it] 94%|█████████▍| 15/16 [02:24<00:09,  9.64s/it]100%|██████████| 16/16 [02:33<00:00,  9.64s/it]100%|██████████| 16/16 [02:33<00:00,  9.61s/it]
+/home/users/delon/aemulusnu_massfunction/fit.py:453: RuntimeWarning: divide by zero encountered in scalar divide
+  oup *= ((σM/e)**(-d)+σM**(-f))
+slurmstepd: error: *** JOB 17684185 ON sh03-04n09 CANCELLED AT 2023-04-28T02:18:15 ***
