@@ -1,0 +1,52 @@
+
+CommandNotFoundError: Your shell has not been properly configured to use 'conda activate'.
+To initialize your shell, run
+
+    $ conda init <SHELL_NAME>
+
+Currently supported shells are:
+  - bash
+  - fish
+  - tcsh
+  - xonsh
+  - zsh
+  - powershell
+
+See 'conda init --help' for more information and options.
+
+IMPORTANT: You may need to close and restart your shell after running 'conda init'.
+
+
+/home/users/delon/aemulusnu_massfunction/fit.py:76: IntegrationWarning: The maximum number of subdivisions (50) has been achieved.
+  If increasing the limit yields no improvement it is advised to analyze 
+  the integrand in order to determine the difficulties.  If the position of a 
+  local difficulty can be determined (singularity, discontinuity) one will 
+  probably gain from splitting up the interval and calling the integrator 
+  on the subranges.  Perhaps a special-purpose integrator should be used.
+  res, err = quad(dσ2dk, 0, np.inf)
+  0%|          | 0/16 [00:00<?, ?it/s]/home/users/delon/aemulusnu_massfunction/fit.py:76: IntegrationWarning: The maximum number of subdivisions (50) has been achieved.
+  If increasing the limit yields no improvement it is advised to analyze 
+  the integrand in order to determine the difficulties.  If the position of a 
+  local difficulty can be determined (singularity, discontinuity) one will 
+  probably gain from splitting up the interval and calling the integrator 
+  on the subranges.  Perhaps a special-purpose integrator should be used.
+  res, err = quad(dσ2dk, 0, np.inf)
+/home/users/delon/aemulusnu_massfunction/fit.py:116: IntegrationWarning: The maximum number of subdivisions (50) has been achieved.
+  If increasing the limit yields no improvement it is advised to analyze 
+  the integrand in order to determine the difficulties.  If the position of a 
+  local difficulty can be determined (singularity, discontinuity) one will 
+  probably gain from splitting up the interval and calling the integrator 
+  on the subranges.  Perhaps a special-purpose integrator should be used.
+  res, err = quad(dσ2dRdk, 0, np.inf)
+  6%|▋         | 1/16 [00:09<02:20,  9.36s/it] 12%|█▎        | 2/16 [00:18<02:11,  9.41s/it] 19%|█▉        | 3/16 [00:28<02:02,  9.41s/it] 25%|██▌       | 4/16 [00:37<01:53,  9.49s/it] 31%|███▏      | 5/16 [00:47<01:44,  9.54s/it] 38%|███▊      | 6/16 [00:56<01:35,  9.52s/it] 44%|████▍     | 7/16 [01:06<01:25,  9.51s/it] 50%|█████     | 8/16 [01:15<01:16,  9.52s/it] 56%|█████▋    | 9/16 [01:25<01:06,  9.53s/it] 62%|██████▎   | 10/16 [01:35<00:57,  9.54s/it] 69%|██████▉   | 11/16 [01:44<00:47,  9.54s/it] 75%|███████▌  | 12/16 [01:54<00:38,  9.56s/it] 81%|████████▏ | 13/16 [02:03<00:28,  9.55s/it] 88%|████████▊ | 14/16 [02:13<00:19,  9.54s/it] 94%|█████████▍| 15/16 [02:22<00:09,  9.53s/it]100%|██████████| 16/16 [02:32<00:00,  9.53s/it]100%|██████████| 16/16 [02:32<00:00,  9.52s/it]
+Traceback (most recent call last):
+  File "/home/users/delon/aemulusnu_massfunction/fit.py", line 487, in <module>
+    inv_weighted_cov = {a:np.linalg.inv(weighted_cov[a]) for a in weighted_cov}  
+  File "/home/users/delon/aemulusnu_massfunction/fit.py", line 487, in <dictcomp>
+    inv_weighted_cov = {a:np.linalg.inv(weighted_cov[a]) for a in weighted_cov}  
+  File "<__array_function__ internals>", line 200, in inv
+  File "/home/users/delon/.local/lib/python3.9/site-packages/numpy/linalg/linalg.py", line 538, in inv
+    ainv = _umath_linalg.inv(a, signature=signature, extobj=extobj)
+  File "/home/users/delon/.local/lib/python3.9/site-packages/numpy/linalg/linalg.py", line 89, in _raise_linalgerror_singular
+    raise LinAlgError("Singular matrix")
+numpy.linalg.LinAlgError: Singular matrix

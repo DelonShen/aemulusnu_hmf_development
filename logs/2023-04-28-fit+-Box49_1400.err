@@ -38,15 +38,15 @@ IMPORTANT: You may need to close and restart your shell after running 'conda ini
   probably gain from splitting up the interval and calling the integrator 
   on the subranges.  Perhaps a special-purpose integrator should be used.
   res, err = quad(dσ2dRdk, 0, np.inf)
-  6%|▋         | 1/16 [00:09<02:23,  9.56s/it] 12%|█▎        | 2/16 [00:19<02:15,  9.67s/it] 19%|█▉        | 3/16 [00:29<02:06,  9.73s/it] 25%|██▌       | 4/16 [00:38<01:57,  9.77s/it] 31%|███▏      | 5/16 [00:48<01:47,  9.81s/it] 38%|███▊      | 6/16 [00:58<01:38,  9.81s/it] 44%|████▍     | 7/16 [01:08<01:28,  9.80s/it] 50%|█████     | 8/16 [01:18<01:18,  9.81s/it] 56%|█████▋    | 9/16 [01:28<01:08,  9.83s/it] 62%|██████▎   | 10/16 [01:37<00:58,  9.83s/it] 69%|██████▉   | 11/16 [01:47<00:49,  9.82s/it] 75%|███████▌  | 12/16 [01:57<00:39,  9.81s/it] 81%|████████▏ | 13/16 [02:07<00:29,  9.82s/it] 88%|████████▊ | 14/16 [02:17<00:19,  9.81s/it] 94%|█████████▍| 15/16 [02:26<00:09,  9.81s/it]100%|██████████| 16/16 [02:36<00:00,  9.82s/it]100%|██████████| 16/16 [02:36<00:00,  9.80s/it]
+  6%|▋         | 1/16 [00:09<02:24,  9.61s/it] 12%|█▎        | 2/16 [00:19<02:16,  9.76s/it] 19%|█▉        | 3/16 [00:29<02:07,  9.82s/it] 25%|██▌       | 4/16 [00:39<01:57,  9.82s/it] 31%|███▏      | 5/16 [00:48<01:47,  9.81s/it] 38%|███▊      | 6/16 [00:58<01:38,  9.82s/it] 44%|████▍     | 7/16 [01:08<01:28,  9.81s/it] 50%|█████     | 8/16 [01:18<01:18,  9.82s/it] 56%|█████▋    | 9/16 [01:28<01:08,  9.85s/it] 62%|██████▎   | 10/16 [01:38<00:59,  9.85s/it] 69%|██████▉   | 11/16 [01:48<00:49,  9.85s/it] 75%|███████▌  | 12/16 [01:58<00:39,  9.88s/it] 81%|████████▏ | 13/16 [02:07<00:29,  9.89s/it] 88%|████████▊ | 14/16 [02:17<00:19,  9.91s/it] 94%|█████████▍| 15/16 [02:27<00:09,  9.93s/it]100%|██████████| 16/16 [02:37<00:00,  9.93s/it]100%|██████████| 16/16 [02:37<00:00,  9.86s/it]
 Traceback (most recent call last):
   File "/home/users/delon/aemulusnu_massfunction/fit.py", line 487, in <module>
     inv_weighted_cov = {a:np.linalg.inv(weighted_cov[a]) for a in weighted_cov}  
   File "/home/users/delon/aemulusnu_massfunction/fit.py", line 487, in <dictcomp>
     inv_weighted_cov = {a:np.linalg.inv(weighted_cov[a]) for a in weighted_cov}  
   File "<__array_function__ internals>", line 200, in inv
-  File "/home/users/delon/.local/lib/python3.9/site-packages/numpy/linalg/linalg.py", line 538, in inv
-    ainv = _umath_linalg.inv(a, signature=signature, extobj=extobj)
-  File "/home/users/delon/.local/lib/python3.9/site-packages/numpy/linalg/linalg.py", line 89, in _raise_linalgerror_singular
-    raise LinAlgError("Singular matrix")
-numpy.linalg.LinAlgError: Singular matrix
+  File "/home/users/delon/.local/lib/python3.9/site-packages/numpy/linalg/linalg.py", line 532, in inv
+    _assert_stacked_2d(a)
+  File "/home/users/delon/.local/lib/python3.9/site-packages/numpy/linalg/linalg.py", line 183, in _assert_stacked_2d
+    raise LinAlgError('%d-dimensional array given. Array must be '
+numpy.linalg.LinAlgError: 0-dimensional array given. Array must be at least two-dimensional

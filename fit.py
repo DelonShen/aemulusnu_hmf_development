@@ -602,13 +602,13 @@ sampler = emcee.EnsembleSampler(
     pool=Pool()
 )
 
-sampler.run_mcmc(initialpos, 50000, progress=True);
+sampler.run_mcmc(initialpos, 10000, progress=True);
 
 with open("/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/%s_MCMC_sampler%s.pkl"%(box,SUFFIX), "wb") as f:
     pickle.dump(sampler, f)
 
 import corner
-samples = sampler.chain[:, 40000:, :].reshape((-1, ndim))
+samples = sampler.chain[:, 9000:, :].reshape((-1, ndim))
 final_param_vals = np.percentile(samples,  50,axis=0)
 params_final = dict(zip(param_names, final_param_vals))
 fig = corner.corner(samples, labels=labels, quantiles=[0.16, 0.5, 0.84],show_titles=True,)

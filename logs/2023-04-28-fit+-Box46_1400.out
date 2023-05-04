@@ -1,0 +1,39 @@
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/condabin/conda
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/bin/conda
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/bin/conda-env
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/bin/activate
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/bin/deactivate
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/etc/profile.d/conda.sh
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/etc/fish/conf.d/conda.fish
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/shell/condabin/Conda.psm1
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/shell/condabin/conda-hook.ps1
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/lib/python3.10/site-packages/xontrib/conda.xsh
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/etc/profile.d/conda.csh
+no change     /home/users/delon/.bashrc
+No action taken.
+['As', 'ns', 'H0', 'w0', 'ombh2', 'omch2', 'nu_mass_ev', 'sigma']
+['As', 'ns', 'H0', 'w0', 'ombh2', 'omch2', 'nu_mass_ev', 'sigma']
+Starting ML Fit
+Box46_1400
+       message: Optimization terminated successfully.
+       success: True
+        status: 0
+           fun: 242165.37780227995
+             x: [ 1.170e+00 -1.309e+00  5.937e-01 -1.187e+00  4.779e-01
+                  1.855e-01  1.016e+00 -2.596e-01]
+           nit: 2140
+          nfev: 3187
+ final_simplex: (array([[ 1.170e+00, -1.309e+00, ...,  1.016e+00,
+                        -2.596e-01],
+                       [ 1.170e+00, -1.309e+00, ...,  1.016e+00,
+                        -2.596e-01],
+                       ...,
+                       [ 1.170e+00, -1.309e+00, ...,  1.016e+00,
+                        -2.596e-01],
+                       [ 1.170e+00, -1.309e+00, ...,  1.016e+00,
+                        -2.596e-01]]), array([ 2.422e+05,  2.422e+05,  2.422e+05,  2.422e+05,
+                        2.422e+05,  2.422e+05,  2.422e+05,  2.422e+05,
+                        2.422e+05]))
+   param_names: ['d0', 'd1', 'e0', 'e1', 'f0', 'f1', 'g0', 'g1']
+[ 1.16988102 -1.30941561  0.59367607 -1.18735214  0.47793898  0.18549303
+  1.01570219 -0.25960614]

@@ -1,12 +1,13 @@
 import numpy as np
 from scipy.stats import binned_statistic
 from tqdm import tqdm, trange
-import seaborn
 import matplotlib.pyplot as plt
 import os
 import sys
 
 box = sys.argv[1]
+# box = 'Box_n50_0_1400'
+# box = 'Box0_1400'
 curr_run_fname = '/oak/stanford/orgs/kipac/aemulus/aemulus_nu/%s/'%(box)
 rockstar_dir = curr_run_fname+'output/rockstar/'
 
@@ -16,51 +17,65 @@ f.close()
 
 N_snapshots = len(savelist)
 
+print(N_snapshots)
+
 i=0
 
 import pickle
 
 NvMs = {}
 f = open('/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/'+box+'_M200b', 'r')
-
+Np_fname = "/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/" + box + "_Np";
+f2 = open(Np_fname, 'r')
 TMP=0
+# gt200idxs = {}
 for line in tqdm(f):
+    line2 = f2.readline()
 #     fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(13,8))
 
     #extract the masses and position of halos for a given snapshot 
     snapshot_mass = line.strip().split()
     snapshot_mass = np.array(snapshot_mass, dtype=np.float64)  
-    
+    snapshot_Np = line2.strip().split()
+    snapshot_Np = np.array(snapshot_Np, dtype=np.float64)  
+    assert(len(snapshot_mass)==len(snapshot_Np))
+#     gt200Np = np.where(snapshot_Np >= 200)
+    print(len(snapshot_mass))
+#     snapshot_mass = snapshot_mass[gt200Np]
+    print(len(snapshot_mass))
 
-
-    f = open(rockstar_dir+'out_%d.list'%(i), 'r')
     
     #get the volume, redshift, and particle mass in the simulation
     vol = -1
     BOX_SIZE = -1
     a = -1
     Mpart = -1
-    for line in f:
-        if('#a' in line):
-            a = eval(line.split()[2])
-        if('Particle mass' in line):
-            Mpart = eval(line.split()[2])
-        if('Box size' in line):
-            vol = eval(line.split()[2])**3
-            BOX_SIZE = eval(line.split()[2])
-            break
-            
     
+    f_meta = open(rockstar_dir+'out_%d.list'%(i), 'r')
+
+    for meta_data in f_meta:
+        if('#a' in meta_data):
+            a = eval(meta_data.split()[2])
+        if('Particle mass' in meta_data):
+            Mpart = eval(meta_data.split()[2])
+        if('Box size' in meta_data):
+            vol = eval(meta_data.split()[2])**3
+            BOX_SIZE = eval(meta_data.split()[2])
+            break            
     
+#     gt200idxs[a] = gt200Np
+
     nBins = 16
     
     #we'll only consider halos with more than 200 particles
+    print(np.log10(200*Mpart), np.log10(np.max(snapshot_mass)))
     edges_log10 = np.arange(np.log10(200*Mpart), 1+np.log10(np.max(snapshot_mass)), 0.1)
     edges = np.array([10**el10 for el10 in edges_log10])
 
     #get the number count of halos in the mass bins
     N, bin_edge, bin_idx = binned_statistic(snapshot_mass, np.ones_like(snapshot_mass), 
                                             statistic='count', bins=edges)
+    print(sum(N))
     c_i = len(N)-1
     while(N[c_i] == 0):
         N = N[:c_i]
@@ -119,11 +134,11 @@ for line in tqdm(f):
                'corrections':correction}
 f.close()
 
+
 NvM_fname = '/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/'+curr_run_fname.split('/')[-2]+'_NvsM.pkl'
 NvM_f = open(NvM_fname, 'wb')
 pickle.dump(NvMs, NvM_f)
 NvM_f.close()
-
 
 jackknife = {}
 f_pos = open('/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/'+box+'_pos', 'r')
@@ -131,12 +146,13 @@ for a in tqdm(NvMs):
     snapshot_pos  = f_pos.readline().strip().split(',')
     snapshot_pos  = [np.array(pos.split(), dtype=np.float32) for pos in snapshot_pos if pos != '']
     snapshot_pos  = np.array(snapshot_pos)
-
+    
+#     gt200Np = gt200idxs[a]
     N = NvMs[a]['N']
     vol = NvMs[a]['vol']
     bin_idx = NvMs[a]['bin_idx']
     correction = NvMs[a]['corrections']
-
+#     snapshot_pos  = snapshot_pos[gt200Np]
     assert(len(bin_idx) == len(snapshot_pos))
     #now lets get to spatial jackknife
     N_DIVS = 4 #each axis is diided into N_DIVS parts so in total the box

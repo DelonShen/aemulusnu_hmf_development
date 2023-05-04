@@ -1,0 +1,29 @@
+
+CommandNotFoundError: Your shell has not been properly configured to use 'conda activate'.
+To initialize your shell, run
+
+    $ conda init <SHELL_NAME>
+
+Currently supported shells are:
+  - bash
+  - fish
+  - tcsh
+  - xonsh
+  - zsh
+  - powershell
+
+See 'conda init --help' for more information and options.
+
+IMPORTANT: You may need to close and restart your shell after running 'conda init'.
+
+
+0it [00:00, ?it/s]1it [00:01,  1.83s/it]2it [00:04,  2.05s/it]3it [00:06,  2.19s/it]3it [00:06,  2.13s/it]
+Traceback (most recent call last):
+  File "/home/users/delon/aemulusnu_massfunction/prepare_data.py", line 71, in <module>
+    print(np.log10(200*Mpart), np.log10(np.max(snapshot_mass)))
+  File "<__array_function__ internals>", line 200, in amax
+  File "/home/users/delon/.local/lib/python3.9/site-packages/numpy/core/fromnumeric.py", line 2820, in amax
+    return _wrapreduction(a, np.maximum, 'max', axis, None, out,
+  File "/home/users/delon/.local/lib/python3.9/site-packages/numpy/core/fromnumeric.py", line 86, in _wrapreduction
+    return ufunc.reduce(obj, axis, dtype, out, **passkwargs)
+ValueError: zero-size array to reduction operation maximum which has no identity

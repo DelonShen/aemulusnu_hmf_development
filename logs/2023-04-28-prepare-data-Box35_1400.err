@@ -1,0 +1,24 @@
+
+CommandNotFoundError: Your shell has not been properly configured to use 'conda activate'.
+To initialize your shell, run
+
+    $ conda init <SHELL_NAME>
+
+Currently supported shells are:
+  - bash
+  - fish
+  - tcsh
+  - xonsh
+  - zsh
+  - powershell
+
+See 'conda init --help' for more information and options.
+
+IMPORTANT: You may need to close and restart your shell after running 'conda init'.
+
+
+0it [00:00, ?it/s]1it [00:01,  1.15s/it]2it [00:02,  1.45s/it]3it [00:05,  1.93s/it]4it [00:08,  2.37s/it]5it [00:12,  2.88s/it]6it [00:16,  3.25s/it]7it [00:20,  3.57s/it]8it [00:24,  3.81s/it]8it [00:28,  3.55s/it]
+Traceback (most recent call last):
+  File "/home/users/delon/aemulusnu_massfunction/prepare_data.py", line 41, in <module>
+    assert(len(snapshot_mass)==len(snapshot_Np))
+AssertionError
