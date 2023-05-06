@@ -2,11 +2,11 @@ import sys
 box = sys.argv[1]
 # box = 'Box_n50_0_1400'
 FIXED = {
-         'f1':0.16,
-         'e0':0.1,
+         'f1':0.12,
+         'd0':2.4,
         }
-param_names = [ 'd0', 'd1',
-                'e1',
+param_names = [ 'd1',
+               'e0' ,'e1',
                'f0', 
                'g0','g1']
 ndim = len(param_names)

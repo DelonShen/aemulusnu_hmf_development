@@ -11,3 +11,26 @@ no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/lib/python3.10/sit
 no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/etc/profile.d/conda.csh
 no change     /home/users/delon/.bashrc
 No action taken.
+Starting ML Fit
+Box_n50_19_1400
+       message: Optimization terminated successfully.
+       success: True
+        status: 0
+           fun: 180540.36006819457
+             x: [ 1.042e+00  1.847e+00  1.273e-01  5.737e-01  1.007e+00
+                 -1.394e-01]
+           nit: 935
+          nfev: 1475
+ final_simplex: (array([[ 1.042e+00,  1.847e+00, ...,  1.007e+00,
+                        -1.394e-01],
+                       [ 1.042e+00,  1.847e+00, ...,  1.007e+00,
+                        -1.394e-01],
+                       ...,
+                       [ 1.042e+00,  1.847e+00, ...,  1.007e+00,
+                        -1.394e-01],
+                       [ 1.042e+00,  1.847e+00, ...,  1.007e+00,
+                        -1.394e-01]]), array([ 1.805e+05,  1.805e+05,  1.805e+05,  1.805e+05,
+                        1.805e+05,  1.805e+05,  1.805e+05]))
+   param_names: ['d0', 'd1', 'e1', 'f0', 'g0', 'g1']
+[ 1.04213464  1.84676406  0.127327    0.5737165   1.00728272 -0.1393774 ]
+(5000, 64, 6)

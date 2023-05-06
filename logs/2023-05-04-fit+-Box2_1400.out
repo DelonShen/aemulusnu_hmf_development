@@ -12,3 +12,25 @@ no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/etc/profile.d/cond
 no change     /home/users/delon/.bashrc
 No action taken.
 Starting ML Fit
+Box2_1400
+       message: Optimization terminated successfully.
+       success: True
+        status: 0
+           fun: 26743.604394413054
+             x: [ 3.050e-01  2.064e-01  3.448e-01  1.569e+00  1.153e+00
+                  7.443e-02]
+           nit: 744
+          nfev: 1154
+ final_simplex: (array([[ 3.050e-01,  2.064e-01, ...,  1.153e+00,
+                         7.443e-02],
+                       [ 3.050e-01,  2.064e-01, ...,  1.153e+00,
+                         7.443e-02],
+                       ...,
+                       [ 3.050e-01,  2.064e-01, ...,  1.153e+00,
+                         7.444e-02],
+                       [ 3.050e-01,  2.064e-01, ...,  1.153e+00,
+                         7.443e-02]]), array([ 2.674e+04,  2.674e+04,  2.674e+04,  2.674e+04,
+                        2.674e+04,  2.674e+04,  2.674e+04]))
+   param_names: ['d0', 'd1', 'e1', 'f0', 'g0', 'g1']
+[0.30496771 0.20637441 0.34479897 1.56907331 1.15262989 0.07442868]
+(5000, 64, 6)
