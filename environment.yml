@@ -13,4 +13,5 @@ dependencies:
     - seaborn
     - emcee
     - corner
-    - george
+    - torch
+    - gpytorch

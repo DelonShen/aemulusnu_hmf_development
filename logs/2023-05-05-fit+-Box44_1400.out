@@ -1,0 +1,37 @@
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/condabin/conda
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/bin/conda
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/bin/conda-env
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/bin/activate
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/bin/deactivate
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/etc/profile.d/conda.sh
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/etc/fish/conf.d/conda.fish
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/shell/condabin/Conda.psm1
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/shell/condabin/conda-hook.ps1
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/lib/python3.10/site-packages/xontrib/conda.xsh
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/etc/profile.d/conda.csh
+no change     /home/users/delon/.bashrc
+No action taken.
+Starting ML Fit
+Box44_1400
+       message: Optimization terminated successfully.
+       success: True
+        status: 0
+           fun: 39226.12423215613
+             x: [-5.877e-01  1.069e+00  1.853e-01  4.144e-01  1.307e+00
+                  1.286e-03]
+           nit: 970
+          nfev: 1508
+ final_simplex: (array([[-5.877e-01,  1.069e+00, ...,  1.307e+00,
+                         1.286e-03],
+                       [-5.877e-01,  1.069e+00, ...,  1.307e+00,
+                         1.301e-03],
+                       ...,
+                       [-5.878e-01,  1.069e+00, ...,  1.307e+00,
+                         1.273e-03],
+                       [-5.876e-01,  1.069e+00, ...,  1.307e+00,
+                         1.325e-03]]), array([ 3.923e+04,  3.923e+04,  3.923e+04,  3.923e+04,
+                        3.923e+04,  3.923e+04,  3.923e+04]))
+   param_names: ['d1', 'e0', 'e1', 'f0', 'g0', 'g1']
+[-5.87700589e-01  1.06868721e+00  1.85285430e-01  4.14412521e-01
+  1.30744923e+00  1.28554153e-03]
+(5000, 64, 6)

@@ -1,0 +1,36 @@
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/condabin/conda
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/bin/conda
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/bin/conda-env
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/bin/activate
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/bin/deactivate
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/etc/profile.d/conda.sh
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/etc/fish/conf.d/conda.fish
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/shell/condabin/Conda.psm1
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/shell/condabin/conda-hook.ps1
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/lib/python3.10/site-packages/xontrib/conda.xsh
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/etc/profile.d/conda.csh
+no change     /home/users/delon/.bashrc
+No action taken.
+Starting ML Fit
+Box_n50_28_1400
+       message: Optimization terminated successfully.
+       success: True
+        status: 0
+           fun: 45053.66232608872
+             x: [-6.824e-01  1.089e+00  2.000e-01  4.160e-01  1.331e+00
+                 -1.254e-02]
+           nit: 443
+          nfev: 705
+ final_simplex: (array([[-6.824e-01,  1.089e+00, ...,  1.331e+00,
+                        -1.254e-02],
+                       [-6.824e-01,  1.089e+00, ...,  1.331e+00,
+                        -1.254e-02],
+                       ...,
+                       [-6.824e-01,  1.089e+00, ...,  1.331e+00,
+                        -1.254e-02],
+                       [-6.824e-01,  1.089e+00, ...,  1.331e+00,
+                        -1.254e-02]]), array([ 4.505e+04,  4.505e+04,  4.505e+04,  4.505e+04,
+                        4.505e+04,  4.505e+04,  4.505e+04]))
+   param_names: ['d1', 'e0', 'e1', 'f0', 'g0', 'g1']
+[-0.68240569  1.08877746  0.19998359  0.41598328  1.33146639 -0.01254027]
+(5000, 64, 6)
