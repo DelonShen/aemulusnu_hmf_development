@@ -65,11 +65,9 @@ for line in tqdm(f):
     
 #     gt200idxs[a] = gt200Np
 
-    nBins = 16
-    
-    #we'll only consider halos with more than 200 particles
-    print(np.log10(200*Mpart), np.log10(np.max(snapshot_mass)))
-    edges_log10 = np.arange(np.log10(200*Mpart), 1+np.log10(np.max(snapshot_mass)), 0.1)
+    #we'll only consider halos with more mass more than 10^13 Msol/h 
+#     print(np.log10(200*Mpart), np.log10(np.max(snapshot_mass)))
+    edges_log10 = np.arange(13, 1+np.log10(np.max(snapshot_mass)), 0.1)
     edges = np.array([10**el10 for el10 in edges_log10])
 
     #get the number count of halos in the mass bins

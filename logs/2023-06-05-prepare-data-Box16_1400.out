@@ -1,0 +1,62 @@
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/condabin/conda
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/bin/conda
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/bin/conda-env
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/bin/activate
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/bin/deactivate
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/etc/profile.d/conda.sh
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/etc/fish/conf.d/conda.fish
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/shell/condabin/Conda.psm1
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/shell/condabin/conda-hook.ps1
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/lib/python3.10/site-packages/xontrib/conda.xsh
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/etc/profile.d/conda.csh
+no change     /home/users/delon/.bashrc
+No action taken.
+16
+2648073
+2648073
+3565.0
+4383203
+4383203
+17537.0
+6079982
+6079982
+52436.0
+6826844
+6826844
+79396.0
+8032585
+8032585
+151300.0
+8272520
+8272520
+171776.0
+8486247
+8486247
+192664.0
+8678246
+8678246
+214215.0
+8849717
+8849717
+236275.0
+8998508
+8998508
+258379.0
+9127847
+9127847
+280087.0
+9333809
+9333809
+323853.0
+9480780
+9480780
+366266.0
+9577506
+9577506
+406816.0
+9631534
+9631534
+444652.0
+9648477
+9648477
+462836.0

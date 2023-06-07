@@ -104,18 +104,21 @@ class MassFunction:
         my_sigma8 = np.sqrt(sigma2(Pk, 8)) # 8 h^-1 Mpc
         assert(np.abs(class_sigma8-my_sigma8)<0.01*class_sigma8)
 
-    def tinker(self, a, M, params):
-        d = self.p(a, params['d0'], params['d1'])
-        e = self.p(a, params['e0'], params['e1'])
-        f = self.p(a, params['f0'], params['f1'])
-        g = self.p(a, params['g0'], params['g1'])
 
+    def tinker(self, a, M, d, e, f, g):
         R = self.M_to_R(M, a) #Mpc/h
         σM = np.sqrt(sigma2(self.Pka[a], R))  
         oup = self.f_G(a, M, σM, d, e, f, g)
         oup *= self.rhom_a(a)/M
         oup *= self.dlnσinvdMs[a](M)
         return oup
+    
+    def tinker_wrapper(self, a, M, params):
+        d = self.p(a, params['d0'], params['d1'])
+        e = self.p(a, params['e0'], params['e1'])
+        f = self.p(a, params['f0'], params['f1'])
+        g = self.p(a, params['g0'], params['g1'])
+        return self.tinker(a, M, d, e, f, g)
 
     def p(self, a, p0, p1):
         oup = (p0)+(a-0.5)*(p1)
