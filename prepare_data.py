@@ -153,7 +153,7 @@ for a in tqdm(NvMs):
 #     snapshot_pos  = snapshot_pos[gt200Np]
     assert(len(bin_idx) == len(snapshot_pos))
     #now lets get to spatial jackknife
-    N_DIVS = 4 #each axis is diided into N_DIVS parts so in total the box
+    N_DIVS = 8 #each axis is diided into N_DIVS parts so in total the box
                #is divided into N_DIVS**3 boxes
 
     #compute the size of each smaller cube

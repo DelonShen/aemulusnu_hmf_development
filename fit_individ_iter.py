@@ -194,7 +194,7 @@ print('Starting ML Fit')
 #Start by sampling with a maximum likelihood approach
 from scipy import optimize as optimize
 nll = lambda *args: -log_likelihood_with_prior(*args)
-result = optimize.minimize(nll, guess, method="Nelder-Mead", options={
+result = optimize.minimize(nll, guess, method="Nelder-Mead", bounds = [(0,10) for _ in range(ndim)], options={
     'maxiter': len(guess)*10000
 })
 result['param_names'] = param_names

@@ -45,7 +45,7 @@ current_date = date.today().strftime('%Y-%m-%d')
 # Construct the output and error log paths
 output_log = f'logs/{current_date}-{job_name}.out'
 error_log = f'logs/{current_date}-{job_name}.err'
-sbatch_command = f'sbatch --job-name={job_name} --output={output_log} --error={error_log} --time=5:00 -p kipac --nodes=1 --mem=32768 --cpus-per-task=1 --wrap="{line}"'
+sbatch_command = f'sbatch --job-name={job_name} --output={output_log} --error={error_log} --time=60:00 -p kipac --nodes=1 --mem=32768 --cpus-per-task=1 --wrap="{line}"'
 
 
 subprocess.run(sbatch_command, shell=True)
@@ -70,7 +70,7 @@ for i in trange(1, len(a_list)):
     # Construct the output and error log paths
     output_log = f'logs/{current_date}-{job_name}.out'
     error_log = f'logs/{current_date}-{job_name}.err'
-    sbatch_command = f'sbatch --job-name={job_name} --output={output_log} --error={error_log} --time=5:00 -p kipac --nodes=1 --mem=32768 --cpus-per-task=1 --wrap="{line}"'
+    sbatch_command = f'sbatch --job-name={job_name} --output={output_log} --error={error_log} --time=60:00 -p kipac --nodes=1 --mem=32768 --cpus-per-task=1 --wrap="{line}"'
 
     
     subprocess.run(sbatch_command, shell=True)
