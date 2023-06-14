@@ -25,22 +25,23 @@ import pickle
 
 NvMs = {}
 f = open('/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/'+box+'_M200b', 'r')
-Np_fname = "/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/" + box + "_Np";
-f2 = open(Np_fname, 'r')
+# Np_fname = "/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/" + box + "_Np";
+# f2 = open(Np_fname, 'r')
 TMP=0
 skips = 0
 # gt200idxs = {}
 for line in tqdm(f):
-    line2 = f2.readline()
+#     line2 = f2.readline()
 #     fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(13,8))
 
     #extract the masses and position of halos for a given snapshot 
     snapshot_mass = line.strip().split()
     snapshot_mass = np.array(snapshot_mass, dtype=np.float64)  
-    snapshot_Np = line2.strip().split()
-    snapshot_Np = np.array(snapshot_Np, dtype=np.float64)  
-    assert(len(snapshot_mass)==len(snapshot_Np))
-#     gt200Np = np.where(snapshot_Np >= 200)
+#     snapshot_Np = line2.strip().split()
+#     snapshot_Np = np.array(snapshot_Np, dtype=np.float64)  
+#     print(len(snapshot_mass), len(snapshot_Np))
+#     assert(len(snapshot_mass)==len(snapshot_Np))
+# #     gt200Np = np.where(snapshot_Np >= 200)
     print(len(snapshot_mass))
 #     snapshot_mass = snapshot_mass[gt200Np]
     print(len(snapshot_mass))

@@ -1,33 +1,20 @@
-box_prev = 'Box_n50_0_1400'
-box = 'Box_n50_0_1400'
-from utils import *
-from massfunction import *
+import sys
 
+box_prev =  sys.argv[2]
+box = sys.argv[1]
+print('Curr: %-10s, Prev: %-10s'%(box, box_prev))
 import numpy as np
 from tqdm import tqdm, trange
-import matplotlib.pyplot as plt
 import os
-import emcee
-import sys
 import numpy as np
 import pickle
 
-cosmos_f = open('data/cosmo_params.pkl', 'rb')
-cosmo_params = pickle.load(cosmos_f) #cosmo_params is a dict
-cosmos_f.close()
 
-cosmo = cosmo_params[box]
-mass_function = MassFunction(cosmo)
-
-h = cosmo['H0']/100
-
-NvM_fname = '/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/'+box+'_NvsM.pkl'
-NvM_f = open(NvM_fname, 'rb')
-NvMs = pickle.load(NvM_f) #NvMs is a dictionary of dictionaries
-NvM_f.close()
-
-a_list = list(reversed(NvMs.keys()))
-print(a_list)
+a_list_fname = '/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/alist.pkl'
+a_list_f = open(a_list_fname, 'rb')
+a_list = pickle.load(a_list_f) 
+a_list_f.close()
+print('alist', a_list)
 
 import subprocess
 from datetime import date
