@@ -1,5 +1,5 @@
 box_prev = 'Box_n50_0_1400'
-box = 'Box5_1400'
+box = 'Box_n50_0_1400'
 from utils import *
 from massfunction import *
 

@@ -3,7 +3,7 @@ box = sys.argv[1]
 a_fit = eval(sys.argv[2])
 prev_box = sys.argv[3]
 prev_a = eval(sys.argv[4])
-PARAM_SPREAD = 0.001
+PARAM_SPREAD = 1e-4
 
 param_names = ['d','e','f','g']
 ndim = len(param_names)
@@ -38,8 +38,6 @@ NvM_f.close()
 
 all_as = list(NvMs.keys())
 all_zs = list(map(scaleToRedshift, all_as))
-print(all_as)
-print(all_zs)
 
 
 N_data = {}
@@ -166,6 +164,7 @@ prev_params_final = None
 with open("/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/%s_%.2f_params.pkl"%(prev_box, prev_a), "rb") as f:
     prev_params_final = pickle.load(f)
 prev_final_param_vals = np.array(list(prev_params_final.values()))
+print('prev', prev_params_final)
 KX = np.diag([PARAM_SPREAD for _ in range(ndim)])
 KXinv = np.linalg.inv(KX)
 detKX = np.linalg.det(KX)
@@ -185,11 +184,7 @@ def log_likelihood_with_prior(param_values):
 
 guess = prev_final_param_vals + np.random.normal(loc=0, 
                                                  scale=PARAM_SPREAD, 
-                                                 size=prev_final_param_vals.shape)
-while(not np.isfinite(log_likelihood_with_prior(guess))):
-    guess = prev_final_param_vals + np.random.normal(loc=0, scale=PARAM_SPREAD, size=prev_final_param_vals.shape)
-    
-    
+                                                 size=prev_final_param_vals.shape)    
 print('Starting ML Fit')
 #Start by sampling with a maximum likelihood approach
 from scipy import optimize as optimize
@@ -286,8 +281,9 @@ axs[1].set_xlabel(r'Mass $[h^{-1}M_\odot]$')
 axs[1].set_ylabel(r'$\frac{N_{\rm Tinker}-N_{\rm data}}{N_{\rm data}} $')
 axs[0].set_title('%s, a=%.2f, z=%.2f'%(box, a, scaleToRedshift(a)))
 
-axs[0].set_xlim((1e13, np.max(edges)))
-axs[1].set_xlim((1e13, np.max(edges)))
-axs[1].set_ylim((-.19, .19))
-axs[1].set_yticks([-.1, 0, .1])
+left = np.ceil(np.log10(200*Mpart) * 10) / 10
+axs[0].set_xlim((10**left, np.max(edges)))
+axs[1].set_xlim((10**left, np.max(edges)))
+axs[1].set_ylim((-.29, .29))
+axs[1].set_yticks([-.2, -.1, 0, .1, .2])
 plt.savefig('/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/figures/%s_fit_%.2f.pdf'%(box, a), bbox_inches='tight')

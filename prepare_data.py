@@ -4,7 +4,7 @@ from tqdm import tqdm, trange
 import matplotlib.pyplot as plt
 import os
 import sys
-
+from utils import *
 box = sys.argv[1]
 # box = 'Box_n50_0_1400'
 # box = 'Box0_1400'
@@ -19,7 +19,7 @@ N_snapshots = len(savelist)
 
 print(N_snapshots)
 
-i=0
+SNAPSHOT_IDX=0
 
 import pickle
 
@@ -28,6 +28,7 @@ f = open('/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/'+box+'_M2
 Np_fname = "/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/" + box + "_Np";
 f2 = open(Np_fname, 'r')
 TMP=0
+skips = 0
 # gt200idxs = {}
 for line in tqdm(f):
     line2 = f2.readline()
@@ -51,7 +52,7 @@ for line in tqdm(f):
     a = -1
     Mpart = -1
     
-    f_meta = open(rockstar_dir+'out_%d.list'%(i), 'r')
+    f_meta = open(rockstar_dir+'out_%d.list'%(SNAPSHOT_IDX), 'r')
 
     for meta_data in f_meta:
         if('#a' in meta_data):
@@ -61,19 +62,29 @@ for line in tqdm(f):
         if('Box size' in meta_data):
             vol = eval(meta_data.split()[2])**3
             BOX_SIZE = eval(meta_data.split()[2])
-            break            
-    
+            break        
+    print('redshift', scaleToRedshift(a))
+    SNAPSHOT_IDX+=1
+    if(scaleToRedshift(a) >= 2):
+        skips+=1
+        continue
 #     gt200idxs[a] = gt200Np
-
+    left_log10 = np.ceil(np.log10(200*Mpart) * 10) / 10 #e.g. 13.897234 -> 13.9
+    print('leftlog10', left_log10)
     #we'll only consider halos with more mass more than 10^13 Msol/h 
 #     print(np.log10(200*Mpart), np.log10(np.max(snapshot_mass)))
-    edges_log10 = np.arange(13, 1+np.log10(np.max(snapshot_mass)), 0.1)
+    edges_log10 = np.arange(left_log10, 1+np.log10(np.max(snapshot_mass)), 0.1)
     edges = np.array([10**el10 for el10 in edges_log10])
 
     #get the number count of halos in the mass bins
     N, bin_edge, bin_idx = binned_statistic(snapshot_mass, np.ones_like(snapshot_mass), 
                                             statistic='count', bins=edges)
-    print(sum(N))
+    print('sumN', sum(N))
+    print('N', N)
+#     print('raw mass head', snapshot_mass[:10])
+    print('edges', np.log10(edges))
+#     print('%.1e'%np.max(snapshot_mass))
+#     print('200mpart: %.1e'%(200*Mpart))
     c_i = len(N)-1
     while(N[c_i] == 0):
         N = N[:c_i]
@@ -97,7 +108,7 @@ for line in tqdm(f):
 #         print(N)
 #         print(bin_edge)
 #         print('---')
-
+    print('after adaptive', N)
         
     M_means = []
     correction = np.zeros_like(N)
@@ -108,7 +119,7 @@ for line in tqdm(f):
 #         print(N[j], len(snapshot_mass[this_bin]))
         assert(len(snapshot_mass[this_bin]) == N[j])
             
-    edge_pairs = [[bin_edge[i], bin_edge[i+1]] for i in range(len(bin_edge)-1)]
+    edge_pairs = [[bin_edge[j], bin_edge[j+1]] for j in range(len(bin_edge)-1)]
     assert(len(edge_pairs) == len(N))
 #     ax.bar(x=bin_edge[:-1], height=N, width=np.diff(bin_edge), align='edge', fill=False, label=r'$a=%.2f$'%(a))
 
@@ -121,7 +132,6 @@ for line in tqdm(f):
 
 #     plt.savefig('/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/figures/'+curr_run_fname.split('/')[-2]+'_NvsM_a%.1f.pdf'%(a), bbox_inches='tight')
 
-    i+=1
     assert(len(edge_pairs) == len(N))
     NvMs[a] = {'M':M_means, 
                'N':N, 
@@ -140,11 +150,13 @@ NvM_f.close()
 
 jackknife = {}
 f_pos = open('/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/'+box+'_pos', 'r')
+for _ in range(skips):
+    f_pos.readline()
 for a in tqdm(NvMs):
     snapshot_pos  = f_pos.readline().strip().split(',')
     snapshot_pos  = [np.array(pos.split(), dtype=np.float32) for pos in snapshot_pos if pos != '']
     snapshot_pos  = np.array(snapshot_pos)
-    
+
 #     gt200Np = gt200idxs[a]
     N = NvMs[a]['N']
     vol = NvMs[a]['vol']
