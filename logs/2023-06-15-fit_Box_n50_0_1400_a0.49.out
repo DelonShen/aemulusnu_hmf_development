@@ -4,7 +4,7 @@ Box_n50_0_1400
        message: Optimization terminated successfully.
        success: True
         status: 0
-           fun: 5767.921814902492
+           fun: 5767.921814903193
              x: [ 4.152e-01  8.209e-01  2.335e+00  1.280e+00]
            nit: 94
           nfev: 163

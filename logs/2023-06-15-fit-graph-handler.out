@@ -149,19 +149,437 @@ Box81_1400	 Prev: Box46_1400	 distance:2.49
 240.75130578226685
 Running fit for Box_n50_4_1400
 scripts/fit-iter-handler-Box_n50_4_1400.sh
-Submitted batch job 22049728
+Submitted batch job 22052296
 Running fit for Box_n50_14_1400
 scripts/fit-iter-handler-Box_n50_14_1400.sh
-Submitted batch job 22049729
+Submitted batch job 22052298
 Running fit for Box_n50_21_1400
 scripts/fit-iter-handler-Box_n50_21_1400.sh
-Submitted batch job 22049730
+Submitted batch job 22052300
 Running fit for Box_n50_33_1400
 scripts/fit-iter-handler-Box_n50_33_1400.sh
-Submitted batch job 22049731
+Submitted batch job 22052303
 Running fit for Box_n50_35_1400
 scripts/fit-iter-handler-Box_n50_35_1400.sh
-Submitted batch job 22049732
+Submitted batch job 22052308
 Running fit for Box_n50_43_1400
 scripts/fit-iter-handler-Box_n50_43_1400.sh
-Submitted batch job 22049733
+Submitted batch job 22052311
+Running fit for Box_n50_36_1400
+scripts/fit-iter-handler-Box_n50_36_1400.sh
+Submitted batch job 22053142
+Running fit for Box_n50_6_1400
+scripts/fit-iter-handler-Box_n50_6_1400.sh
+Submitted batch job 22053145
+Running fit for Box_n50_32_1400
+scripts/fit-iter-handler-Box_n50_32_1400.sh
+Submitted batch job 22053146
+Running fit for Box_n50_44_1400
+scripts/fit-iter-handler-Box_n50_44_1400.sh
+Submitted batch job 22053147
+Running fit for Box_n50_17_1400
+scripts/fit-iter-handler-Box_n50_17_1400.sh
+Submitted batch job 22053183
+Running fit for Box_n50_34_1400
+scripts/fit-iter-handler-Box_n50_34_1400.sh
+Submitted batch job 22053186
+Running fit for Box_n50_1_1400
+scripts/fit-iter-handler-Box_n50_1_1400.sh
+Submitted batch job 22053187
+Running fit for Box_n50_26_1400
+scripts/fit-iter-handler-Box_n50_26_1400.sh
+Submitted batch job 22053188
+Running fit for Box_n50_19_1400
+scripts/fit-iter-handler-Box_n50_19_1400.sh
+Submitted batch job 22053258
+Running fit for Box_n50_37_1400
+scripts/fit-iter-handler-Box_n50_37_1400.sh
+Submitted batch job 22053259
+Running fit for Box_n50_46_1400
+scripts/fit-iter-handler-Box_n50_46_1400.sh
+Submitted batch job 22053260
+Running fit for Box3_1400
+scripts/fit-iter-handler-Box3_1400.sh
+Submitted batch job 22053265
+Running fit for Box_n50_20_1400
+scripts/fit-iter-handler-Box_n50_20_1400.sh
+Submitted batch job 22053267
+Running fit for Box_n50_31_1400
+scripts/fit-iter-handler-Box_n50_31_1400.sh
+Submitted batch job 22054115
+Running fit for Box_n50_13_1400
+scripts/fit-iter-handler-Box_n50_13_1400.sh
+Submitted batch job 22054122
+Running fit for Box_n50_39_1400
+scripts/fit-iter-handler-Box_n50_39_1400.sh
+Submitted batch job 22054123
+Running fit for Box_n50_5_1400
+scripts/fit-iter-handler-Box_n50_5_1400.sh
+Submitted batch job 22054157
+Running fit for Box4_1400
+scripts/fit-iter-handler-Box4_1400.sh
+Submitted batch job 22054254
+Running fit for Box45_1400
+scripts/fit-iter-handler-Box45_1400.sh
+Submitted batch job 22054255
+Running fit for Box_n50_15_1400
+scripts/fit-iter-handler-Box_n50_15_1400.sh
+Submitted batch job 22054257
+Running fit for Box_n50_45_1400
+scripts/fit-iter-handler-Box_n50_45_1400.sh
+Submitted batch job 22054258
+Running fit for Box_n50_49_1400
+scripts/fit-iter-handler-Box_n50_49_1400.sh
+Submitted batch job 22054260
+Running fit for Box97_1400
+scripts/fit-iter-handler-Box97_1400.sh
+Submitted batch job 22054262
+Running fit for Box_n50_18_1400
+scripts/fit-iter-handler-Box_n50_18_1400.sh
+Submitted batch job 22054263
+Running fit for Box91_1400
+scripts/fit-iter-handler-Box91_1400.sh
+Submitted batch job 22054264
+Running fit for Box_n50_28_1400
+scripts/fit-iter-handler-Box_n50_28_1400.sh
+Submitted batch job 22054265
+Running fit for Box8_1400
+scripts/fit-iter-handler-Box8_1400.sh
+Submitted batch job 22054270
+Running fit for Box87_1400
+scripts/fit-iter-handler-Box87_1400.sh
+Submitted batch job 22054321
+Running fit for Box9_1400
+scripts/fit-iter-handler-Box9_1400.sh
+Submitted batch job 22054333
+Running fit for Box56_1400
+scripts/fit-iter-handler-Box56_1400.sh
+Submitted batch job 22054339
+Running fit for Box_n50_16_1400
+scripts/fit-iter-handler-Box_n50_16_1400.sh
+Submitted batch job 22054340
+Running fit for Box_n50_24_1400
+scripts/fit-iter-handler-Box_n50_24_1400.sh
+Submitted batch job 22054341
+Running fit for Box_n50_42_1400
+scripts/fit-iter-handler-Box_n50_42_1400.sh
+Submitted batch job 22054342
+Running fit for Box93_1400
+scripts/fit-iter-handler-Box93_1400.sh
+Submitted batch job 22054347
+Running fit for Box66_1400
+scripts/fit-iter-handler-Box66_1400.sh
+Submitted batch job 22054349
+Running fit for Box72_1400
+scripts/fit-iter-handler-Box72_1400.sh
+Submitted batch job 22054350
+Running fit for Box42_1400
+scripts/fit-iter-handler-Box42_1400.sh
+Submitted batch job 22055142
+Running fit for Box28_1400
+scripts/fit-iter-handler-Box28_1400.sh
+Submitted batch job 22055207
+Running fit for Box48_1400
+scripts/fit-iter-handler-Box48_1400.sh
+Submitted batch job 22055220
+Running fit for Box_n50_25_1400
+scripts/fit-iter-handler-Box_n50_25_1400.sh
+Submitted batch job 22055221
+Running fit for Box_n50_47_1400
+scripts/fit-iter-handler-Box_n50_47_1400.sh
+Submitted batch job 22055222
+Running fit for Box30_1400
+scripts/fit-iter-handler-Box30_1400.sh
+Submitted batch job 22055377
+Running fit for Box_n50_10_1400
+scripts/fit-iter-handler-Box_n50_10_1400.sh
+Submitted batch job 22055378
+Running fit for Box_n50_30_1400
+scripts/fit-iter-handler-Box_n50_30_1400.sh
+Submitted batch job 22055380
+Running fit for Box20_1400
+scripts/fit-iter-handler-Box20_1400.sh
+Submitted batch job 22055382
+Running fit for Box32_1400
+scripts/fit-iter-handler-Box32_1400.sh
+Submitted batch job 22055386
+Running fit for Box_n50_27_1400
+scripts/fit-iter-handler-Box_n50_27_1400.sh
+Submitted batch job 22055398
+Running fit for Box52_1400
+scripts/fit-iter-handler-Box52_1400.sh
+Submitted batch job 22055437
+Running fit for Box73_1400
+scripts/fit-iter-handler-Box73_1400.sh
+Submitted batch job 22055487
+Running fit for Box_n50_8_1400
+scripts/fit-iter-handler-Box_n50_8_1400.sh
+Submitted batch job 22055490
+Running fit for Box33_1400
+scripts/fit-iter-handler-Box33_1400.sh
+Submitted batch job 22055508
+Running fit for Box_n50_9_1400
+scripts/fit-iter-handler-Box_n50_9_1400.sh
+Submitted batch job 22055510
+Running fit for Box38_1400
+scripts/fit-iter-handler-Box38_1400.sh
+Submitted batch job 22055577
+Running fit for Box80_1400
+scripts/fit-iter-handler-Box80_1400.sh
+Submitted batch job 22055579
+Running fit for Box29_1400
+scripts/fit-iter-handler-Box29_1400.sh
+Submitted batch job 22055591
+Running fit for Box75_1400
+scripts/fit-iter-handler-Box75_1400.sh
+Submitted batch job 22055593
+Running fit for Box78_1400
+scripts/fit-iter-handler-Box78_1400.sh
+Submitted batch job 22055596
+Running fit for Box61_1400
+scripts/fit-iter-handler-Box61_1400.sh
+Submitted batch job 22055605
+Running fit for Box94_1400
+scripts/fit-iter-handler-Box94_1400.sh
+Submitted batch job 22055683
+Running fit for Box_n50_11_1400
+scripts/fit-iter-handler-Box_n50_11_1400.sh
+Submitted batch job 22055685
+Running fit for Box_n50_29_1400
+scripts/fit-iter-handler-Box_n50_29_1400.sh
+Submitted batch job 22055687
+Running fit for Box1_1400
+scripts/fit-iter-handler-Box1_1400.sh
+Submitted batch job 22055690
+Running fit for Box92_1400
+scripts/fit-iter-handler-Box92_1400.sh
+Submitted batch job 22055691
+Running fit for Box77_1400
+scripts/fit-iter-handler-Box77_1400.sh
+Submitted batch job 22055748
+Running fit for Box64_1400
+scripts/fit-iter-handler-Box64_1400.sh
+Submitted batch job 22055819
+Running fit for Box88_1400
+scripts/fit-iter-handler-Box88_1400.sh
+Submitted batch job 22055833
+Running fit for Box14_1400
+scripts/fit-iter-handler-Box14_1400.sh
+Submitted batch job 22056351
+Running fit for Box37_1400
+scripts/fit-iter-handler-Box37_1400.sh
+Submitted batch job 22056401
+Running fit for Box_n50_22_1400
+scripts/fit-iter-handler-Box_n50_22_1400.sh
+Submitted batch job 22056403
+Running fit for Box7_1400
+scripts/fit-iter-handler-Box7_1400.sh
+Submitted batch job 22056491
+Running fit for Box34_1400
+scripts/fit-iter-handler-Box34_1400.sh
+Submitted batch job 22056537
+Running fit for Box_n50_40_1400
+scripts/fit-iter-handler-Box_n50_40_1400.sh
+Submitted batch job 22056538
+Running fit for Box47_1400
+scripts/fit-iter-handler-Box47_1400.sh
+Submitted batch job 22056541
+Running fit for Box_n50_41_1400
+scripts/fit-iter-handler-Box_n50_41_1400.sh
+Submitted batch job 22056650
+Running fit for Box82_1400
+scripts/fit-iter-handler-Box82_1400.sh
+Submitted batch job 22056653
+Running fit for Box69_1400
+scripts/fit-iter-handler-Box69_1400.sh
+Submitted batch job 22056656
+Running fit for Box99_1400
+scripts/fit-iter-handler-Box99_1400.sh
+Submitted batch job 22056664
+Running fit for Box17_1400
+scripts/fit-iter-handler-Box17_1400.sh
+Submitted batch job 22056718
+Running fit for Box40_1400
+scripts/fit-iter-handler-Box40_1400.sh
+Submitted batch job 22056721
+Running fit for Box_n50_7_1400
+scripts/fit-iter-handler-Box_n50_7_1400.sh
+Submitted batch job 22056724
+Running fit for Box18_1400
+scripts/fit-iter-handler-Box18_1400.sh
+Submitted batch job 22056823
+Running fit for Box26_1400
+scripts/fit-iter-handler-Box26_1400.sh
+Submitted batch job 22056837
+Running fit for Box44_1400
+scripts/fit-iter-handler-Box44_1400.sh
+Submitted batch job 22056838
+Running fit for Box55_1400
+scripts/fit-iter-handler-Box55_1400.sh
+Submitted batch job 22056840
+Running fit for Box6_1400
+scripts/fit-iter-handler-Box6_1400.sh
+Submitted batch job 22056843
+Running fit for Box31_1400
+scripts/fit-iter-handler-Box31_1400.sh
+Submitted batch job 22056844
+Running fit for Box65_1400
+scripts/fit-iter-handler-Box65_1400.sh
+Submitted batch job 22056850
+Running fit for Box53_1400
+scripts/fit-iter-handler-Box53_1400.sh
+Submitted batch job 22056897
+Running fit for Box90_1400
+scripts/fit-iter-handler-Box90_1400.sh
+Submitted batch job 22056901
+Running fit for Box0_1400
+scripts/fit-iter-handler-Box0_1400.sh
+Submitted batch job 22056981
+Running fit for Box_n50_12_1400
+scripts/fit-iter-handler-Box_n50_12_1400.sh
+Submitted batch job 22056983
+Running fit for Box43_1400
+scripts/fit-iter-handler-Box43_1400.sh
+Submitted batch job 22056989
+Running fit for Box62_1400
+scripts/fit-iter-handler-Box62_1400.sh
+Submitted batch job 22057101
+Running fit for Box67_1400
+scripts/fit-iter-handler-Box67_1400.sh
+Submitted batch job 22057103
+Running fit for Box27_1400
+scripts/fit-iter-handler-Box27_1400.sh
+Submitted batch job 22057118
+Running fit for Box_n50_2_1400
+scripts/fit-iter-handler-Box_n50_2_1400.sh
+Submitted batch job 22057510
+Running fit for Box60_1400
+scripts/fit-iter-handler-Box60_1400.sh
+Submitted batch job 22057627
+Running fit for Box39_1400
+scripts/fit-iter-handler-Box39_1400.sh
+Submitted batch job 22057632
+Running fit for Box49_1400
+scripts/fit-iter-handler-Box49_1400.sh
+Submitted batch job 22057638
+Running fit for Box_n50_48_1400
+scripts/fit-iter-handler-Box_n50_48_1400.sh
+Submitted batch job 22057838
+Running fit for Box68_1400
+scripts/fit-iter-handler-Box68_1400.sh
+Submitted batch job 22057848
+Running fit for Box54_1400
+scripts/fit-iter-handler-Box54_1400.sh
+Submitted batch job 22057934
+Running fit for Box83_1400
+scripts/fit-iter-handler-Box83_1400.sh
+Submitted batch job 22057935
+Running fit for Box_n50_3_1400
+scripts/fit-iter-handler-Box_n50_3_1400.sh
+Submitted batch job 22057939
+Running fit for Box2_1400
+scripts/fit-iter-handler-Box2_1400.sh
+Submitted batch job 22057954
+Running fit for Box10_1400
+scripts/fit-iter-handler-Box10_1400.sh
+Submitted batch job 22057955
+Running fit for Box98_1400
+scripts/fit-iter-handler-Box98_1400.sh
+Submitted batch job 22058089
+Running fit for Box51_1400
+scripts/fit-iter-handler-Box51_1400.sh
+Submitted batch job 22058104
+Running fit for Box79_1400
+scripts/fit-iter-handler-Box79_1400.sh
+Submitted batch job 22058105
+Running fit for Box15_1400
+scripts/fit-iter-handler-Box15_1400.sh
+Submitted batch job 22058151
+Running fit for Box16_1400
+scripts/fit-iter-handler-Box16_1400.sh
+Submitted batch job 22058190
+Running fit for Box71_1400
+scripts/fit-iter-handler-Box71_1400.sh
+Submitted batch job 22058193
+Running fit for Box57_1400
+scripts/fit-iter-handler-Box57_1400.sh
+Submitted batch job 22058272
+Running fit for Box25_1400
+scripts/fit-iter-handler-Box25_1400.sh
+Submitted batch job 22058278
+Running fit for Box96_1400
+scripts/fit-iter-handler-Box96_1400.sh
+Submitted batch job 22058291
+Running fit for Box24_1400
+scripts/fit-iter-handler-Box24_1400.sh
+Submitted batch job 22058345
+Running fit for Box59_1400
+scripts/fit-iter-handler-Box59_1400.sh
+Submitted batch job 22058711
+Running fit for Box74_1400
+scripts/fit-iter-handler-Box74_1400.sh
+Submitted batch job 22058828
+Running fit for Box22_1400
+scripts/fit-iter-handler-Box22_1400.sh
+Submitted batch job 22058951
+Running fit for Box11_1400
+scripts/fit-iter-handler-Box11_1400.sh
+Submitted batch job 22059029
+Running fit for Box_n50_23_1400
+scripts/fit-iter-handler-Box_n50_23_1400.sh
+Submitted batch job 22059033
+Running fit for Box50_1400
+scripts/fit-iter-handler-Box50_1400.sh
+Submitted batch job 22059257
+Running fit for Box86_1400
+scripts/fit-iter-handler-Box86_1400.sh
+Submitted batch job 22059258
+Running fit for Box89_1400
+scripts/fit-iter-handler-Box89_1400.sh
+Submitted batch job 22059275
+Running fit for Box36_1400
+scripts/fit-iter-handler-Box36_1400.sh
+Submitted batch job 22059352
+Running fit for Box95_1400
+scripts/fit-iter-handler-Box95_1400.sh
+Submitted batch job 22059353
+Running fit for Box19_1400
+scripts/fit-iter-handler-Box19_1400.sh
+Submitted batch job 22059356
+Running fit for Box41_1400
+scripts/fit-iter-handler-Box41_1400.sh
+Submitted batch job 22059358
+Running fit for Box76_1400
+scripts/fit-iter-handler-Box76_1400.sh
+Submitted batch job 22059359
+Running fit for Box23_1400
+scripts/fit-iter-handler-Box23_1400.sh
+Submitted batch job 22060069
+Running fit for Box13_1400
+scripts/fit-iter-handler-Box13_1400.sh
+Submitted batch job 22060299
+Running fit for Box70_1400
+scripts/fit-iter-handler-Box70_1400.sh
+Submitted batch job 22060300
+Running fit for Box84_1400
+scripts/fit-iter-handler-Box84_1400.sh
+Submitted batch job 22060423
+Running fit for Box46_1400
+scripts/fit-iter-handler-Box46_1400.sh
+Submitted batch job 22060983
+Running fit for Box85_1400
+scripts/fit-iter-handler-Box85_1400.sh
+Submitted batch job 22061161
+Running fit for Box81_1400
+scripts/fit-iter-handler-Box81_1400.sh
+Submitted batch job 22061756
+Running fit for Box21_1400
+scripts/fit-iter-handler-Box21_1400.sh
+Submitted batch job 22061757
+Running fit for Box58_1400
+scripts/fit-iter-handler-Box58_1400.sh
+Submitted batch job 22061758
+Running fit for Box12_1400
+scripts/fit-iter-handler-Box12_1400.sh
+Submitted batch job 22061759
+Iterataive Graph Fitting Traversal Done!
