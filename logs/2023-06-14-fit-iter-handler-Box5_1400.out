@@ -1,0 +1,6 @@
+Curr: Box5_1400 , Prev: Box3_1400 
+alist [1.0, 0.953321, 0.866399, 0.787402, 0.715608, 0.65036, 0.620002, 0.591061, 0.563471, 0.537169, 0.512095, 0.488191, 0.403224, 0.366459]
+python -u fit_individ_iter.py Box5_1400 1.000000 Box3_1400 1.000000
+Submitted batch job 22013044
+python -u fit_individ_iter.py Box5_1400 0.953321 Box5_1400 1.000000
+Submitted batch job 22013174

@@ -1,4 +1,4 @@
-147
+146
 most central:  Box_n50_0_1400
 Box_n50_0_1400	 
 Box_n50_4_1400	 Prev: Box_n50_0_1400	 distance:1.23
@@ -11,7 +11,7 @@ Box_n50_17_1400	 Prev: Box_n50_4_1400	 distance:1.28
 Box_n50_34_1400	 Prev: Box_n50_4_1400	 distance:1.12
 Box3_1400 	 Prev: Box_n50_14_1400	 distance:1.52
 Box_n50_20_1400	 Prev: Box_n50_14_1400	 distance:1.70
-Box_n50_36_1400	 Prev: Box_n50_21_1400	 distance:0.87
+Box_n50_36_1400	 Prev: Box_n50_21_1400	 distance:0.86
 Box_n50_19_1400	 Prev: Box_n50_33_1400	 distance:1.21
 Box_n50_37_1400	 Prev: Box_n50_33_1400	 distance:0.79
 Box_n50_46_1400	 Prev: Box_n50_33_1400	 distance:1.31
@@ -22,20 +22,19 @@ Box_n50_32_1400	 Prev: Box_n50_43_1400	 distance:1.09
 Box_n50_44_1400	 Prev: Box_n50_43_1400	 distance:0.91
 Box97_1400	 Prev: Box_n50_17_1400	 distance:1.92
 Box_n50_18_1400	 Prev: Box_n50_17_1400	 distance:1.37
-Box9_1400 	 Prev: Box_n50_34_1400	 distance:1.25
-Box5_1400 	 Prev: Box3_1400 	 distance:0.47
-Box8_1400 	 Prev: Box3_1400 	 distance:2.53
+Box9_1400 	 Prev: Box_n50_34_1400	 distance:1.24
+Box8_1400 	 Prev: Box3_1400 	 distance:2.52
 Box4_1400 	 Prev: Box_n50_20_1400	 distance:1.60
 Box45_1400	 Prev: Box_n50_20_1400	 distance:2.45
 Box_n50_15_1400	 Prev: Box_n50_20_1400	 distance:1.67
 Box_n50_45_1400	 Prev: Box_n50_20_1400	 distance:1.69
 Box91_1400	 Prev: Box_n50_36_1400	 distance:0.81
 Box_n50_28_1400	 Prev: Box_n50_36_1400	 distance:1.24
-Box_n50_49_1400	 Prev: Box_n50_36_1400	 distance:1.05
-Box56_1400	 Prev: Box_n50_19_1400	 distance:1.80
+Box_n50_49_1400	 Prev: Box_n50_36_1400	 distance:1.04
+Box56_1400	 Prev: Box_n50_19_1400	 distance:1.79
 Box_n50_16_1400	 Prev: Box_n50_19_1400	 distance:1.19
 Box_n50_24_1400	 Prev: Box_n50_19_1400	 distance:0.96
-Box_n50_42_1400	 Prev: Box_n50_19_1400	 distance:1.33
+Box_n50_42_1400	 Prev: Box_n50_19_1400	 distance:1.32
 Box93_1400	 Prev: Box_n50_37_1400	 distance:1.19
 Box87_1400	 Prev: Box_n50_46_1400	 distance:1.45
 Box66_1400	 Prev: Box_n50_26_1400	 distance:1.61
@@ -47,48 +46,47 @@ Box_n50_5_1400	 Prev: Box_n50_44_1400	 distance:0.91
 Box78_1400	 Prev: Box97_1400	 distance:1.06
 Box38_1400	 Prev: Box_n50_18_1400	 distance:1.87
 Box80_1400	 Prev: Box_n50_18_1400	 distance:1.01
-Box60_1400	 Prev: Box5_1400 	 distance:1.96
-Box52_1400	 Prev: Box4_1400 	 distance:2.29
+Box52_1400	 Prev: Box4_1400 	 distance:2.28
 Box30_1400	 Prev: Box_n50_15_1400	 distance:1.93
 Box_n50_10_1400	 Prev: Box_n50_15_1400	 distance:1.42
 Box_n50_30_1400	 Prev: Box_n50_15_1400	 distance:1.59
 Box77_1400	 Prev: Box91_1400	 distance:1.69
-Box29_1400	 Prev: Box_n50_49_1400	 distance:1.69
+Box29_1400	 Prev: Box_n50_49_1400	 distance:1.68
 Box75_1400	 Prev: Box_n50_49_1400	 distance:1.84
 Box20_1400	 Prev: Box56_1400	 distance:1.83
 Box32_1400	 Prev: Box56_1400	 distance:1.88
-Box64_1400	 Prev: Box_n50_16_1400	 distance:2.21
-Box94_1400	 Prev: Box_n50_24_1400	 distance:2.17
-Box_n50_11_1400	 Prev: Box_n50_24_1400	 distance:1.04
+Box64_1400	 Prev: Box_n50_16_1400	 distance:2.20
+Box94_1400	 Prev: Box_n50_24_1400	 distance:2.16
+Box_n50_11_1400	 Prev: Box_n50_24_1400	 distance:1.03
 Box_n50_29_1400	 Prev: Box_n50_24_1400	 distance:0.65
 Box33_1400	 Prev: Box_n50_42_1400	 distance:1.92
-Box_n50_9_1400	 Prev: Box_n50_42_1400	 distance:1.34
+Box_n50_9_1400	 Prev: Box_n50_42_1400	 distance:1.33
 Box73_1400	 Prev: Box93_1400	 distance:1.72
 Box_n50_8_1400	 Prev: Box93_1400	 distance:1.28
-Box61_1400	 Prev: Box87_1400	 distance:2.04
+Box61_1400	 Prev: Box87_1400	 distance:2.03
 Box88_1400	 Prev: Box66_1400	 distance:1.52
 Box1_1400 	 Prev: Box72_1400	 distance:1.99
 Box92_1400	 Prev: Box72_1400	 distance:2.22
 Box_n50_27_1400	 Prev: Box_n50_13_1400	 distance:1.34
-Box28_1400	 Prev: Box_n50_39_1400	 distance:2.14
+Box28_1400	 Prev: Box_n50_39_1400	 distance:2.13
 Box42_1400	 Prev: Box_n50_31_1400	 distance:2.13
 Box48_1400	 Prev: Box_n50_5_1400	 distance:1.61
 Box_n50_25_1400	 Prev: Box_n50_5_1400	 distance:1.35
 Box_n50_47_1400	 Prev: Box_n50_5_1400	 distance:1.18
 Box65_1400	 Prev: Box78_1400	 distance:1.51
 Box53_1400	 Prev: Box38_1400	 distance:1.47
-Box90_1400	 Prev: Box38_1400	 distance:1.91
-Box43_1400	 Prev: Box80_1400	 distance:1.92
-Box47_1400	 Prev: Box52_1400	 distance:1.89
+Box90_1400	 Prev: Box38_1400	 distance:1.90
+Box43_1400	 Prev: Box80_1400	 distance:1.91
+Box47_1400	 Prev: Box52_1400	 distance:1.88
 Box99_1400	 Prev: Box30_1400	 distance:3.31
 Box_n50_41_1400	 Prev: Box_n50_10_1400	 distance:1.69
 Box82_1400	 Prev: Box_n50_30_1400	 distance:1.38
-Box6_1400 	 Prev: Box77_1400	 distance:2.68
+Box6_1400 	 Prev: Box77_1400	 distance:2.67
 Box31_1400	 Prev: Box77_1400	 distance:2.82
 Box18_1400	 Prev: Box29_1400	 distance:1.89
 Box0_1400 	 Prev: Box_n50_11_1400	 distance:2.22
 Box_n50_12_1400	 Prev: Box_n50_11_1400	 distance:0.87
-Box62_1400	 Prev: Box_n50_29_1400	 distance:1.14
+Box62_1400	 Prev: Box_n50_29_1400	 distance:1.13
 Box67_1400	 Prev: Box_n50_29_1400	 distance:1.24
 Box69_1400	 Prev: Box_n50_9_1400	 distance:1.94
 Box17_1400	 Prev: Box_n50_8_1400	 distance:1.98
@@ -97,72 +95,491 @@ Box_n50_7_1400	 Prev: Box_n50_8_1400	 distance:1.71
 Box55_1400	 Prev: Box61_1400	 distance:1.70
 Box27_1400	 Prev: Box88_1400	 distance:1.85
 Box26_1400	 Prev: Box1_1400 	 distance:0.99
-Box44_1400	 Prev: Box1_1400 	 distance:2.13
+Box44_1400	 Prev: Box1_1400 	 distance:2.12
 Box34_1400	 Prev: Box_n50_27_1400	 distance:1.41
 Box_n50_40_1400	 Prev: Box_n50_27_1400	 distance:1.50
 Box7_1400 	 Prev: Box48_1400	 distance:1.29
 Box14_1400	 Prev: Box_n50_25_1400	 distance:1.54
 Box37_1400	 Prev: Box_n50_47_1400	 distance:1.73
-Box_n50_22_1400	 Prev: Box_n50_47_1400	 distance:1.43
+Box_n50_22_1400	 Prev: Box_n50_47_1400	 distance:1.42
 Box98_1400	 Prev: Box90_1400	 distance:1.69
-Box49_1400	 Prev: Box47_1400	 distance:1.98
+Box49_1400	 Prev: Box47_1400	 distance:1.97
 Box16_1400	 Prev: Box18_1400	 distance:1.47
-Box71_1400	 Prev: Box18_1400	 distance:1.90
-Box15_1400	 Prev: Box_n50_12_1400	 distance:2.10
+Box71_1400	 Prev: Box18_1400	 distance:1.89
+Box15_1400	 Prev: Box_n50_12_1400	 distance:2.09
 Box25_1400	 Prev: Box62_1400	 distance:1.25
 Box57_1400	 Prev: Box62_1400	 distance:1.64
 Box24_1400	 Prev: Box67_1400	 distance:2.52
 Box2_1400 	 Prev: Box40_1400	 distance:1.61
-Box10_1400	 Prev: Box40_1400	 distance:2.40
+Box10_1400	 Prev: Box40_1400	 distance:2.39
 Box_n50_3_1400	 Prev: Box_n50_7_1400	 distance:1.39
 Box96_1400	 Prev: Box27_1400	 distance:2.48
 Box51_1400	 Prev: Box26_1400	 distance:3.14
-Box79_1400	 Prev: Box44_1400	 distance:1.84
+Box79_1400	 Prev: Box44_1400	 distance:1.83
 Box54_1400	 Prev: Box34_1400	 distance:2.80
-Box83_1400	 Prev: Box34_1400	 distance:2.01
+Box83_1400	 Prev: Box34_1400	 distance:2.00
 Box68_1400	 Prev: Box_n50_40_1400	 distance:1.86
 Box_n50_48_1400	 Prev: Box_n50_40_1400	 distance:1.52
-Box39_1400	 Prev: Box37_1400	 distance:1.73
+Box60_1400	 Prev: Box14_1400	 distance:2.00
+Box39_1400	 Prev: Box37_1400	 distance:1.72
 Box_n50_2_1400	 Prev: Box_n50_22_1400	 distance:1.13
 Box89_1400	 Prev: Box98_1400	 distance:1.60
-Box59_1400	 Prev: Box49_1400	 distance:1.94
-Box50_1400	 Prev: Box71_1400	 distance:2.33
+Box59_1400	 Prev: Box49_1400	 distance:1.93
+Box50_1400	 Prev: Box71_1400	 distance:2.32
 Box86_1400	 Prev: Box71_1400	 distance:1.78
-Box19_1400	 Prev: Box25_1400	 distance:1.55
+Box19_1400	 Prev: Box25_1400	 distance:1.54
 Box41_1400	 Prev: Box25_1400	 distance:1.96
 Box76_1400	 Prev: Box25_1400	 distance:2.03
 Box36_1400	 Prev: Box57_1400	 distance:1.55
-Box95_1400	 Prev: Box57_1400	 distance:1.39
+Box95_1400	 Prev: Box57_1400	 distance:1.38
 Box11_1400	 Prev: Box2_1400 	 distance:0.99
 Box_n50_23_1400	 Prev: Box_n50_3_1400	 distance:1.80
-Box22_1400	 Prev: Box54_1400	 distance:3.43
+Box22_1400	 Prev: Box54_1400	 distance:3.42
 Box74_1400	 Prev: Box39_1400	 distance:2.31
-Box84_1400	 Prev: Box50_1400	 distance:1.40
+Box84_1400	 Prev: Box50_1400	 distance:1.39
 Box70_1400	 Prev: Box41_1400	 distance:1.44
 Box13_1400	 Prev: Box95_1400	 distance:1.51
 Box23_1400	 Prev: Box_n50_23_1400	 distance:1.75
 Box85_1400	 Prev: Box70_1400	 distance:2.37
-Box46_1400	 Prev: Box23_1400	 distance:2.31
+Box46_1400	 Prev: Box23_1400	 distance:2.30
 Box12_1400	 Prev: Box85_1400	 distance:2.46
-Box21_1400	 Prev: Box85_1400	 distance:2.00
+Box21_1400	 Prev: Box85_1400	 distance:1.99
 Box58_1400	 Prev: Box46_1400	 distance:2.00
 Box81_1400	 Prev: Box46_1400	 distance:2.49
-241.5572508976884
+240.75130578226685
 Running fit for Box_n50_4_1400
 scripts/fit-iter-handler-Box_n50_4_1400.sh
-Submitted batch job 21984224
+Submitted batch job 22021540
 Running fit for Box_n50_14_1400
 scripts/fit-iter-handler-Box_n50_14_1400.sh
-Submitted batch job 21984269
+Submitted batch job 22021541
 Running fit for Box_n50_21_1400
 scripts/fit-iter-handler-Box_n50_21_1400.sh
-Submitted batch job 21984293
+Submitted batch job 22021544
 Running fit for Box_n50_33_1400
 scripts/fit-iter-handler-Box_n50_33_1400.sh
-Submitted batch job 21984326
+Submitted batch job 22021547
 Running fit for Box_n50_35_1400
 scripts/fit-iter-handler-Box_n50_35_1400.sh
-Submitted batch job 21984382
+Submitted batch job 22021549
 Running fit for Box_n50_43_1400
 scripts/fit-iter-handler-Box_n50_43_1400.sh
-Submitted batch job 21984395
+Submitted batch job 22021552
+Running fit for Box_n50_6_1400
+scripts/fit-iter-handler-Box_n50_6_1400.sh
+Submitted batch job 22022588
+Running fit for Box_n50_32_1400
+scripts/fit-iter-handler-Box_n50_32_1400.sh
+Submitted batch job 22022591
+Running fit for Box_n50_44_1400
+scripts/fit-iter-handler-Box_n50_44_1400.sh
+Submitted batch job 22022592
+Running fit for Box_n50_46_1400
+scripts/fit-iter-handler-Box_n50_46_1400.sh
+Submitted batch job 22022834
+Running fit for Box3_1400
+scripts/fit-iter-handler-Box3_1400.sh
+Submitted batch job 22022836
+Running fit for Box_n50_20_1400
+scripts/fit-iter-handler-Box_n50_20_1400.sh
+Submitted batch job 22022838
+Running fit for Box_n50_19_1400
+scripts/fit-iter-handler-Box_n50_19_1400.sh
+Submitted batch job 22022839
+Running fit for Box_n50_37_1400
+scripts/fit-iter-handler-Box_n50_37_1400.sh
+Submitted batch job 22022840
+Running fit for Box_n50_1_1400
+scripts/fit-iter-handler-Box_n50_1_1400.sh
+Submitted batch job 22022910
+Running fit for Box_n50_26_1400
+scripts/fit-iter-handler-Box_n50_26_1400.sh
+Submitted batch job 22022911
+Running fit for Box_n50_17_1400
+scripts/fit-iter-handler-Box_n50_17_1400.sh
+Submitted batch job 22022912
+Running fit for Box_n50_34_1400
+scripts/fit-iter-handler-Box_n50_34_1400.sh
+Submitted batch job 22022913
+Running fit for Box_n50_36_1400
+scripts/fit-iter-handler-Box_n50_36_1400.sh
+Submitted batch job 22022923
+Running fit for Box_n50_31_1400
+scripts/fit-iter-handler-Box_n50_31_1400.sh
+Submitted batch job 22023793
+Running fit for Box_n50_13_1400
+scripts/fit-iter-handler-Box_n50_13_1400.sh
+Submitted batch job 22023907
+Running fit for Box_n50_39_1400
+scripts/fit-iter-handler-Box_n50_39_1400.sh
+Submitted batch job 22023926
+Running fit for Box56_1400
+scripts/fit-iter-handler-Box56_1400.sh
+Submitted batch job 22023943
+Running fit for Box_n50_16_1400
+scripts/fit-iter-handler-Box_n50_16_1400.sh
+Submitted batch job 22023944
+Running fit for Box_n50_24_1400
+scripts/fit-iter-handler-Box_n50_24_1400.sh
+Submitted batch job 22023945
+Running fit for Box_n50_42_1400
+scripts/fit-iter-handler-Box_n50_42_1400.sh
+Submitted batch job 22023948
+Running fit for Box_n50_5_1400
+scripts/fit-iter-handler-Box_n50_5_1400.sh
+Submitted batch job 22023955
+Running fit for Box93_1400
+scripts/fit-iter-handler-Box93_1400.sh
+Submitted batch job 22023981
+Running fit for Box8_1400
+scripts/fit-iter-handler-Box8_1400.sh
+Submitted batch job 22024003
+Running fit for Box4_1400
+scripts/fit-iter-handler-Box4_1400.sh
+Submitted batch job 22024066
+Running fit for Box45_1400
+scripts/fit-iter-handler-Box45_1400.sh
+Submitted batch job 22024067
+Running fit for Box_n50_15_1400
+scripts/fit-iter-handler-Box_n50_15_1400.sh
+Submitted batch job 22024068
+Running fit for Box_n50_45_1400
+scripts/fit-iter-handler-Box_n50_45_1400.sh
+Submitted batch job 22024069
+Running fit for Box91_1400
+scripts/fit-iter-handler-Box91_1400.sh
+Submitted batch job 22024070
+Running fit for Box_n50_28_1400
+scripts/fit-iter-handler-Box_n50_28_1400.sh
+Submitted batch job 22024071
+Running fit for Box_n50_49_1400
+scripts/fit-iter-handler-Box_n50_49_1400.sh
+Submitted batch job 22024072
+Running fit for Box9_1400
+scripts/fit-iter-handler-Box9_1400.sh
+Submitted batch job 22024233
+Running fit for Box97_1400
+scripts/fit-iter-handler-Box97_1400.sh
+Submitted batch job 22024238
+Running fit for Box_n50_18_1400
+scripts/fit-iter-handler-Box_n50_18_1400.sh
+Submitted batch job 22024240
+Running fit for Box87_1400
+scripts/fit-iter-handler-Box87_1400.sh
+Submitted batch job 22024294
+Running fit for Box66_1400
+scripts/fit-iter-handler-Box66_1400.sh
+Submitted batch job 22024379
+Running fit for Box72_1400
+scripts/fit-iter-handler-Box72_1400.sh
+Submitted batch job 22024383
+Running fit for Box42_1400
+scripts/fit-iter-handler-Box42_1400.sh
+Submitted batch job 22025293
+Running fit for Box20_1400
+scripts/fit-iter-handler-Box20_1400.sh
+Submitted batch job 22025387
+Running fit for Box32_1400
+scripts/fit-iter-handler-Box32_1400.sh
+Submitted batch job 22025391
+Running fit for Box64_1400
+scripts/fit-iter-handler-Box64_1400.sh
+Submitted batch job 22025394
+Running fit for Box94_1400
+scripts/fit-iter-handler-Box94_1400.sh
+Submitted batch job 22025396
+Running fit for Box_n50_11_1400
+scripts/fit-iter-handler-Box_n50_11_1400.sh
+Submitted batch job 22025401
+Running fit for Box_n50_29_1400
+scripts/fit-iter-handler-Box_n50_29_1400.sh
+Submitted batch job 22025403
+Running fit for Box48_1400
+scripts/fit-iter-handler-Box48_1400.sh
+Submitted batch job 22025458
+Running fit for Box_n50_25_1400
+scripts/fit-iter-handler-Box_n50_25_1400.sh
+Submitted batch job 22025461
+Running fit for Box_n50_47_1400
+scripts/fit-iter-handler-Box_n50_47_1400.sh
+Submitted batch job 22025463
+Running fit for Box73_1400
+scripts/fit-iter-handler-Box73_1400.sh
+Submitted batch job 22025481
+Running fit for Box_n50_8_1400
+scripts/fit-iter-handler-Box_n50_8_1400.sh
+Submitted batch job 22025482
+Running fit for Box28_1400
+scripts/fit-iter-handler-Box28_1400.sh
+Submitted batch job 22025558
+Running fit for Box33_1400
+scripts/fit-iter-handler-Box33_1400.sh
+Submitted batch job 22025560
+Running fit for Box_n50_9_1400
+scripts/fit-iter-handler-Box_n50_9_1400.sh
+Submitted batch job 22025562
+Running fit for Box_n50_27_1400
+scripts/fit-iter-handler-Box_n50_27_1400.sh
+Submitted batch job 22025564
+Running fit for Box52_1400
+scripts/fit-iter-handler-Box52_1400.sh
+Submitted batch job 22025590
+Running fit for Box30_1400
+scripts/fit-iter-handler-Box30_1400.sh
+Submitted batch job 22025591
+Running fit for Box_n50_10_1400
+scripts/fit-iter-handler-Box_n50_10_1400.sh
+Submitted batch job 22025592
+Running fit for Box_n50_30_1400
+scripts/fit-iter-handler-Box_n50_30_1400.sh
+Submitted batch job 22025595
+Running fit for Box77_1400
+scripts/fit-iter-handler-Box77_1400.sh
+Submitted batch job 22025597
+Running fit for Box29_1400
+scripts/fit-iter-handler-Box29_1400.sh
+Submitted batch job 22025646
+Running fit for Box75_1400
+scripts/fit-iter-handler-Box75_1400.sh
+Submitted batch job 22025647
+Running fit for Box38_1400
+scripts/fit-iter-handler-Box38_1400.sh
+Submitted batch job 22025693
+Running fit for Box80_1400
+scripts/fit-iter-handler-Box80_1400.sh
+Submitted batch job 22025696
+Running fit for Box61_1400
+scripts/fit-iter-handler-Box61_1400.sh
+Submitted batch job 22025778
+Running fit for Box78_1400
+scripts/fit-iter-handler-Box78_1400.sh
+Submitted batch job 22025780
+Running fit for Box1_1400
+scripts/fit-iter-handler-Box1_1400.sh
+Submitted batch job 22026054
+Running fit for Box92_1400
+scripts/fit-iter-handler-Box92_1400.sh
+Submitted batch job 22026059
+Running fit for Box88_1400
+scripts/fit-iter-handler-Box88_1400.sh
+Submitted batch job 22026135
+Running fit for Box47_1400
+scripts/fit-iter-handler-Box47_1400.sh
+Submitted batch job 22026888
+Running fit for Box14_1400
+scripts/fit-iter-handler-Box14_1400.sh
+Submitted batch job 22026982
+Running fit for Box0_1400
+scripts/fit-iter-handler-Box0_1400.sh
+Submitted batch job 22026995
+Running fit for Box_n50_12_1400
+scripts/fit-iter-handler-Box_n50_12_1400.sh
+Submitted batch job 22026999
+Running fit for Box69_1400
+scripts/fit-iter-handler-Box69_1400.sh
+Submitted batch job 22027075
+Running fit for Box17_1400
+scripts/fit-iter-handler-Box17_1400.sh
+Submitted batch job 22027077
+Running fit for Box40_1400
+scripts/fit-iter-handler-Box40_1400.sh
+Submitted batch job 22027078
+Running fit for Box_n50_7_1400
+scripts/fit-iter-handler-Box_n50_7_1400.sh
+Submitted batch job 22027080
+Running fit for Box7_1400
+scripts/fit-iter-handler-Box7_1400.sh
+Submitted batch job 22027082
+Running fit for Box37_1400
+scripts/fit-iter-handler-Box37_1400.sh
+Submitted batch job 22027084
+Running fit for Box_n50_22_1400
+scripts/fit-iter-handler-Box_n50_22_1400.sh
+Submitted batch job 22027085
+Running fit for Box82_1400
+scripts/fit-iter-handler-Box82_1400.sh
+Submitted batch job 22027090
+Running fit for Box62_1400
+scripts/fit-iter-handler-Box62_1400.sh
+Submitted batch job 22027092
+Running fit for Box67_1400
+scripts/fit-iter-handler-Box67_1400.sh
+Submitted batch job 22027093
+Running fit for Box_n50_41_1400
+scripts/fit-iter-handler-Box_n50_41_1400.sh
+Submitted batch job 22027156
+Running fit for Box99_1400
+scripts/fit-iter-handler-Box99_1400.sh
+Submitted batch job 22027163
+Running fit for Box55_1400
+scripts/fit-iter-handler-Box55_1400.sh
+Submitted batch job 22027168
+Running fit for Box65_1400
+scripts/fit-iter-handler-Box65_1400.sh
+Submitted batch job 22027172
+Running fit for Box18_1400
+scripts/fit-iter-handler-Box18_1400.sh
+Submitted batch job 22027248
+Running fit for Box34_1400
+scripts/fit-iter-handler-Box34_1400.sh
+Submitted batch job 22027254
+Running fit for Box_n50_40_1400
+scripts/fit-iter-handler-Box_n50_40_1400.sh
+Submitted batch job 22027257
+Running fit for Box53_1400
+scripts/fit-iter-handler-Box53_1400.sh
+Submitted batch job 22027261
+Running fit for Box90_1400
+scripts/fit-iter-handler-Box90_1400.sh
+Submitted batch job 22027262
+Running fit for Box43_1400
+scripts/fit-iter-handler-Box43_1400.sh
+Submitted batch job 22027263
+Running fit for Box6_1400
+scripts/fit-iter-handler-Box6_1400.sh
+Submitted batch job 22027413
+Running fit for Box31_1400
+scripts/fit-iter-handler-Box31_1400.sh
+Submitted batch job 22027416
+Running fit for Box26_1400
+scripts/fit-iter-handler-Box26_1400.sh
+Submitted batch job 22027523
+Running fit for Box44_1400
+scripts/fit-iter-handler-Box44_1400.sh
+Submitted batch job 22027525
+Running fit for Box27_1400
+scripts/fit-iter-handler-Box27_1400.sh
+Submitted batch job 22027714
+Running fit for Box49_1400
+scripts/fit-iter-handler-Box49_1400.sh
+Submitted batch job 22028334
+Running fit for Box15_1400
+scripts/fit-iter-handler-Box15_1400.sh
+Submitted batch job 22028346
+Running fit for Box2_1400
+scripts/fit-iter-handler-Box2_1400.sh
+Submitted batch job 22028496
+Running fit for Box10_1400
+scripts/fit-iter-handler-Box10_1400.sh
+Submitted batch job 22028503
+Running fit for Box60_1400
+scripts/fit-iter-handler-Box60_1400.sh
+Submitted batch job 22028515
+Running fit for Box25_1400
+scripts/fit-iter-handler-Box25_1400.sh
+Submitted batch job 22028526
+Running fit for Box57_1400
+scripts/fit-iter-handler-Box57_1400.sh
+Submitted batch job 22028527
+Running fit for Box24_1400
+scripts/fit-iter-handler-Box24_1400.sh
+Submitted batch job 22028577
+Running fit for Box_n50_2_1400
+scripts/fit-iter-handler-Box_n50_2_1400.sh
+Submitted batch job 22028590
+Running fit for Box98_1400
+scripts/fit-iter-handler-Box98_1400.sh
+Submitted batch job 22028591
+Running fit for Box39_1400
+scripts/fit-iter-handler-Box39_1400.sh
+Submitted batch job 22028598
+Running fit for Box_n50_3_1400
+scripts/fit-iter-handler-Box_n50_3_1400.sh
+Submitted batch job 22028600
+Running fit for Box54_1400
+scripts/fit-iter-handler-Box54_1400.sh
+Submitted batch job 22028643
+Running fit for Box83_1400
+scripts/fit-iter-handler-Box83_1400.sh
+Submitted batch job 22028644
+Running fit for Box16_1400
+scripts/fit-iter-handler-Box16_1400.sh
+Submitted batch job 22028783
+Running fit for Box71_1400
+scripts/fit-iter-handler-Box71_1400.sh
+Submitted batch job 22028784
+Running fit for Box68_1400
+scripts/fit-iter-handler-Box68_1400.sh
+Submitted batch job 22028786
+Running fit for Box_n50_48_1400
+scripts/fit-iter-handler-Box_n50_48_1400.sh
+Submitted batch job 22028789
+Running fit for Box79_1400
+scripts/fit-iter-handler-Box79_1400.sh
+Submitted batch job 22029016
+Running fit for Box51_1400
+scripts/fit-iter-handler-Box51_1400.sh
+Submitted batch job 22029086
+Running fit for Box96_1400
+scripts/fit-iter-handler-Box96_1400.sh
+Submitted batch job 22029258
+Running fit for Box59_1400
+scripts/fit-iter-handler-Box59_1400.sh
+Submitted batch job 22029510
+Running fit for Box74_1400
+scripts/fit-iter-handler-Box74_1400.sh
+Submitted batch job 22029879
+Running fit for Box19_1400
+scripts/fit-iter-handler-Box19_1400.sh
+Submitted batch job 22029897
+Running fit for Box41_1400
+scripts/fit-iter-handler-Box41_1400.sh
+Submitted batch job 22029902
+Running fit for Box76_1400
+scripts/fit-iter-handler-Box76_1400.sh
+Submitted batch job 22029905
+Running fit for Box22_1400
+scripts/fit-iter-handler-Box22_1400.sh
+Submitted batch job 22029997
+Running fit for Box36_1400
+scripts/fit-iter-handler-Box36_1400.sh
+Submitted batch job 22030005
+Running fit for Box95_1400
+scripts/fit-iter-handler-Box95_1400.sh
+Submitted batch job 22030007
+Running fit for Box89_1400
+scripts/fit-iter-handler-Box89_1400.sh
+Submitted batch job 22030010
+Running fit for Box_n50_23_1400
+scripts/fit-iter-handler-Box_n50_23_1400.sh
+Submitted batch job 22030011
+Running fit for Box11_1400
+scripts/fit-iter-handler-Box11_1400.sh
+Submitted batch job 22030012
+Running fit for Box50_1400
+scripts/fit-iter-handler-Box50_1400.sh
+Submitted batch job 22030195
+Running fit for Box86_1400
+scripts/fit-iter-handler-Box86_1400.sh
+Submitted batch job 22030199
+Running fit for Box13_1400
+scripts/fit-iter-handler-Box13_1400.sh
+Submitted batch job 22031093
+Running fit for Box70_1400
+scripts/fit-iter-handler-Box70_1400.sh
+Submitted batch job 22031207
+Running fit for Box23_1400
+scripts/fit-iter-handler-Box23_1400.sh
+Submitted batch job 22031356
+Running fit for Box84_1400
+scripts/fit-iter-handler-Box84_1400.sh
+Submitted batch job 22031358
+Running fit for Box85_1400
+scripts/fit-iter-handler-Box85_1400.sh
+Submitted batch job 22032027
+Running fit for Box46_1400
+scripts/fit-iter-handler-Box46_1400.sh
+Submitted batch job 22032529
+Running fit for Box21_1400
+scripts/fit-iter-handler-Box21_1400.sh
+Submitted batch job 22033086
+Running fit for Box12_1400
+scripts/fit-iter-handler-Box12_1400.sh
+Submitted batch job 22033087
+Running fit for Box81_1400
+scripts/fit-iter-handler-Box81_1400.sh
+Submitted batch job 22033426
+Running fit for Box58_1400
+scripts/fit-iter-handler-Box58_1400.sh
+Submitted batch job 22033429
+Iterataive Graph Fitting Traversal Done!

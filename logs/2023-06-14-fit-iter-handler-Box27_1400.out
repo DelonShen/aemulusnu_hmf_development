@@ -1,0 +1,30 @@
+Curr: Box27_1400, Prev: Box88_1400
+alist [1.0, 0.953321, 0.866399, 0.787402, 0.715608, 0.65036, 0.620002, 0.591061, 0.563471, 0.537169, 0.512095, 0.488191, 0.403224, 0.366459]
+python -u fit_individ_iter.py Box27_1400 1.000000 Box88_1400 1.000000
+Submitted batch job 22027804
+python -u fit_individ_iter.py Box27_1400 0.953321 Box27_1400 1.000000
+Submitted batch job 22027873
+python -u fit_individ_iter.py Box27_1400 0.866399 Box27_1400 0.953321
+Submitted batch job 22028088
+python -u fit_individ_iter.py Box27_1400 0.787402 Box27_1400 0.866399
+Submitted batch job 22028212
+python -u fit_individ_iter.py Box27_1400 0.715608 Box27_1400 0.787402
+Submitted batch job 22028268
+python -u fit_individ_iter.py Box27_1400 0.650360 Box27_1400 0.715608
+Submitted batch job 22028343
+python -u fit_individ_iter.py Box27_1400 0.620002 Box27_1400 0.650360
+Submitted batch job 22028504
+python -u fit_individ_iter.py Box27_1400 0.591061 Box27_1400 0.620002
+Submitted batch job 22028586
+python -u fit_individ_iter.py Box27_1400 0.563471 Box27_1400 0.591061
+Submitted batch job 22028634
+python -u fit_individ_iter.py Box27_1400 0.537169 Box27_1400 0.563471
+Submitted batch job 22028775
+python -u fit_individ_iter.py Box27_1400 0.512095 Box27_1400 0.537169
+Submitted batch job 22028820
+python -u fit_individ_iter.py Box27_1400 0.488191 Box27_1400 0.512095
+Submitted batch job 22028943
+python -u fit_individ_iter.py Box27_1400 0.403224 Box27_1400 0.488191
+Submitted batch job 22029007
+python -u fit_individ_iter.py Box27_1400 0.366459 Box27_1400 0.403224
+Submitted batch job 22029151

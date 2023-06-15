@@ -18,7 +18,7 @@ X = []
 Y = []
 idx = {}
 cidx = 0
-weird_boxes = ['Box63_1400', 'Box35_1400', 'Box_n50_38_1400']
+weird_boxes = ['Box63_1400', 'Box35_1400', 'Box_n50_38_1400', 'Box5_1400']
 for box in cosmo_params:
     if(box in weird_boxes):
         continue
@@ -152,7 +152,7 @@ def bfs_traversal_run_jobs(mst, start):
 
     while queue:
 #         print('----START-----')
-        time.sleep(20)
+#         time.sleep(1)
         node = queue.popleft()
         
         

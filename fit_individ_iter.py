@@ -1,9 +1,16 @@
 import sys 
+import numpy as np
 box = sys.argv[1]
 a_fit = eval(sys.argv[2])
+
+
 prev_box = sys.argv[3]
 prev_a = eval(sys.argv[4])
-PARAM_SPREAD = 1e-4
+
+
+KX = np.diag([1e-5, 1e-5, 1e-6, 1e-5])
+# if(a_fit == 1.0):
+#     KX = np.diag([1e-5, 1e-5, 1e-6, 1e-5])
 
 param_names = ['d','e','f','g']
 ndim = len(param_names)
@@ -12,7 +19,6 @@ ndim = len(param_names)
 from utils import *
 from massfunction import *
 
-import numpy as np
 from tqdm import tqdm, trange
 import matplotlib.pyplot as plt
 import os
@@ -165,7 +171,6 @@ with open("/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/%s_%.2f_p
     prev_params_final = pickle.load(f)
 prev_final_param_vals = np.array(list(prev_params_final.values()))
 print('prev', prev_params_final)
-KX = np.diag([PARAM_SPREAD for _ in range(ndim)])
 KXinv = np.linalg.inv(KX)
 detKX = np.linalg.det(KX)
 logdetKX = np.log(detKX)
@@ -182,14 +187,15 @@ def log_likelihood_with_prior(param_values):
     return lp + log_prob(param_values)
 
 
-guess = prev_final_param_vals + np.random.normal(loc=0, 
-                                                 scale=PARAM_SPREAD, 
-                                                 size=prev_final_param_vals.shape)    
+guess = prev_final_param_vals 
 print('Starting ML Fit')
 #Start by sampling with a maximum likelihood approach
 from scipy import optimize as optimize
+
+# bounds = [(prev_final_param_vals[i]-0.3, prev_final_param_vals[i]+0.3) for i in range(len(prev_final_param_vals))]
+bounds = [(0,10) for _ in range(len(guess))]
 nll = lambda *args: -log_likelihood_with_prior(*args)
-result = optimize.minimize(nll, guess, method="Nelder-Mead", bounds = [(0,10) for _ in range(ndim)], options={
+result = optimize.minimize(nll, guess, method="Nelder-Mead", bounds = bounds, options={
     'maxiter': len(guess)*10000
 })
 result['param_names'] = param_names
@@ -243,6 +249,9 @@ axs[0].bar(x=edges[:-1], height=N, width=np.diff(edges),
            align='edge', fill=False, ec='black', label='Data')
 axs[0].bar(x=edges[:-1], height=tinker_eval_MCMC, width=np.diff(edges), align='edge', fill=False, ec='blue', label='Tinker')
 axs[1].errorbar(Ms, (tinker_eval_MCMC-N)/N, yerr/N, fmt='x', color='blue')
+
+with open("/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/%s_%.2f_NvMfit_output.pkl"%(box, a_fit), "wb") as f:
+    pickle.dump({'Ms':Ms, 'tinker_eval':tinker_eval_MCMC, 'N':N, 'edges':edges}, f)
 
 y1 = 0.1*np.ones_like(N)
 y1 = np.append(y1, y1[-1])
