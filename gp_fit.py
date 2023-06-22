@@ -13,6 +13,8 @@ import math
 import torch
 import gpytorch
 from matplotlib import pyplot as plt
+leave_out_box = sys.argv[1]
+print('Leaving out', leave_out_box)
 
 cosmos_f = open('data/cosmo_params.pkl', 'rb')
 cosmo_params = pickle.load(cosmos_f) #cosmo_params is a dict
@@ -26,8 +28,7 @@ print('alist', a_list)
 
 weird_boxes = ['Box63_1400', 'Box35_1400', 'Box_n50_38_1400', 'Box5_1400']
 
-leave_out_box = sys.argv[1]
-print('Leaving out', leave_out_box)
+
 errors = {a:{} for a in a_list}
 X = []
 Y = []
@@ -80,11 +81,10 @@ for box in tqdm(cosmo_params):
             ]
         )
         sigma8 = pkclass.sigma(8, z, h_units=True)
-        #go to z sigma 8 
         if(leave_out_box == box):
-            Xlo += [curr_cosmo_values + [z*sigma8]]
+            Xlo += [curr_cosmo_values + [a]]
         else:
-            X+= [curr_cosmo_values + [z*sigma8]]
+            X+= [curr_cosmo_values + [a]]
         with open("/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/%s_%.2f_params.pkl"%(box, a), "rb") as f:
             MLE_params = pickle.load(f)
             param_values = list(MLE_params.values())
@@ -98,6 +98,17 @@ Xlo = np.array(Xlo)
 Ylo = np.array(Ylo)
 
 
+# from sklearn.preprocessing import StandardScaler, MinMaxScaler
+
+# scaler = MinMaxScaler()
+
+# scaler.fit(X)
+
+# # Standardize the data
+# X = scaler.transform(X)
+# Xlo = scaler.transform(Xlo)
+
+
 X_train = torch.from_numpy(X).float()
 Y_train = torch.from_numpy(Y).float()
 n_tasks = len(Y_train[0])
@@ -106,10 +117,12 @@ class MultitaskGPModel(gpytorch.models.ExactGP):
     def __init__(self, train_x, train_y, likelihood):
         super(MultitaskGPModel, self).__init__(train_x, train_y, likelihood)
         self.mean_module = gpytorch.means.MultitaskMean(
-            gpytorch.means.ConstantMean(), num_tasks=n_tasks
+            [gpytorch.means.LinearMean(input_size=X_train.shape[1]) for _ in range(n_tasks)], num_tasks=n_tasks
         )
         self.covar_module = gpytorch.kernels.MultitaskKernel(
-            gpytorch.kernels.SpectralMixtureKernel(num_mixtures=8, ard_num_dims=X_train.shape[1]), num_tasks=n_tasks, rank=1
+#             gpytorch.kernels.MaternKernel(ard_num_dims=X_train.shape[1]),
+            gpytorch.kernels.SpectralMixtureKernel(num_mixtures=3, ard_num_dims=X_train.shape[1])*gpytorch.kernels.PiecewisePolynomialKernel(ard_num_dims=X_train.shape[1]),
+            num_tasks=n_tasks, rank=1
         )
     def forward(self, x):
         mean_x = self.mean_module(x)
@@ -119,16 +132,15 @@ class MultitaskGPModel(gpytorch.models.ExactGP):
 likelihood = gpytorch.likelihoods.MultitaskGaussianLikelihood(num_tasks=n_tasks)
 model = MultitaskGPModel(X_train, Y_train, likelihood)
 
-# Use the adam optimizer
-optimizer = torch.optim.Adam(model.parameters(), lr=0.1)  # Includes GaussianLikelihood parameters
 
 # "Loss" for GPs - the marginal log likelihood
 mll = gpytorch.mlls.ExactMarginalLogLikelihood(likelihood, model)
+optimizer = torch.optim.AdamW(model.parameters(), lr=0.1, amsgrad=True)  # Includes GaussianLikelihood parameters
 
 model.train()
 likelihood.train()
 
-training_iterations = 500
+training_iterations = 250
 for i in trange(training_iterations):
     optimizer.zero_grad()
     output = model(X_train)
@@ -136,6 +148,24 @@ for i in trange(training_iterations):
     loss.backward()
     print('Iter %d/%d - Loss: %.4f' % (i + 1, training_iterations, loss.item()))
     optimizer.step()
+    
+print('now training with smaller learning rate')
+#train some more with smaller lr to avoid disaster
+model.train()
+likelihood.train()
+
+training_iterations = 250
+# Use the adam optimizer
+optimizer = torch.optim.AdamW(model.parameters(), lr=0.01, amsgrad=True)  # Includes GaussianLikelihood parameters
+
+for i in trange(training_iterations):
+    optimizer.zero_grad()
+    output = model(X_train)
+    loss = -mll(output, Y_train)
+    loss.backward()
+    print('Iter %d/%d - Loss: %.4f' % (i + 1, training_iterations, loss.item()))
+    optimizer.step()
+    
     
     
 from utils import *
@@ -275,7 +305,7 @@ for a in tqdm(N_data):
 
     #Emulator 
     c_params = dict(zip(param_names, predicted_params[a]))
-    print(c_params)
+#     print(c_params)
     tinker_eval_MCMC = [mass_function.tinker(a, M_c, **c_params,)*vol for M_c in M_numerics]
     f_dndM_MCMC =  interp1d(M_numerics, tinker_eval_MCMC, kind='linear', 
                             bounds_error=False, fill_value=0.)

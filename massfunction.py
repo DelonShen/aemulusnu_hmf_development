@@ -13,7 +13,7 @@ from scipy.special import gamma
 from scipy.optimize import curve_fit
 from scipy import optimize as optimize
 from multiprocessing import Pool
-import pickle
+import dill as pickle
 from functools import partial
 import functools
 from scipy.integrate import quad, fixed_quad
@@ -61,7 +61,7 @@ class MassFunction:
                
     def compute_dlnsinvdM(self, a):    
         h = self.cosmology['H0']/100
-        M_numerics = np.logspace(np.log10(11), 17, 100) #h^-1 Msolar
+        M_numerics = np.logspace(11, 17, 100) #h^-1 Msolar
         R = [self.M_to_R(m, a) for m in M_numerics] #h^-1 Mpc
         
         if(a not in self.Pka):
@@ -81,7 +81,7 @@ class MassFunction:
 
         f_dlnsinvdM_log = interp1d(np.log10(M_numerics), dlnsinvdM, kind='linear')
         self.dlnσinvdMs[a] = lambda x:f_dlnsinvdM_log(np.log10(x))
-        
+
     def compute_Pka(self, a):
         h = self.cosmology['H0']/100
         z = scaleToRedshift(a)

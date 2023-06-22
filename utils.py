@@ -33,7 +33,7 @@ def sigma2(pk, R):
         W = (3 / x) * (np.sin(x) / x**2 - np.cos(x) / x)
         dσ2dk = W**2 * pk(k) * k**2 / 2 / np.pi**2
         return dσ2dk
-    res, err = quad(dσ2dk, 0, np.inf)
+    res, err = quad(dσ2dk, 0, 20/R, limit=1000)
     σ2 = res
     return σ2
     
@@ -57,6 +57,6 @@ def dsigma2dR(pk, R):
         dWdx = (-3 / x) * ((3 / x**2 - 1) * np.sin(x) / x - 3 * np.cos(x) / x**2)
         dσ2dRdk = 2 * W * dWdx * pk(k) * k**3 / 2 / np.pi**2
         return dσ2dRdk
-    res, err = quad(dσ2dRdk, 0, np.inf)
+    res, err = quad(dσ2dRdk, 0, 20/R, limit=1000)
     return res
 

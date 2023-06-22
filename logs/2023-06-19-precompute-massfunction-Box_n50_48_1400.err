@@ -1,0 +1,28 @@
+
+CommandNotFoundError: Your shell has not been properly configured to use 'conda activate'.
+To initialize your shell, run
+
+    $ conda init <SHELL_NAME>
+
+Currently supported shells are:
+  - bash
+  - fish
+  - tcsh
+  - xonsh
+  - zsh
+  - powershell
+
+See 'conda init --help' for more information and options.
+
+IMPORTANT: You may need to close and restart your shell after running 'conda init'.
+
+
+  0%|                                                     | 0/14 [00:00<?, ?it/s]/home/users/delon/aemulusnu_massfunction/utils.py:36: IntegrationWarning: The occurrence of roundoff error is detected, which prevents 
+  the requested tolerance from being achieved.  The error may be 
+  underestimated.
+  res, err = quad(dσ2dk, 0, 20/R, limit=1000)
+/home/users/delon/aemulusnu_massfunction/utils.py:60: IntegrationWarning: The occurrence of roundoff error is detected, which prevents 
+  the requested tolerance from being achieved.  The error may be 
+  underestimated.
+  res, err = quad(dσ2dRdk, 0, 20/R, limit=1000)
+  7%|███▏                                         | 1/14 [00:19<04:10, 19.28s/it] 14%|██████▍                                      | 2/14 [00:38<03:51, 19.31s/it] 21%|█████████▋                                   | 3/14 [00:57<03:32, 19.33s/it] 29%|████████████▊                                | 4/14 [01:17<03:12, 19.27s/it] 36%|████████████████                             | 5/14 [01:36<02:52, 19.18s/it] 43%|███████████████████▎                         | 6/14 [01:55<02:33, 19.14s/it] 50%|██████████████████████▌                      | 7/14 [02:14<02:13, 19.10s/it] 57%|█████████████████████████▋                   | 8/14 [02:33<01:54, 19.08s/it] 64%|████████████████████████████▉                | 9/14 [02:52<01:34, 19.00s/it] 71%|███████████████████████████████▍            | 10/14 [03:10<01:15, 18.96s/it] 79%|██████████████████████████████████▌         | 11/14 [03:29<00:56, 18.91s/it] 86%|█████████████████████████████████████▋      | 12/14 [03:48<00:37, 18.88s/it] 93%|████████████████████████████████████████▊   | 13/14 [04:07<00:18, 18.82s/it]100%|████████████████████████████████████████████| 14/14 [04:25<00:00, 18.77s/it]100%|████████████████████████████████████████████| 14/14 [04:25<00:00, 19.00s/it]
