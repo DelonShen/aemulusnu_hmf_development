@@ -41,6 +41,7 @@ for box in tqdm(cosmo_params):
     if(box in weird_boxes):
         continue
     curr_cosmo = cosmo_params[box]
+    curr_cosmo['nu_mass_ev'] = (curr_cosmo['nu_mass_ev'])**(1/8)
     curr_cosmo_values = list(curr_cosmo.values())
     
     h = curr_cosmo['H0']/100
@@ -82,9 +83,9 @@ for box in tqdm(cosmo_params):
         )
         sigma8 = pkclass.sigma(8, z, h_units=True)
         if(leave_out_box == box):
-            Xlo += [curr_cosmo_values + [a]]
+            Xlo += [curr_cosmo_values + [a, sigma8]]
         else:
-            X+= [curr_cosmo_values + [a]]
+            X+= [curr_cosmo_values + [a, sigma8]]
         with open("/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/%s_%.2f_params.pkl"%(box, a), "rb") as f:
             MLE_params = pickle.load(f)
             param_values = list(MLE_params.values())
@@ -98,16 +99,19 @@ Xlo = np.array(Xlo)
 Ylo = np.array(Ylo)
 
 
-# from sklearn.preprocessing import StandardScaler, MinMaxScaler
+################################
+# print('scaling input')
+# in_scaler = Normalizer()
+# in_scaler.fit(X)
+# X = in_scaler.transform(X)
+# Xlo = in_scaler.transform(Xlo)
 
-# scaler = MinMaxScaler()
 
-# scaler.fit(X)
-
-# # Standardize the data
-# X = scaler.transform(X)
-# Xlo = scaler.transform(Xlo)
-
+# print('scaling output')
+# out_scaler = Standardizer()
+# out_scaler.fit(Y)
+# Y = out_scaler.transform(Y)
+##REMEMBER TO UNSCALE OUTPUT AND SAVE SCALERS#####
 
 X_train = torch.from_numpy(X).float()
 Y_train = torch.from_numpy(Y).float()
@@ -121,7 +125,8 @@ class MultitaskGPModel(gpytorch.models.ExactGP):
         )
         self.covar_module = gpytorch.kernels.MultitaskKernel(
 #             gpytorch.kernels.MaternKernel(ard_num_dims=X_train.shape[1]),
-            gpytorch.kernels.SpectralMixtureKernel(num_mixtures=3, ard_num_dims=X_train.shape[1])*gpytorch.kernels.PiecewisePolynomialKernel(ard_num_dims=X_train.shape[1]),
+            (gpytorch.kernels.SpectralMixtureKernel(num_mixtures=3, ard_num_dims=X_train.shape[1])+gpytorch.kernels.MaternKernel(ard_num_dims=X_train.shape[1]))*gpytorch.kernels.SpectralMixtureKernel(num_mixtures=8, ard_num_dims=X_train.shape[1]),
+#             gpytorch.kernels.SpectralMixtureKernel(num_mixtures=3, ard_num_dims=X_train.shape[1]),
             num_tasks=n_tasks, rank=1
         )
     def forward(self, x):
@@ -173,7 +178,11 @@ from massfunction import *
 
 with open("/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/GP_lo%s.pkl"%(leave_out_box), "wb") as f:
     pickle.dump([model,
-                 likelihood], f)
+#                 in_scaler,
+#                 out_scaler,
+                likelihood,], f)
+    
+
 
     
 # Set into eval mode
@@ -254,7 +263,9 @@ param_names = ['d','e','f','g']
 predicted_params = {}
 true_params = {}
 for c_X, c_Y, c_mean, a in zip(Xlo, Ylo, mean, a_list):
+#     predicted_params[a] = out_scaler.inverse_transform(c_mean)
     predicted_params[a] = c_mean
+
     true_params[a] = c_Y
     
     

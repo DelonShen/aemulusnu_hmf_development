@@ -9,6 +9,8 @@ prev_a = eval(sys.argv[4])
 
 
 KX = np.diag([1e-5, 1e-5, 1e-6, 1e-5])
+# KX = np.diag([1e-5, 1e-5, 1e-6, 1e-3])
+
 # if(a_fit == 1.0):
 #     KX = np.diag([1e-5, 1e-5, 1e-6, 1e-5])
 

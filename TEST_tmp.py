@@ -19,7 +19,7 @@ print('alist', a_list)
 import subprocess
 from datetime import date
 
-
+import time
 
 # line = 'python -u fit_individ_iter.py %s %f %s %f'%(box, 1.0, box_prev, 1.0)
 # print(line)
@@ -57,13 +57,17 @@ for i in trange(1, len(a_list)):
     # Construct the output and error log paths
     output_log = f'logs/{current_date}-{job_name}.out'
     error_log = f'logs/{current_date}-{job_name}.err'
-    sbatch_command = f'sbatch --job-name={job_name} --output={output_log} --error={error_log} --time=60:00 -p kipac --nodes=1 --mem=32768 --cpus-per-task=1 --wrap="{line}"'
+    sbatch_command = f'sbatch --job-name={job_name} --output={output_log} --error={error_log} --time=10:00 -p kipac --nodes=1 --mem=32768 --cpus-per-task=1 --wrap="{line}"'
 
     
     subprocess.run(sbatch_command, shell=True)
 
     # Wait for the current job to finish
     while True:
-        squeue_output = subprocess.check_output(['squeue', '-u', 'delon', '-n', job_name, '-h']).decode().strip()
-        if not squeue_output:
-            break
+        try:
+            squeue_output = subprocess.check_output(['squeue', '-u', 'delon', '-n', job_name, '-h']).decode().strip()
+            if not squeue_output:
+                break
+        except:
+            time.sleep(10)
+            continue
