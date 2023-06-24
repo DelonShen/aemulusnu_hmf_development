@@ -41,7 +41,7 @@ for box in tqdm(cosmo_params):
     if(box in weird_boxes):
         continue
     curr_cosmo = cosmo_params[box]
-    curr_cosmo['nu_mass_ev'] = (curr_cosmo['nu_mass_ev'])**(1/8)
+    curr_cosmo['nu_mass_ev'] = (curr_cosmo['nu_mass_ev'])**(1/8) ###RMEMBER 8th ROOTING
     curr_cosmo_values = list(curr_cosmo.values())
     
     h = curr_cosmo['H0']/100
@@ -100,17 +100,17 @@ Ylo = np.array(Ylo)
 
 
 ################################
-# print('scaling input')
-# in_scaler = Normalizer()
-# in_scaler.fit(X)
-# X = in_scaler.transform(X)
-# Xlo = in_scaler.transform(Xlo)
+print('scaling input')
+in_scaler = Normalizer()
+in_scaler.fit(X)
+X = in_scaler.transform(X)
+Xlo = in_scaler.transform(Xlo)
 
 
-# print('scaling output')
-# out_scaler = Standardizer()
-# out_scaler.fit(Y)
-# Y = out_scaler.transform(Y)
+print('scaling output')
+out_scaler = Standardizer()
+out_scaler.fit(Y)
+Y = out_scaler.transform(Y)
 ##REMEMBER TO UNSCALE OUTPUT AND SAVE SCALERS#####
 
 X_train = torch.from_numpy(X).float()
@@ -125,8 +125,8 @@ class MultitaskGPModel(gpytorch.models.ExactGP):
         )
         self.covar_module = gpytorch.kernels.MultitaskKernel(
 #             gpytorch.kernels.MaternKernel(ard_num_dims=X_train.shape[1]),
-(gpytorch.kernels.SpectralMixtureKernel(num_mixtures=3,ard_num_dims=X_train.shape[1])+gpytorch.kernels.MaternKernel(ard_num_dims=X_train.shape[1]))*gpytorch.kernels.SpectralMixtureKernel(num_mixtures=3, ard_num_dims=X_train.shape[1]),
-#             gpytorch.kernels.SpectralMixtureKernel(num_mixtures=3, ard_num_dims=X_train.shape[1]),
+#(gpytorch.kernels.SpectralMixtureKernel(num_mixtures=3,ard_num_dims=X_train.shape[1])+gpytorch.kernels.MaternKernel(ard_num_dims=X_train.shape[1]))*gpytorch.kernels.SpectralMixtureKernel(num_mixtures=8, ard_num_dims=X_train.shape[1]),
+             gpytorch.kernels.SpectralMixtureKernel(num_mixtures=3, ard_num_dims=X_train.shape[1]),
             num_tasks=n_tasks, rank=1
         )
     def forward(self, x):
@@ -155,7 +155,7 @@ best_loss = float('inf')
 patience = 8
 patience_counter = 0
 
-training_iterations = 250
+training_iterations = 300
 epochs_iter = tqdm(range(training_iterations), desc="Iteration")
 
 for i in epochs_iter:
@@ -238,8 +238,8 @@ from massfunction import *
 
 with open("/scratch/users/delon/aemulusnu_massfunction/GP_lo%s.pkl"%(leave_out_box), "wb") as f:
     pickle.dump([model,
-#                 in_scaler,
-#                 out_scaler,
+                in_scaler,
+                out_scaler,
                 likelihood,], f)
     
 
@@ -302,7 +302,11 @@ for a in tqdm(NvMs.keys()):
         M_data[a] += [M_curr]
         aux_data[a] += [{'a':a, 'edge_pair':edge_pair}]
     
-    mass_function.compute_dlnsinvdM(a)
+    with open("/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/%s_massfunction.pkl"%(box), "rb") as f:
+        tmp = pickle.load(f)
+        mass_function.dlnσinvdMs = tmp[0]
+        mass_function.Pka = tmp[1]
+    #mass_function.compute_dlnsinvdM(a)
     
     
 M_numerics = np.logspace(np.log10(100*Mpart), 17, 50)
@@ -323,8 +327,8 @@ param_names = ['d','e','f','g']
 predicted_params = {}
 true_params = {}
 for c_X, c_Y, c_mean, a in zip(Xlo, Ylo, mean, a_list):
-#     predicted_params[a] = out_scaler.inverse_transform(c_mean)
-    predicted_params[a] = c_mean
+    predicted_params[a] = out_scaler.inverse_transform(c_mean)
+#     predicted_params[a] = c_mean
 
     true_params[a] = c_Y
     

@@ -25,6 +25,3 @@ for box in cosmo_params:
         continue
     run_gp_fit(box)
     
-
-
-
