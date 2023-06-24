@@ -125,7 +125,7 @@ class MultitaskGPModel(gpytorch.models.ExactGP):
         )
         self.covar_module = gpytorch.kernels.MultitaskKernel(
 #             gpytorch.kernels.MaternKernel(ard_num_dims=X_train.shape[1]),
-            (gpytorch.kernels.SpectralMixtureKernel(num_mixtures=3, ard_num_dims=X_train.shape[1])+gpytorch.kernels.MaternKernel(ard_num_dims=X_train.shape[1]))*gpytorch.kernels.SpectralMixtureKernel(num_mixtures=8, ard_num_dims=X_train.shape[1]),
+(gpytorch.kernels.SpectralMixtureKernel(num_mixtures=3,ard_num_dims=X_train.shape[1])+gpytorch.kernels.MaternKernel(ard_num_dims=X_train.shape[1]))*gpytorch.kernels.SpectralMixtureKernel(num_mixtures=3, ard_num_dims=X_train.shape[1]),
 #             gpytorch.kernels.SpectralMixtureKernel(num_mixtures=3, ard_num_dims=X_train.shape[1]),
             num_tasks=n_tasks, rank=1
         )
@@ -142,41 +142,101 @@ model = MultitaskGPModel(X_train, Y_train, likelihood)
 mll = gpytorch.mlls.ExactMarginalLogLikelihood(likelihood, model)
 optimizer = torch.optim.AdamW(model.parameters(), lr=0.1, amsgrad=True)  # Includes GaussianLikelihood parameters
 
+from copy import deepcopy
 model.train()
 likelihood.train()
+# Set initial learning rate
+lr = 0.1
+
+# Create the optimizer with the initial learning rate
+optimizer = torch.optim.AdamW(model.parameters(), lr=0.1, amsgrad=True)  # Includes GaussianLikelihood parameters
+best_model = None
+best_loss = float('inf')
+patience = 8
+patience_counter = 0
 
 training_iterations = 250
-for i in trange(training_iterations):
+epochs_iter = tqdm(range(training_iterations), desc="Iteration")
+
+for i in epochs_iter:
+    # Training step
+    model.train()
+    likelihood.train()
+
     optimizer.zero_grad()
     output = model(X_train)
     loss = -mll(output, Y_train)
+    epochs_iter.set_postfix(loss=loss.item())
     loss.backward()
-    print('Iter %d/%d - Loss: %.4f' % (i + 1, training_iterations, loss.item()))
     optimizer.step()
+    print('Iter %d/%d - Loss: %.4f' % (i + 1, training_iterations, loss.item()))
+#     # Validation step
+#     model.eval()
+#     likelihood.eval()
+#     with torch.no_grad():
+#         validation_output = model(X_val)
+#         validation_loss = -mll(validation_output, Y_val)
     
-print('now training with smaller learning rate')
-#train some more with smaller lr to avoid disaster
-model.train()
-likelihood.train()
+#     model.train()
+#     likelihood.train()
 
-training_iterations = 250
-# Use the adam optimizer
-optimizer = torch.optim.AdamW(model.parameters(), lr=0.01, amsgrad=True)  # Includes GaussianLikelihood parameters
+#     # Check for improvement
+#     if validation_loss < best_loss:
+#         best_loss = validation_loss
+#         best_model = deepcopy(model.state_dict()) # save the model state
+#         patience_counter = 0 # reset counter
+#     else:
+#         patience_counter += 1
 
-for i in trange(training_iterations):
-    optimizer.zero_grad()
-    output = model(X_train)
-    loss = -mll(output, Y_train)
-    loss.backward()
-    print('Iter %d/%d - Loss: %.4f' % (i + 1, training_iterations, loss.item()))
-    optimizer.step()
+#     # Early stopping
+#     if patience_counter >= patience:
+#         print("Early stopping: validation loss did not improve for {} iterations.".format(patience))
+#         model.load_state_dict(best_model) # restore best model
+#         break
+
+    # Change learning rate after half of iterations
+    if i == training_iterations//2:
+        lr = 0.01
+        for param_group in optimizer.param_groups:
+            param_group['lr'] = lr
+
+
+
+# model.train()
+# likelihood.train()
+
+# training_iterations = 250
+# for i in trange(training_iterations):
+#     optimizer.zero_grad()
+#     output = model(X_train)
+#     loss = -mll(output, Y_train)
+#     loss.backward()
+#     print('Iter %d/%d - Loss: %.4f' % (i + 1, training_iterations, loss.item()))
+#     optimizer.step()
+    
+# print('now training with smaller learning rate')
+# #train some more with smaller lr to avoid disaster
+# model.train()
+# likelihood.train()
+
+# training_iterations = 250
+# # Use the adam optimizer
+# optimizer = torch.optim.AdamW(model.parameters(), lr=0.01, amsgrad=True)  # Includes GaussianLikelihood parameters
+
+# for i in trange(training_iterations):
+#     optimizer.zero_grad()
+#     output = model(X_train)
+#     loss = -mll(output, Y_train)
+#     loss.backward()
+#     print('Iter %d/%d - Loss: %.4f' % (i + 1, training_iterations, loss.item()))
+#     optimizer.step()
     
     
     
 from utils import *
 from massfunction import *
 
-with open("/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/GP_lo%s.pkl"%(leave_out_box), "wb") as f:
+with open("/scratch/users/delon/aemulusnu_massfunction/GP_lo%s.pkl"%(leave_out_box), "wb") as f:
     pickle.dump([model,
 #                 in_scaler,
 #                 out_scaler,
@@ -326,7 +386,7 @@ for a in tqdm(N_data):
                align='edge', fill=False, ec='red', label='Emulator')
     axs[1].scatter(Ms, (tinker_eval_MCMC-N)/N, marker='x', color='red')
 #     axs[1].scatter(Ms, (tinker_eval_MCMC-N)/N, marker='x', color='red')
-    with open("/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/%s_%.2f_NvMemulator_loo_output.pkl"%(box, a), "wb") as f:
+    with open("/scratch/users/delon/aemulusnu_massfunction/%s_%.2f_NvMemulator_loo_output.pkl"%(box, a), "wb") as f:
         pickle.dump({'Ms':Ms, 'tinker_eval':tinker_eval_MCMC, 'N':N, 'edges':edges}, f)
 
     #ML Fit
@@ -367,4 +427,6 @@ for a in tqdm(N_data):
     axs[1].set_ylim((-.29, .29))
     axs[1].set_yticks([-.2, -.1, 0, .1, .2])
 
-    plt.savefig('/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/figures/emulator/%s_emufit_%.2f.pdf'%(box, a), bbox_inches='tight')
+    plt.savefig('/scratch/users/delon/aemulusnu_massfunction/figures/emulator/%s_emufit_%.2f.pdf'%(box, a), bbox_inches='tight')
+with open("/scratch/users/delon/aemulusnu_massfunction/%s_emu_loo_predicted_params.pkl"%(leave_out_box), "wb") as f:
+    pickle.dump(predicted_params, f)
