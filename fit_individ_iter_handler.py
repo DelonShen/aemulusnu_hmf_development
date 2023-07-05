@@ -46,7 +46,9 @@ while True:
         
 # Submit each command as a Slurm job with the dynamically generated log paths    
 for i in trange(1, len(a_list)):
-    line = 'python -u fit_individ_iter.py %s %f %s %f'%(box, a_list[i], box, a_list[i-1])
+#     line = 'python -u fit_individ_iter.py %s %f %s %f'%(box, a_list[i], box, a_list[i-1])
+    line = 'python -u fit_individ_iter.py %s %f %s %f'%(box, a_list[i], box_prev, a_list[i])
+
     print(line)
     # Define the job parameters
     job_name = 'fit_%s_a%.2f'%(box, a_list[i])

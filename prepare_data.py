@@ -66,7 +66,7 @@ for line in tqdm(f):
             break        
     print('redshift', scaleToRedshift(a))
     SNAPSHOT_IDX+=1
-    if(scaleToRedshift(a) >= 2):
+    if(scaleToRedshift(a) >= 2.4):
         skips+=1
         continue
 #     gt200idxs[a] = gt200Np
@@ -91,14 +91,14 @@ for line in tqdm(f):
         N = N[:c_i]
         bin_edge = bin_edge[:(c_i+1)]
         c_i -= 1
-#         print('---')
-#         print(N)
-#         print(bin_edge)
-#         print('---')
+        print('---')
+        print(N)
+        print(bin_edge)
+        print('---')
 
         
-    #make large mass bin have at least 20 halos
-    while(N[c_i] < 20):
+    #make large mass bin have at least 15 halos
+    while(N[c_i] < 15):
         N[c_i-1] += N[c_i]
         halos_here = np.where(bin_idx==c_i+1)
         bin_idx[halos_here] = c_i

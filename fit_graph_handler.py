@@ -136,7 +136,7 @@ from collections import deque
 
 import subprocess
 import time
-import os
+
 def run_fit_iter(box, prev_box):
     #run the fit job for this guy 
     subprocess.run('./scripts/fit_individ_handler.sh %s %s'%(box, prev_box), shell=True)
@@ -167,13 +167,9 @@ def bfs_traversal_run_jobs(mst, start):
         #check if parent still running
         curr_parent = parent[node]
         if(curr_parent is not None):
-            
-            #check if a=1.0 params saved 
-          
-            parent_a1_params_fname = "/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/%s_%.2f_params.pkl" % (X[curr_parent], 1.0)
-            parent_a1_done = os.path.exists(parent_a1_params_fname)
-            
-            if parent_a1_done: 
+            squeue_output = subprocess.check_output(['squeue', '-u', 'delon', '-n', 'fit-iter-handler-%s'%(X[curr_parent]), '-h']).decode().strip()
+#             print('sq', squeue_output)
+            if not squeue_output: #if job done running 
                 print('Running fit for %s'%(X[node]))
                 run_fit_iter(X[node], X[curr_parent])
                 #add its neighboros to the queue
@@ -182,7 +178,7 @@ def bfs_traversal_run_jobs(mst, start):
                         queue.append(neighbor)
                         visited[neighbor] = True
                         parent[neighbor] = node
-            else: 
+            else: #parent job not done running
 #                 print('Fit for %s still running'%(X[curr_parent]))
                 queue.append(node)
         else:

@@ -137,6 +137,7 @@ class MassFunction:
         oup *= np.exp(-g/σM**2)
         return oup
     
+    
     def rhom_a(self, a):
         ombh2 = self.cosmology['ombh2']
         omch2 = self.cosmology['omch2']

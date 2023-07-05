@@ -195,7 +195,7 @@ print('Starting ML Fit')
 from scipy import optimize as optimize
 
 # bounds = [(prev_final_param_vals[i]-0.3, prev_final_param_vals[i]+0.3) for i in range(len(prev_final_param_vals))]
-bounds = [(0,10) for _ in range(len(guess))]
+bounds = [(0,5) for _ in range(len(guess))]
 nll = lambda *args: -log_likelihood_with_prior(*args)
 result = optimize.minimize(nll, guess, method="Nelder-Mead", bounds = bounds, options={
     'maxiter': len(guess)*10000
