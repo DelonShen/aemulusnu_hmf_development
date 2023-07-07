@@ -1,0 +1,25 @@
+
+CommandNotFoundError: Your shell has not been properly configured to use 'conda activate'.
+To initialize your shell, run
+
+    $ conda init <SHELL_NAME>
+
+Currently supported shells are:
+  - bash
+  - fish
+  - tcsh
+  - xonsh
+  - zsh
+  - powershell
+
+See 'conda init --help' for more information and options.
+
+IMPORTANT: You may need to close and restart your shell after running 'conda init'.
+
+
+0it [00:00, ?it/s]1it [00:00,  2.31it/s]2it [00:01,  1.83it/s]3it [00:02,  1.21it/s]4it [00:03,  1.13s/it]5it [00:05,  1.36s/it]6it [00:07,  1.52s/it]7it [00:09,  1.66s/it]8it [00:11,  1.76s/it]9it [00:13,  1.85s/it]10it [00:15,  1.90s/it]11it [00:17,  1.96s/it]12it [00:19,  2.03s/it]13it [00:21,  2.07s/it]14it [00:24,  2.12s/it]15it [00:26,  2.15s/it]16it [00:28,  2.21s/it]16it [00:28,  1.79s/it]
+  0%|                                                                                              | 0/14 [00:00<?, ?it/s]  7%|██████▏                                                                               | 1/14 [00:11<02:24, 11.10s/it] 14%|████████████▎                                                                         | 2/14 [00:24<02:26, 12.18s/it] 21%|██████████████████▍                                                                   | 3/14 [00:40<02:35, 14.10s/it] 29%|████████████████████████▌                                                             | 4/14 [00:57<02:32, 15.22s/it] 36%|██████████████████████████████▋                                                       | 5/14 [01:15<02:25, 16.12s/it] 43%|████████████████████████████████████▊                                                 | 6/14 [01:33<02:14, 16.87s/it] 43%|████████████████████████████████████▊                                                 | 6/14 [01:47<02:22, 17.87s/it]
+Traceback (most recent call last):
+  File "/home/users/delon/aemulusnu_massfunction/prepare_data.py", line 167, in <module>
+    assert(len(bin_idx) == len(snapshot_pos))
+AssertionError

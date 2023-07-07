@@ -24,6 +24,12 @@ a_list_fname = '/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/alis
 a_list_f = open(a_list_fname, 'rb')
 a_list = pickle.load(a_list_f) 
 a_list_f.close()
+
+###TMP
+# a_list = [a_list[0], a_list[1]]
+##TMP
+
+
 print('alist', a_list)
 
 weird_boxes = ['Box63_1400', 'Box35_1400', 'Box_n50_38_1400', 'Box5_1400']
@@ -41,7 +47,6 @@ for box in tqdm(cosmo_params):
     if(box in weird_boxes):
         continue
     curr_cosmo = cosmo_params[box]
-    curr_cosmo['nu_mass_ev'] = (curr_cosmo['nu_mass_ev'])**(1/8) ###RMEMBER 8th ROOTING
     curr_cosmo_values = list(curr_cosmo.values())
     
     h = curr_cosmo['H0']/100
@@ -98,19 +103,23 @@ Y = np.array(Y)
 Xlo = np.array(Xlo)
 Ylo = np.array(Ylo)
 
-
+print(X.shape)
+print(Y.shape)
 ################################
 print('scaling input')
 in_scaler = Normalizer()
 in_scaler.fit(X)
 X = in_scaler.transform(X)
 Xlo = in_scaler.transform(Xlo)
+print(X.shape)
 
 
 print('scaling output')
 out_scaler = Standardizer()
 out_scaler.fit(Y)
 Y = out_scaler.transform(Y)
+print(Y.shape)
+
 ##REMEMBER TO UNSCALE OUTPUT AND SAVE SCALERS#####
 
 X_train = torch.from_numpy(X).float()
@@ -121,7 +130,7 @@ class MultitaskGPModel(gpytorch.models.ExactGP):
     def __init__(self, train_x, train_y, likelihood):
         super(MultitaskGPModel, self).__init__(train_x, train_y, likelihood)
         self.mean_module = gpytorch.means.MultitaskMean(
-            [gpytorch.means.LinearMean(input_size=X_train.shape[1]) for _ in range(n_tasks)], num_tasks=n_tasks
+            gpytorch.means.LinearMean(input_size=X_train.shape[1]), num_tasks=n_tasks
         )
         self.covar_module = gpytorch.kernels.MultitaskKernel(
 #             gpytorch.kernels.MaternKernel(ard_num_dims=X_train.shape[1]),
@@ -273,7 +282,7 @@ from scipy.interpolate import interp1d, UnivariateSpline, InterpolatedUnivariate
 vol = -1 #Mpc^3/h^3
 Mpart = -1
 
-for a in tqdm(NvMs.keys()):
+for a in tqdm(a_list):
 #     if(a != 1): #TEST
 #         continue
         
@@ -334,7 +343,7 @@ for c_X, c_Y, c_mean, a in zip(Xlo, Ylo, mean, a_list):
     
     
 
-for a in tqdm(N_data):
+for a in tqdm(a_list):
     fig1 = plt.figure(figsize =(12, 7))
 
     axs=[fig1.add_axes((0.0,0.4,1,.6)), fig1.add_axes((0.0,0.0,1,.4))]

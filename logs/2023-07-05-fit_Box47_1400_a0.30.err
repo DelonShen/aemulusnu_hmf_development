@@ -1,0 +1,20 @@
+  0%|                                                                                               | 0/1 [00:00<?, ?it/s]/home/users/delon/aemulusnu_massfunction/utils.py:36: IntegrationWarning: The occurrence of roundoff error is detected, which prevents 
+  the requested tolerance from being achieved.  The error may be 
+  underestimated.
+  res, err = quad(dσ2dk, 0, 20/R, limit=1000)
+/home/users/delon/aemulusnu_massfunction/utils.py:60: IntegrationWarning: The occurrence of roundoff error is detected, which prevents 
+  the requested tolerance from being achieved.  The error may be 
+  underestimated.
+  res, err = quad(dσ2dRdk, 0, 20/R, limit=1000)
+100%|███████████████████████████████████████████████████████████████████████████████████████| 1/1 [00:16<00:00, 16.82s/it]100%|███████████████████████████████████████████████████████████████████████████████████████| 1/1 [00:16<00:00, 16.82s/it]
+Traceback (most recent call last):
+  File "/home/users/delon/aemulusnu_massfunction/fit_individ_iter.py", line 107, in <module>
+    inv_weighted_cov = {a:np.linalg.inv(weighted_cov[a]) for a in weighted_cov}  
+  File "/home/users/delon/aemulusnu_massfunction/fit_individ_iter.py", line 107, in <dictcomp>
+    inv_weighted_cov = {a:np.linalg.inv(weighted_cov[a]) for a in weighted_cov}  
+  File "<__array_function__ internals>", line 200, in inv
+  File "/home/users/delon/.local/lib/python3.9/site-packages/numpy/linalg/linalg.py", line 532, in inv
+    _assert_stacked_2d(a)
+  File "/home/users/delon/.local/lib/python3.9/site-packages/numpy/linalg/linalg.py", line 183, in _assert_stacked_2d
+    raise LinAlgError('%d-dimensional array given. Array must be '
+numpy.linalg.LinAlgError: 0-dimensional array given. Array must be at least two-dimensional
