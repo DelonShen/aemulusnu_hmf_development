@@ -26,6 +26,10 @@ from classy import Class
 
 class MassFunction:
     def __init__(self, cosmology, fixed={}):
+        '''
+        TODO: note that currently cosmo['As'] is actually 10^9 A_s, 
+        fix sometime 
+        '''
         self.cosmology = cosmology
         self.fixed = fixed
         
@@ -66,7 +70,9 @@ class MassFunction:
         
         if(a not in self.Pka):
             self.compute_Pka(a)
-    
+        if(a in self.dlnσinvdMs):
+            print('Already computed!')
+            
         Pk = self.Pka[a]
                 
         sigma2s = np.array([sigma2(Pk, r) for r in R])
