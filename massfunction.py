@@ -106,7 +106,6 @@ class MassFunction:
         my_sigma8 = np.sqrt(sigma2(Pk, 8)) # 8 h^-1 Mpc
         assert(np.abs(class_sigma8-my_sigma8)<0.01*class_sigma8)
 
-
     def tinker(self, a, M, d, e, f, g):
         R = self.M_to_R(M, a) #Mpc/h
         σM = np.sqrt(sigma2(self.Pka[a], R))  

@@ -120,23 +120,3 @@ class AemulusNu_HMF_Emulator:
         mass_function.compute_dlnsinvdM(a)
 
         return mass_function.tinker(a, m, **tinker_params)
-
-    def predicit_n_in_bins(self, cosmology, z, bin_edges):
-        """
-        Parameters:
-            - cosmology (dict): A dictioniary containing the cosmological parameters
-                - 10^9 As: As * 10^9
-                - ns: Spectral index
-                - H0: Hubble parameter in [km/s/Mpc]
-                - w0: Dark Energy Equation fo State
-                - ombh2: Ω_b h^2
-                - omch2: Ω_m h^2
-                - nu_mass_ev: Neutrino mass sum in [eV]
-                - sigma8: σ8
-            - z (float): Redshift to evaluate dn/dM at
-            - bins_edges (list): List of Mass [M_solar / h] bin edges to evaluate dn/dM in
-        Returns:
-            - n_in_bins (list): List of number density in mass bins
-
-        """
-        return [-1]

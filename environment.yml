@@ -16,3 +16,4 @@ dependencies:
     - torch
     - gpytorch
     - seaborn
+    - pyccl
