@@ -27,12 +27,12 @@ from classy import Class
 class MassFunction:
     def __init__(self, cosmology, fixed={}):
         '''
-        TODO: note that currently cosmo['As'] is actually 10^9 A_s, 
-        fix sometime 
+        TODO: note that currently cosmo['As'] is actually 10^9 A_s,
+        fix sometime
         '''
         self.cosmology = cosmology
         self.fixed = fixed
-        
+
         cosmo = self.cosmology
         h = cosmo['H0']/100
         cosmo_dict = {
@@ -62,26 +62,25 @@ class MassFunction:
         N_snapshots = 16
         self.Pka = {}
         self.dlnσinvdMs = {}
-               
-    def compute_dlnsinvdM(self, a):    
+
+    def compute_dlnsinvdM(self, a):
         h = self.cosmology['H0']/100
         M_numerics = np.logspace(11, 17, 100) #h^-1 Msolar
-        R = [self.M_to_R(m, a) for m in M_numerics] #h^-1 Mpc
-        
+        R = self.M_to_R(M_numerics, a) #h^-1 Mpc
+
         if(a not in self.Pka):
             self.compute_Pka(a)
         if(a in self.dlnσinvdMs):
-            print('Already computed!')
-            
+            return
+
         Pk = self.Pka[a]
-                
-        sigma2s = np.array([sigma2(Pk, r) for r in R])
-        sigma = np.sqrt(sigma2s)
-        
-        ds2dR = np.array([dsigma2dR(Pk, r) for r in R])
-        dRdMs = np.array([self.dRdM(m, a) for m in M_numerics])
+        sigma = [self.pkclass.sigma(R_curr, scaleToRedshift(a)) for R_curr in R]
+        sigma2s = np.square(sigma)
+
+        ds2dR = dsigma2dR(Pk, R)
+        dRdMs = self.dRdM(M_numerics, a)
         ds2dM = ds2dR * dRdMs
-        
+
         dlnsinvds2 = -1/(2*sigma2s)
         dlnsinvdM = ds2dM*dlnsinvds2
 
@@ -99,13 +98,10 @@ class MassFunction:
                 for ki in kt * h # 1 / Mpc
             ]
         )
-        
         from scipy.interpolate import interp1d
         #given k in units of h/Mpc gives Pk in units of Mpc^3/h^3 
         Pk = interp1d(kt, pk_m_lin, kind='linear', bounds_error=False, fill_value=0.)
-        
-        self.Pka[a] = Pk   
-        
+        self.Pka[a] = Pk
         class_sigma8 = self.pkclass.sigma(8, z, h_units=True)
         my_sigma8 = np.sqrt(sigma2(Pk, 8)) # 8 h^-1 Mpc
         assert(np.abs(class_sigma8-my_sigma8)<0.01*class_sigma8)
@@ -170,6 +166,7 @@ class MassFunction:
         """
 
         return (M / (4/3 * math.pi * self.rhom_a(a))) ** (1/3) # h^-1 Mpc  
+
 
     def R_to_M(self, R, a):
         """
