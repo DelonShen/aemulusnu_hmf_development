@@ -108,7 +108,7 @@ class MassFunction:
 
     def tinker(self, a, M, d, e, f, g):
         R = self.M_to_R(M, a) #Mpc/h
-        σM = np.sqrt(sigma2(self.Pka[a], R))  
+        σM = pkclass.sigma(R, scaleToRedshift(a))
         oup = self.f_G(a, M, σM, d, e, f, g)
         oup *= self.rhom_a(a)/M
         oup *= self.dlnσinvdMs[a](M)
