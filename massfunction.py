@@ -29,6 +29,9 @@ class MassFunction:
         '''
         TODO: note that currently cosmo['As'] is actually 10^9 A_s,
         fix sometime
+
+        Comoving halo mass function
+
         '''
         self.cosmology = cosmology
         self.fixed = fixed
@@ -108,11 +111,11 @@ class MassFunction:
 
     def tinker(self, a, M, d, e, f, g):
         R = self.M_to_R(M, a) #Mpc/h
-        σM = pkclass.sigma(R, scaleToRedshift(a))
-        oup = self.f_G(a, M, σM, d, e, f, g)
-        oup *= self.rhom_a(a)/M
-        oup *= self.dlnσinvdMs[a](M)
-        return oup
+        σM = self.pkclass.sigma(R, scaleToRedshift(a)) # unitelss
+        oup = self.f_G(a, M, σM, d, e, f, g) #unitless
+        oup *= self.rhom_a(a)/M # h^3 /Mpc^3
+        oup *= self.dlnσinvdMs[a](M) # h / Msun
+        return oup # h^4 / (Mpc^3  Msun)
     
     def tinker_wrapper(self, a, M, params):
         d = self.p(a, params['d0'], params['d1'])
