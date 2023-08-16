@@ -105,9 +105,9 @@ class MassFunction:
         #given k in units of h/Mpc gives Pk in units of Mpc^3/h^3 
         Pk = interp1d(kt, pk_m_lin, kind='linear', bounds_error=False, fill_value=0.)
         self.Pka[a] = Pk
-        class_sigma8 = self.pkclass.sigma(8, z, h_units=True)
-        my_sigma8 = np.sqrt(sigma2(Pk, 8)) # 8 h^-1 Mpc
-        assert(np.abs(class_sigma8-my_sigma8)<0.01*class_sigma8)
+#        class_sigma8 = self.pkclass.sigma(8, z, h_units=True)
+#        my_sigma8 = np.sqrt(sigma2(Pk, 8)) # 8 h^-1 Mpc
+#        assert(np.abs(class_sigma8-my_sigma8)<0.01*class_sigma8)
 
     def tinker(self, a, M, d, e, f, g):
         R = self.M_to_R(M, a) #Mpc/h

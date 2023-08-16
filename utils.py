@@ -56,7 +56,7 @@ def dsigma2dR_scalar(pk, R):
         - dsigma2dR (float): The derivative of the variance of mass fluctuations wrt R
     """
 
-    res, err = quad(lambda k: dσ2dRdk(k, R, pk), 0, 20/R, limit=1000)
+    res, err = quad(lambda k: dσ2dRdk(k, R, pk), 0, 20/R, limit=1000, epsabs=0, epsrel=1e-4)
     return res
 
 sigma2 = np.vectorize(sigma2_scalar)

@@ -25,6 +25,9 @@ class MultitaskGPModel(gpytorch.models.ExactGP):
         covar_x = self.covar_module(x)
         return gpytorch.distributions.MultitaskMultivariateNormal(mean_x, covar_x)
 
+
+key_ordering = ['10^9 As', 'ns', 'H0', 'w0', 'ombh2', 'omch2', 'nu_mass_ev', 'sigma8']
+
 class AemulusNu_HMF_Emulator:
     """
     Halo Mass Function Emulator,
@@ -53,6 +56,9 @@ class AemulusNu_HMF_Emulator:
     def get_cosmo_vals(self, cosmology):
         key_ordering = ['10^9 As', 'ns', 'H0', 'w0', 'ombh2', 'omch2', 'nu_mass_ev', 'sigma8']
         return [cosmology[curr_key] for curr_key in key_ordering]
+
+    def get_cosmo_dict(self, cosmo_vals):
+        return dict(zip(key_ordering, cosmo_vals))
 
 
     def predict_params(self, cosmology, z):
