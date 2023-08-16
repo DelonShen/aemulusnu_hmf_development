@@ -7,6 +7,8 @@ from functools import cache, partial
 
 emulator = AemulusNu_HMF_Emulator()
 
+# c / H 
+DH = 3000 #[h^{-1} Mpc] 
 
 #fiducial cosmolgy
 #(Plank 2018 (base LCDM) + neutrino mass put in by hand)
@@ -85,7 +87,7 @@ else:
     with open(fiducial_log_dndM_fname, 'wb') as file:
         pickle.dump(fiducial_log_dndM, file)
 
-fiducial_dndM = lambda z, m: np.exp(fiducial_log_dndm(z,np.log10(m)))
+fiducial_dndM = lambda z, m: np.exp(fiducial_log_dndM(z,np.log10(m)))
 
 def cluster_richness_relation(M, λ, z):
     #equation (10) to To, Krause+20
@@ -130,8 +132,7 @@ def comoving_volume_elements(z, cosmo_vals):
     DA = ccl.angular_diameter_distance(cosmo, 1/(1+z)) * h # Mpc / h 
     #According to ccl_background.h, this uses dΩ [radians]
     Ez = np.sqrt((Ωb+Ωc)*(1+z)**3 + (1-(Ωb+Ωc))) # unitless
-    DH = 3000 #[h^{-1} Mpc] 
-    return DH*(1+z)**2*DA**2/Ez # h^{-3} Mpc^3 already has units volume? what are angular units??
+    return DH*(1+z)**2*DA**2/Ez # h^{-3} Mpc^3 
 
 
 

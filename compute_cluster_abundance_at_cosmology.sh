@@ -2,9 +2,10 @@
 
 param_names=('10^9 As' 'ns' 'H0' 'w0' 'ombh2' 'omch2' 'nu_mass_ev' 'sigma8')
 
+param_names=('ombh2')
 step_sizes=() # Initialize the array
 
-for i in $(seq 0.5 0.1 2.5); do
+for i in $(seq 1.4 0.025 2.4); do
   step_sizes+=($i)
 done
 
@@ -15,7 +16,7 @@ for ((i=0; i<${#param_names[@]}; i++)); do
         echo $param
         echo -$step_size
         # Generate job name with index
-        job_name="computeN_"$param"_$step_size"
+        job_name="computeN_finer_"$param"_$step_size"
         # Define output and error log file paths
         output_log="logs/$(date +%Y-%m-%d)-$job_name.out"
         error_log="logs/$(date +%Y-%m-%d)-$job_name.err"

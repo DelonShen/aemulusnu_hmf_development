@@ -24,7 +24,7 @@ cluster_abundance_pos = N_in_z_bins_and_richness_bins(cosmology, richness_bin_ed
 
 
 
-with open('/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/cluster_abundance_fisher_%s_%.1f'%(parameter_changed, parameter_log10_rel_step_size), 'wb') as file:
+with open('/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/cluster_abundance_fisher_%s_%.4f'%(parameter_changed, parameter_log10_rel_step_size), 'wb') as file:
     pickle.dump(cluster_abundance_pos, file)
 
 
@@ -40,5 +40,5 @@ print(cosmology)
 cluster_abundance_neg = N_in_z_bins_and_richness_bins(cosmology, richness_bin_edges, z_bin_edges)
 
 
-with open('/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/cluster_abundance_fisher_%s_%.1f_neg'%(parameter_changed, parameter_log10_rel_step_size), 'wb') as file:
+with open('/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/cluster_abundance_fisher_%s_%.4f_neg'%(parameter_changed, parameter_log10_rel_step_size), 'wb') as file:
     pickle.dump(cluster_abundance_neg, file)
