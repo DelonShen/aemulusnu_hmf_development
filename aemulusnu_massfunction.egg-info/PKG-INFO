@@ -1,0 +1,6 @@
+Metadata-Version: 2.1
+Name: aemulusnu-massfunction
+Version: 0.1
+Summary: Halo Mass Function Emulator based on the Aemulus-nu suite of simulations
+Author: Delon Shen
+Author-email: delon@stanford.edu
