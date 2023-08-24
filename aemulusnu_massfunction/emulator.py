@@ -33,12 +33,11 @@ class AemulusNu_HMF_Emulator:
     Halo Mass Function Emulator,
     built from Aemulus-ν suite of simulations
     """
-    def __init__(self):
+    def __init__(self, emulator_loc = '/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/GP_loBox0_1400.pkl'):
         #TODO eventaully replace with local emuatlor
         self.MassFunctions = {}
         self.ComputedParams = {}
-#         with open("GP_emulator.pkl", "rb") as f:
-        with open('/scratch/users/delon/aemulusnu_massfunction/GP_loBox0_1400.pkl', 'rb') as f:
+        with open(emulator_loc, 'rb') as f:
             self.model, self.in_scaler, self.out_scaler, self.likelihood = pickle.load(f)
             self.model.eval()
             self.likelihood.eval()
@@ -80,9 +79,9 @@ class AemulusNu_HMF_Emulator:
         a = redshiftToScale(z)
 
         mass_function = self.get_massfunction(cosmology)
-        mass_function.compute_dlnsinvdM(a)
 
-        sigma8 = mass_function.pkclass.sigma(8, z, h_units=True) #sigma8 at current redshift
+        m8 = mass_function.R_to_M(8, redshiftToScale(z)) #8 h^-1 Mpc as mass
+        sigma8 = np.exp(mass_function.f_logsigma_logM(z, np.log(m8)))[0][0] #sigma8 at current redshift
 
         curr_cosmo_values = self.get_cosmo_vals(cosmology)
         X = self.in_scaler.transform(np.array([curr_cosmo_values + [a, sigma8]]))
@@ -96,7 +95,7 @@ class AemulusNu_HMF_Emulator:
         return self.ComputedParams[tuple(X[0].tolist())]
 
 
-    def predict_dndm(self, cosmology, z, m):
+    def predict_dndM(self, cosmology, z, m):
         """
         Parameters:
             - cosmology (dict): A dictioniary containing the cosmological parameters
@@ -119,6 +118,5 @@ class AemulusNu_HMF_Emulator:
         tinker_params = self.predict_params(cosmology, z)
 
         mass_function = self.get_massfunction(cosmology)
-        mass_function.compute_dlnsinvdM(a)
 
-        return mass_function.tinker(a, m, **tinker_params)
+        return mass_function.dndM(a, m, **tinker_params)

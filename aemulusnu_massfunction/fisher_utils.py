@@ -65,17 +65,17 @@ def create_dndM_interp(cosmo_vals, return_log = False):
 
     # Evaluate the function over the grid
     # Replace this loop with the actual evaluation of your function
-    dndm_evaluated = np.zeros_like(M_grid)
+    dndM_evaluated = np.zeros_like(M_grid)
     for i in trange(len(z)):
         for j in range(len(M)):
-            dndm_evaluated[i, j] = emulator.predict_dndm(emulator.get_cosmo_dict(cosmo_vals), z[i], M[j])
+            dndM_evaluated[i, j] = emulator.predict_dndM(emulator.get_cosmo_dict(cosmo_vals), z[i], M[j])
     # Fit the spline
-    log_dndm = RectBivariateSpline(z, np.log10(M), np.log(dndm_evaluated))
+    log_dndM = RectBivariateSpline(z, np.log10(M), np.log(dndM_evaluated))
     if(return_log):
-        return log_dndm
+        return log_dndM
 
-    dndm = lambda z, m: np.exp(log_dndm(z,np.log10(m)))
-    return dndm
+    dndM = lambda z, m: np.exp(log_dndM(z,np.log10(m)))
+    return dndM
 
 
 if os.path.exists(fiducial_log_dndM_fname):
@@ -137,11 +137,11 @@ def comoving_volume_elements(z, cosmo_vals):
 
 
 def cluster_count_integrand(lam, M, z_val, cosmo_vals,):
-    dndm = create_dndM_interp(tuple(cosmo_vals))
+    dndM = create_dndM_interp(tuple(cosmo_vals))
 
     p = cluster_richness_relation(M, lam, z_val) # h / Msun
 
-    dn_dM = dndm(z_val, M) # h^4 / (Mpc^3  Msun)
+    dn_dM = dndM(z_val, M) # h^4 / (Mpc^3  Msun)
 
 
     d2V_dzdOmega = comoving_volume_elements(z_val, cosmo_vals) # Mpc^3 / h^3

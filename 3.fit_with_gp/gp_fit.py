@@ -1,12 +1,14 @@
 import math
 from scipy.integrate import quad, fixed_quad
 import matplotlib.pyplot as plt
-import pickle 
+import pickle
 import numpy as np
 import functools
-import sys 
+import sys
 from tqdm import tqdm, trange
-from utils import *
+from aemulusnu_massfunction.utils import *
+from aemulusnu_massfunction.emulator import *
+
 from classy import Class
 
 import math
@@ -16,7 +18,7 @@ from matplotlib import pyplot as plt
 leave_out_box = sys.argv[1]
 print('Leaving out', leave_out_box)
 
-cosmos_f = open('data/cosmo_params.pkl', 'rb')
+cosmos_f = open('../data/cosmo_params.pkl', 'rb')
 cosmo_params = pickle.load(cosmos_f) #cosmo_params is a dict
 cosmos_f.close()
 
@@ -47,8 +49,11 @@ for box in tqdm(cosmo_params):
     if(box in weird_boxes):
         continue
     curr_cosmo = cosmo_params[box]
-    curr_cosmo_values = list(curr_cosmo.values())
-    
+    if(box == 'Box_n50_0_1400'):
+        print(curr_cosmo)
+
+    curr_cosmo_values = [curr_cosmo[curr_key] for curr_key in key_ordering]
+
     h = curr_cosmo['H0']/100
 
     cosmo_dict = {
@@ -63,7 +68,7 @@ for box in tqdm(cosmo_params):
         'm_ncdm': curr_cosmo['nu_mass_ev']/3,
         'deg_ncdm': 3,
         'T_cmb': 2.7255,
-        'A_s': curr_cosmo['As'] * 10**-9,
+        'A_s': curr_cosmo['10^9 As'] * 10**-9,
         'n_s': curr_cosmo['ns'],
         'Omega_Lambda': 0.0,
         'w0_fld': curr_cosmo['w0'],
@@ -76,6 +81,8 @@ for box in tqdm(cosmo_params):
     pkclass.set(cosmo_dict)
     pkclass.compute()
 
+    mass_function = MassFunction(curr_cosmo)
+
     for a in a_list:
         z = scaleToRedshift(a)
         z_to_a[z] = a
@@ -87,6 +94,12 @@ for box in tqdm(cosmo_params):
             ]
         )
         sigma8 = pkclass.sigma(8, z, h_units=True)
+
+        m8 = mass_function.R_to_M(8, redshiftToScale(z)) #8 h^-1 Mpc as mass
+        sigma8_other = np.exp(mass_function.f_logsigma_logM(z, np.log(m8)))[0][0] #sigma8 at current redshift
+        print(sigma8, sigma8_other)
+        assert(np.abs((sigma8 - sigma8_other)/sigma8) < 1e-3)
+
         if(leave_out_box == box):
             Xlo += [curr_cosmo_values + [a, sigma8]]
         else:
@@ -102,6 +115,8 @@ X = np.array(X)
 Y = np.array(Y)
 Xlo = np.array(Xlo)
 Ylo = np.array(Ylo)
+print(Xlo)
+print(Ylo)
 
 print(X.shape)
 print(Y.shape)
@@ -126,22 +141,6 @@ X_train = torch.from_numpy(X).float()
 Y_train = torch.from_numpy(Y).float()
 n_tasks = len(Y_train[0])
 
-class MultitaskGPModel(gpytorch.models.ExactGP):
-    def __init__(self, train_x, train_y, likelihood):
-        super(MultitaskGPModel, self).__init__(train_x, train_y, likelihood)
-        self.mean_module = gpytorch.means.MultitaskMean(
-            gpytorch.means.LinearMean(input_size=X_train.shape[1]), num_tasks=n_tasks
-        )
-        self.covar_module = gpytorch.kernels.MultitaskKernel(
-#             gpytorch.kernels.MaternKernel(ard_num_dims=X_train.shape[1]),
-#(gpytorch.kernels.SpectralMixtureKernel(num_mixtures=3,ard_num_dims=X_train.shape[1])+gpytorch.kernels.MaternKernel(ard_num_dims=X_train.shape[1]))*gpytorch.kernels.SpectralMixtureKernel(num_mixtures=8, ard_num_dims=X_train.shape[1]),
-             gpytorch.kernels.SpectralMixtureKernel(num_mixtures=3, ard_num_dims=X_train.shape[1]),
-            num_tasks=n_tasks, rank=1
-        )
-    def forward(self, x):
-        mean_x = self.mean_module(x)
-        covar_x = self.covar_module(x)
-        return gpytorch.distributions.MultitaskMultivariateNormal(mean_x, covar_x)
 
 likelihood = gpytorch.likelihoods.MultitaskGaussianLikelihood(num_tasks=n_tasks)
 model = MultitaskGPModel(X_train, Y_train, likelihood)
@@ -151,7 +150,6 @@ model = MultitaskGPModel(X_train, Y_train, likelihood)
 mll = gpytorch.mlls.ExactMarginalLogLikelihood(likelihood, model)
 optimizer = torch.optim.AdamW(model.parameters(), lr=0.1, amsgrad=True)  # Includes GaussianLikelihood parameters
 
-from copy import deepcopy
 model.train()
 likelihood.train()
 # Set initial learning rate
@@ -161,8 +159,6 @@ lr = 0.1
 optimizer = torch.optim.AdamW(model.parameters(), lr=0.1, amsgrad=True)  # Includes GaussianLikelihood parameters
 best_model = None
 best_loss = float('inf')
-patience = 8
-patience_counter = 0
 
 training_iterations = 300
 epochs_iter = tqdm(range(training_iterations), desc="Iteration")
@@ -179,29 +175,6 @@ for i in epochs_iter:
     loss.backward()
     optimizer.step()
     print('Iter %d/%d - Loss: %.4f' % (i + 1, training_iterations, loss.item()))
-#     # Validation step
-#     model.eval()
-#     likelihood.eval()
-#     with torch.no_grad():
-#         validation_output = model(X_val)
-#         validation_loss = -mll(validation_output, Y_val)
-    
-#     model.train()
-#     likelihood.train()
-
-#     # Check for improvement
-#     if validation_loss < best_loss:
-#         best_loss = validation_loss
-#         best_model = deepcopy(model.state_dict()) # save the model state
-#         patience_counter = 0 # reset counter
-#     else:
-#         patience_counter += 1
-
-#     # Early stopping
-#     if patience_counter >= patience:
-#         print("Early stopping: validation loss did not improve for {} iterations.".format(patience))
-#         model.load_state_dict(best_model) # restore best model
-#         break
 
     # Change learning rate after half of iterations
     if i == training_iterations//2:
@@ -209,65 +182,23 @@ for i in epochs_iter:
         for param_group in optimizer.param_groups:
             param_group['lr'] = lr
 
+from aemulusnu_massfunction.massfunction import *
 
-
-# model.train()
-# likelihood.train()
-
-# training_iterations = 250
-# for i in trange(training_iterations):
-#     optimizer.zero_grad()
-#     output = model(X_train)
-#     loss = -mll(output, Y_train)
-#     loss.backward()
-#     print('Iter %d/%d - Loss: %.4f' % (i + 1, training_iterations, loss.item()))
-#     optimizer.step()
-    
-# print('now training with smaller learning rate')
-# #train some more with smaller lr to avoid disaster
-# model.train()
-# likelihood.train()
-
-# training_iterations = 250
-# # Use the adam optimizer
-# optimizer = torch.optim.AdamW(model.parameters(), lr=0.01, amsgrad=True)  # Includes GaussianLikelihood parameters
-
-# for i in trange(training_iterations):
-#     optimizer.zero_grad()
-#     output = model(X_train)
-#     loss = -mll(output, Y_train)
-#     loss.backward()
-#     print('Iter %d/%d - Loss: %.4f' % (i + 1, training_iterations, loss.item()))
-#     optimizer.step()
-    
-    
-    
-from utils import *
-from massfunction import *
-
-with open("/scratch/users/delon/aemulusnu_massfunction/GP_lo%s.pkl"%(leave_out_box), "wb") as f:
+with open("/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/GP_lo%s.pkl"%(leave_out_box), "wb") as f:
     pickle.dump([model,
                 in_scaler,
                 out_scaler,
                 likelihood,], f)
-    
 
 
-    
-# Set into eval mode
-model.eval()
-likelihood.eval()
 
-with torch.no_grad(), gpytorch.settings.fast_pred_var():
-    predictions = likelihood(model(torch.from_numpy(Xlo).float()))
-    mean = predictions.mean.numpy()
-    
-    
+
+
+
+Emulator = AemulusNu_HMF_Emulator(emulator_loc = "/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/GP_lo%s.pkl"%(leave_out_box))
+
 box =leave_out_box
-from massfunction import *
-
-mass_function = MassFunction(cosmo_params[box])
-
+from aemulusnu_massfunction.massfunction import *
 
 NvM_fname = '/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/'+box+'_NvsM.pkl'
 NvM_f = open(NvM_fname, 'rb')
@@ -285,15 +216,13 @@ Mpart = -1
 for a in tqdm(a_list):
 #     if(a != 1): #TEST
 #         continue
-        
     c_data = NvMs[a]
-    
+
     Ms = c_data['M'] #units of h^-1 Msolar
     N = c_data['N']
     edge_pairs = c_data['edge_pairs']
     assert(len(Ms) == len(edge_pairs))
     assert(len(Ms) == len(N))
-    
 
     if(vol==-1):
         vol = c_data['vol']
@@ -310,14 +239,7 @@ for a in tqdm(a_list):
         N_data[a] += [N_curr]
         M_data[a] += [M_curr]
         aux_data[a] += [{'a':a, 'edge_pair':edge_pair}]
-    
-    with open("/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/%s_massfunction.pkl"%(box), "rb") as f:
-        tmp = pickle.load(f)
-        mass_function.dlnσinvdMs = tmp[0]
-        mass_function.Pka = tmp[1]
-    #mass_function.compute_dlnsinvdM(a)
-    
-    
+
 M_numerics = np.logspace(np.log10(100*Mpart), 17, 50)
 
 jackknife_covs_fname = '/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/'+box+'_jackknife_covs.pkl'
@@ -333,22 +255,15 @@ weighted_cov = {a: jack_covs[a] for a in jack_covs}
 param_names = ['d','e','f','g']
 
 
-predicted_params = {}
 true_params = {}
-for c_X, c_Y, c_mean, a in zip(Xlo, Ylo, mean, a_list):
-    predicted_params[a] = out_scaler.inverse_transform(c_mean)
-#     predicted_params[a] = c_mean
-
+for c_X, c_Y, a in zip(Xlo, Ylo, a_list):
     true_params[a] = c_Y
-    
-    
 
 for a in tqdm(a_list):
     fig1 = plt.figure(figsize =(12, 7))
 
     axs=[fig1.add_axes((0.0,0.4,1,.6)), fig1.add_axes((0.0,0.0,1,.4))]
     plt.subplots_adjust(wspace=0, hspace=0)
-    Pk = mass_function.Pka[a]
     c_data = NvMs[a]
 
     Ms = M_data[a]
@@ -388,27 +303,26 @@ for a in tqdm(a_list):
 
 
     #Emulator 
-    c_params = dict(zip(param_names, predicted_params[a]))
-#     print(c_params)
-    tinker_eval_MCMC = [mass_function.tinker(a, M_c, **c_params,)*vol for M_c in M_numerics]
-    f_dndM_MCMC =  interp1d(M_numerics, tinker_eval_MCMC, kind='linear', 
+    tinker_eval_MCMC = [Emulator.predict_dndM(cosmo_params[leave_out_box], scaleToRedshift(a), M_c)*vol for M_c in M_numerics]
+    f_dNdM_MCMC =  interp1d(M_numerics, tinker_eval_MCMC, kind='linear',
                             bounds_error=False, fill_value=0.)
-    tinker_eval_MCMC = np.array([quad(f_dndM_MCMC, edge[0],  edge[1], epsabs=1e-1)[0] for edge in edge_pairs])
+    tinker_eval_MCMC = np.array([quad(f_dNdM_MCMC, edge[0],  edge[1], epsabs=0, epsrel=1e-5)[0] for edge in edge_pairs])
+
     axs[0].scatter(Ms, tinker_eval_MCMC, marker='x', c='red')
     axs[0].bar(x=edges[:-1], height=tinker_eval_MCMC, width=np.diff(edges), 
                align='edge', fill=False, ec='red', label='Emulator')
     axs[1].scatter(Ms, (tinker_eval_MCMC-N)/N, marker='x', color='red')
 #     axs[1].scatter(Ms, (tinker_eval_MCMC-N)/N, marker='x', color='red')
-    with open("/scratch/users/delon/aemulusnu_massfunction/%s_%.2f_NvMemulator_loo_output.pkl"%(box, a), "wb") as f:
+    with open("/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/%s_%.2f_NvMemulator_loo_output.pkl"%(box, a), "wb") as f:
         pickle.dump({'Ms':Ms, 'tinker_eval':tinker_eval_MCMC, 'N':N, 'edges':edges}, f)
 
     #ML Fit
-    
+
     c_params = dict(zip(param_names, true_params[a]))
-    tinker_eval_MCMC = [mass_function.tinker(a, M_c, **c_params,)*vol for M_c in M_numerics]
-    f_dndM_MCMC =  interp1d(M_numerics, tinker_eval_MCMC, kind='linear', 
+    tinker_eval_MCMC = [Emulator.get_massfunction(cosmo_params[leave_out_box]).dndM(a, M_c, **c_params,)*vol for M_c in M_numerics]
+    f_dNdM_MCMC =  interp1d(M_numerics, tinker_eval_MCMC, kind='linear', 
                             bounds_error=False, fill_value=0.)
-    tinker_eval_MCMC = np.array([quad(f_dndM_MCMC, edge[0],  edge[1], epsabs=1e-1)[0] for edge in edge_pairs])
+    tinker_eval_MCMC = np.array([quad(f_dNdM_MCMC, edge[0],  edge[1], epsabs=0, epsrel=1e-5)[0] for edge in edge_pairs])
     axs[0].scatter(Ms, tinker_eval_MCMC, s=50 , marker='x', c='blue')
     axs[0].bar(x=edges[:-1], height=tinker_eval_MCMC, width=np.diff(edges), 
                align='edge', fill=False, ec='blue', label='ML Fit')
@@ -440,6 +354,6 @@ for a in tqdm(a_list):
     axs[1].set_ylim((-.29, .29))
     axs[1].set_yticks([-.2, -.1, 0, .1, .2])
 
-    plt.savefig('/scratch/users/delon/aemulusnu_massfunction/figures/emulator/%s_emufit_%.2f.pdf'%(box, a), bbox_inches='tight')
-with open("/scratch/users/delon/aemulusnu_massfunction/%s_emu_loo_predicted_params.pkl"%(leave_out_box), "wb") as f:
-    pickle.dump(predicted_params, f)
+    plt.savefig('/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/figures/emulator/%s_emufit_%.2f.pdf'%(box, a), bbox_inches='tight')
+with open("/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/%s_emu_loo_predicted_params.pkl"%(leave_out_box), "wb") as f:
+    pickle.dump(Emulator.predict_params(cosmo_params[leave_out_box], scaleToRedshift(a)), f)
