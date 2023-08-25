@@ -1,0 +1,4 @@
+nohup: ignoring input
+  0%|                                                                                               | 0/1 [00:00<?, ?it/s]
+  0%|                                                                                             | 0/133 [00:00<?, ?it/s][A
+  1%|▌                                                                                | 1/133 [10:44<23:38:31, 644.79s/it][A/bin/sh: line 1: 16343 Terminated              python -u compute_cluster_abundance_at_cosmology.py "nu_mass_ev" -0.69 &>logs/2023-08-24-computeN_nu_mass_ev_0.69.out 2> logs/2023-08-24-computeN_nu_mass_ev_0.69.err

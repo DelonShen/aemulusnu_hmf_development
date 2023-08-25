@@ -1,0 +1,37 @@
+  0%|                                                                                               | 0/4 [00:00<?, ?it/s] 25%|█████████████████████▊                                                                 | 1/4 [01:27<04:21, 87.06s/it] 25%|█████████████████████▌                                                                | 1/4 [02:42<08:06, 162.32s/it]
+Traceback (most recent call last):
+  File "/home/users/delon/aemulusnu_massfunction/4.fisher_forecast/compute_cluster_abundance_at_cosmology.py", line 23, in <module>
+    cluster_abundance_pos = N_in_z_bins_and_richness_bins(cosmology, richness_bin_edges, z_bin_edges)
+  File "/home/users/delon/aemulusnu_massfunction/aemulusnu_massfunction/fisher_utils.py", line 130, in N_in_z_bins_and_richness_bins
+    N_values[i, j] = N_in_z_and_richness_bin(cosmology, lambda_min, lambda_max, z_min, z_max)
+  File "/home/users/delon/aemulusnu_massfunction/aemulusnu_massfunction/fisher_utils.py", line 111, in N_in_z_and_richness_bin
+    result, error = tplquad(cluster_count_integrand_cosmology, z_min, z_max, M_min, M_max, lambda_min, lambda_max, epsrel=1e-4, epsabs=0)
+  File "/home/users/delon/.local/lib/python3.9/site-packages/scipy/integrate/_quadpack_py.py", line 919, in tplquad
+    return nquad(func, ranges, args=args,
+  File "/home/users/delon/.local/lib/python3.9/site-packages/scipy/integrate/_quadpack_py.py", line 1171, in nquad
+    return _NQuad(func, ranges, opts, full_output).integrate(*args)
+  File "/home/users/delon/.local/lib/python3.9/site-packages/scipy/integrate/_quadpack_py.py", line 1225, in integrate
+    quad_r = quad(f, low, high, args=args, full_output=self.full_output,
+  File "/home/users/delon/.local/lib/python3.9/site-packages/scipy/integrate/_quadpack_py.py", line 463, in quad
+    retval = _quad(func, a, b, args, full_output, epsabs, epsrel, limit,
+  File "/home/users/delon/.local/lib/python3.9/site-packages/scipy/integrate/_quadpack_py.py", line 575, in _quad
+    return _quadpack._qagse(func,a,b,args,full_output,epsabs,epsrel,limit)
+  File "/home/users/delon/.local/lib/python3.9/site-packages/scipy/integrate/_quadpack_py.py", line 1225, in integrate
+    quad_r = quad(f, low, high, args=args, full_output=self.full_output,
+  File "/home/users/delon/.local/lib/python3.9/site-packages/scipy/integrate/_quadpack_py.py", line 463, in quad
+    retval = _quad(func, a, b, args, full_output, epsabs, epsrel, limit,
+  File "/home/users/delon/.local/lib/python3.9/site-packages/scipy/integrate/_quadpack_py.py", line 575, in _quad
+    return _quadpack._qagse(func,a,b,args,full_output,epsabs,epsrel,limit)
+  File "/home/users/delon/.local/lib/python3.9/site-packages/scipy/integrate/_quadpack_py.py", line 1225, in integrate
+    quad_r = quad(f, low, high, args=args, full_output=self.full_output,
+  File "/home/users/delon/.local/lib/python3.9/site-packages/scipy/integrate/_quadpack_py.py", line 463, in quad
+    retval = _quad(func, a, b, args, full_output, epsabs, epsrel, limit,
+  File "/home/users/delon/.local/lib/python3.9/site-packages/scipy/integrate/_quadpack_py.py", line 575, in _quad
+    return _quadpack._qagse(func,a,b,args,full_output,epsabs,epsrel,limit)
+  File "/home/users/delon/aemulusnu_massfunction/aemulusnu_massfunction/fisher_utils.py", line 98, in cluster_count_integrand
+    dn_dM = emulator.predict_dndM(emulator.get_cosmo_dict(cosmo_vals), z_val, M) # h^4 / Mpc^3 Msun
+  File "/home/users/delon/aemulusnu_massfunction/aemulusnu_massfunction/emulator.py", line 122, in predict_dndM
+    return mass_function.dndM(a, m, **tinker_params)
+  File "/home/users/delon/aemulusnu_massfunction/aemulusnu_massfunction/massfunction.py", line 92, in dndM
+    σM = np.exp(self.f_logsigma_logM(scaleToRedshift(a), np.log(M)))[0][0]
+KeyboardInterrupt

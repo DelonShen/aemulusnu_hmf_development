@@ -1,13 +1,16 @@
 #!/bin/bash
 
-param_names=('10^9 As' 'ns' 'H0' 'w0' 'ombh2' 'omch2' 'nu_mass_ev' 'sigma8')
+param_names=('10^9 As' 'ns' 'H0' 'w0' 'ombh2' 'omch2')
 
-param_names=('ombh2')
+param_names=('nu_mass_ev')
 step_sizes=() # Initialize the array
 
-for i in $(seq 1.4 0.025 2.4); do
+for i in $(seq 0.68 0.01 2); do
   step_sizes+=($i)
 done
+
+
+
 
 for ((i=0; i<${#param_names[@]}; i++)); do
     for ((j=0; j<${#step_sizes[@]}; j++)); do
@@ -16,7 +19,7 @@ for ((i=0; i<${#param_names[@]}; i++)); do
         echo $param
         echo -$step_size
         # Generate job name with index
-        job_name="computeN_finer_"$param"_$step_size"
+        job_name="computeN_"$param"_$step_size"
         # Define output and error log file paths
         output_log="logs/$(date +%Y-%m-%d)-$job_name.out"
         error_log="logs/$(date +%Y-%m-%d)-$job_name.err"
@@ -28,11 +31,11 @@ for ((i=0; i<${#param_names[@]}; i++)); do
 #SBATCH --job-name="$job_name"
 #SBATCH --output="$output_log"
 #SBATCH --error="$error_log"
-#SBATCH --time=10:00
+#SBATCH --time=20:00
 #SBATCH -p kipac
 #SBATCH --nodes=1
-#SBATCH --mem=8192
-#SBATCH --cpus-per-task=32
+#SBATCH --mem=4096
+#SBATCH --cpus-per-task=16
 
 conda init
 conda activate massfunction

@@ -19,14 +19,9 @@ fiducial_cosmology = {'10^9 As':2.09681,
                       'w0': -1,
                       'ombh2': 0.02233,
                       'omch2': 0.1198,
-                      'nu_mass_ev': 0.07,
-                      'sigma8': 0.8101,}
+                      'nu_mass_ev': 0.07,}
 
 fiducial_cosmo_vals = emulator.get_cosmo_vals(fiducial_cosmology)
-
-fiducial_log_dndM = None
-fiducial_log_dndM_fname = 'fiducial_log_dndM.pkl'
-fiducial_dndM = None
 
 fiducial_ccl_cosmo = None
 
@@ -49,45 +44,6 @@ lnλ0 = 3.8
 Bλ = -0.4
 Mpiv = 5e14 # h^-1 M_sol
 
-
-@cache
-def create_dndM_interp(cosmo_vals, return_log = False):
-    """
-    Ideally would have dndM fast enough
-    TODO, reimplement dndM to be faster
-    """
-    print('Creating dndM interpolation')
-    M = 10**np.linspace(11, 17, 150)
-    z = np.linspace(0, 1, 25)
-
-    # Create meshgrid
-    M_grid, z_grid = np.meshgrid(M, z)
-
-    # Evaluate the function over the grid
-    # Replace this loop with the actual evaluation of your function
-    dndM_evaluated = np.zeros_like(M_grid)
-    for i in trange(len(z)):
-        for j in range(len(M)):
-            dndM_evaluated[i, j] = emulator.predict_dndM(emulator.get_cosmo_dict(cosmo_vals), z[i], M[j])
-    # Fit the spline
-    log_dndM = RectBivariateSpline(z, np.log10(M), np.log(dndM_evaluated))
-    if(return_log):
-        return log_dndM
-
-    dndM = lambda z, m: np.exp(log_dndM(z,np.log10(m)))
-    return dndM
-
-
-if os.path.exists(fiducial_log_dndM_fname):
-    with open(fiducial_log_dndM_fname, 'rb') as file:
-        fiducial_log_dndM = pickle.load(file)
-else:
-    fiducial_log_dndM = create_dndM_interp(tuple(fiducial_cosmo_vals), return_log=True)
-
-    with open(fiducial_log_dndM_fname, 'wb') as file:
-        pickle.dump(fiducial_log_dndM, file)
-
-fiducial_dndM = lambda z, m: np.exp(fiducial_log_dndM(z,np.log10(m)))
 
 def cluster_richness_relation(M, λ, z):
     #equation (10) to To, Krause+20
@@ -137,12 +93,9 @@ def comoving_volume_elements(z, cosmo_vals):
 
 
 def cluster_count_integrand(lam, M, z_val, cosmo_vals,):
-    dndM = create_dndM_interp(tuple(cosmo_vals))
-
     p = cluster_richness_relation(M, lam, z_val) # h / Msun
 
-    dn_dM = dndM(z_val, M) # h^4 / (Mpc^3  Msun)
-
+    dn_dM = emulator.predict_dndM(emulator.get_cosmo_dict(cosmo_vals), z_val, M) # h^4 / Mpc^3 Msun
 
     d2V_dzdOmega = comoving_volume_elements(z_val, cosmo_vals) # Mpc^3 / h^3
 
@@ -172,10 +125,8 @@ def N_in_z_bins_and_richness_bins(cosmology, richness_bin_edges, z_bin_edges):
         for j in range(len(richness_bin_edges) - 1):
             lambda_min = richness_bin_edges[j]
             lambda_max = richness_bin_edges[j + 1]
-#            print('Currently on\n\tredshift bin (%.1f, %.1f)\n\trichness bin (%.1f, %.1f)'%(z_min, z_max, lambda_min, lambda_max))
+
             # Evaluate the function for the given bin
             N_values[i, j] = N_in_z_and_richness_bin(cosmology, lambda_min, lambda_max, z_min, z_max)
 
     return N_values
-
-

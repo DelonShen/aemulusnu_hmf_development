@@ -1,5 +1,5 @@
-from emulator import *
-from fisher_utils import *
+from aemulusnu_massfunction.emulator import *
+from aemulusnu_massfunction.fisher_utils import *
 import pickle
 import sys
 

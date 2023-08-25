@@ -9,6 +9,8 @@ from scipy.interpolate import RectBivariateSpline
 from scipy.special import gamma
 from .utils import *
 from classy import Class
+from functools import cache, partial
+
 
 ρcrit0 = 2.77533742639e+11 #h^2 Msol / Mpc^3
 
@@ -22,7 +24,7 @@ class MassFunction:
         self.cosmology = cosmology
         self.fixed = fixed
 
-        print('Setting dictionary')
+#        print('Setting dictionary')
         cosmo = self.cosmology
         h = cosmo['H0']/100
         cosmo_dict = {
@@ -46,14 +48,14 @@ class MassFunction:
             'fluid_equation_of_state': "CLP"
         }
 
-        print('Computing sigma spline')
+#        print('Computing sigma spline')
         #get logsigma spline
         M = 10**np.linspace(11, 17, 150)
         z = np.linspace(0, 2, 100)
         # Create meshgrid
         M_grid, z_grid = np.meshgrid(M, z)
 
-        print('Initializing CLASS')
+#        print('Initializing CLASS')
         pkclass = Class()
         pkclass.set(cosmo_dict)
         pkclass.compute()
@@ -74,15 +76,15 @@ class MassFunction:
 
         #compute sigma on this mesh
         sigma = np.zeros_like(M_grid)
-        print('Computing Sigma from CLASS')
-        for i in trange(len(z)):
+#        print('Computing Sigma from CLASS')
+        for i in range(len(z)):
             for j in range(len(R)):
                 sigma[i, j] = pkclass.sigma(R[j], z[i], h_units=True) #h^-1 Mpc
 
 
         # Fit the spline
         self.f_logsigma_logM = RectBivariateSpline(z, np.log(M), np.log(sigma))
-        print('Spline Made')
+#        print('Spline Made')
 
 
 
@@ -90,23 +92,27 @@ class MassFunction:
     def dndM(self, a, M, d, e, f, g):
         R = self.M_to_R(M, a) #Mpc/h
         σM = np.exp(self.f_logsigma_logM(scaleToRedshift(a), np.log(M)))[0][0]
-        oup = self.f_G(a, M, σM, d, e, f, g) #unitless
+        oup = self.f_G(σM, d, e, f, g) #unitless
         oup *= self.rhom_a(a)/M**2 # h^3 /Mpc^3
         dlogsiginv_dlogM = -self.f_logsigma_logM.ev(scaleToRedshift(a), np.log(M), dy=1)
         oup *= dlogsiginv_dlogM
         return oup # h^4 / (Mpc^3  Msun)
 
-    def B(self, a, M, σM, d, e, f, g):
+
+    @cache
+    def B(self, d, e, f, g):
         oup = e**(d)*g**(-d/2)*gamma(d/2)
         oup += g**(-f/2)*gamma(f/2)
         oup = 2/oup
         return oup
 
 
-    def f_G(self, a, M, σM, d, e, f, g):
-        oup = self.B(a, M, σM, d, e, f, g)
-        oup *= ((σM/e)**(-d)+σM**(-f))
-        oup *= np.exp(-g/σM**2)
+
+    @cache
+    def f_G(self, σM, d, e, f, g):
+        oup = self.B(d, e, f, g)
+        oup *= ((σM / e) ** (-d) + σM ** (-f))
+        oup *= np.exp(-g / σM ** 2)
         return oup
 
     def rhom_a(self, a):
