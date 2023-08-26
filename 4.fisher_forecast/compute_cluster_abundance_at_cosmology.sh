@@ -2,10 +2,10 @@
 
 param_names=('10^9 As' 'ns' 'H0' 'w0' 'ombh2' 'omch2')
 
-param_names=('nu_mass_ev')
+param_names=('ns')
 step_sizes=() # Initialize the array
 
-for i in $(seq 0.68 0.01 2); do
+for i in $(seq 4.3 0.01 5); do
   step_sizes+=($i)
 done
 

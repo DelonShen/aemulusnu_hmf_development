@@ -1,0 +1,2 @@
+  0%|                                                                                               | 0/4 [00:00<?, ?it/s]/var/spool/slurmd/job28651635/slurm_script: line 12: 27452 Killed                  python -u compute_cluster_abundance_covariance.py 0 0 0 0
+slurmstepd: error: Detected 1 oom_kill event in StepId=28651635.batch. Some of the step tasks have been OOM Killed.

@@ -93,7 +93,7 @@ class MassFunction:
         R = self.M_to_R(M, a) #Mpc/h
         σM = np.exp(self.f_logsigma_logM(scaleToRedshift(a), np.log(M)))[0][0]
         oup = self.f_G(σM, d, e, f, g) #unitless
-        oup *= self.rhom_a(a)/M**2 # h^3 /Mpc^3
+        oup *= self.rhom_a(a)/M**2 # h^4 /Mpc^3 Msun
         dlogsiginv_dlogM = -self.f_logsigma_logM.ev(scaleToRedshift(a), np.log(M), dy=1)
         oup *= dlogsiginv_dlogM
         return oup # h^4 / (Mpc^3  Msun)

@@ -1,0 +1,21 @@
+
+CommandNotFoundError: Your shell has not been properly configured to use 'conda activate'.
+To initialize your shell, run
+
+    $ conda init <SHELL_NAME>
+
+Currently supported shells are:
+  - bash
+  - fish
+  - tcsh
+  - xonsh
+  - zsh
+  - powershell
+
+See 'conda init --help' for more information and options.
+
+IMPORTANT: You may need to close and restart your shell after running 'conda init'.
+
+
+  0%|          | 0/4 [00:00<?, ?it/s] 25%|██▌       | 1/4 [02:01<06:04, 121.44s/it] 50%|█████     | 2/4 [03:49<03:47, 113.56s/it] 75%|███████▌  | 3/4 [05:41<01:52, 112.65s/it]100%|██████████| 4/4 [07:33<00:00, 112.46s/it]100%|██████████| 4/4 [07:33<00:00, 113.30s/it]
+  0%|          | 0/4 [00:00<?, ?it/s] 25%|██▌       | 1/4 [02:09<06:28, 129.49s/it] 50%|█████     | 2/4 [03:54<03:49, 114.86s/it] 75%|███████▌  | 3/4 [05:49<01:55, 115.21s/it]100%|██████████| 4/4 [07:46<00:00, 115.81s/it]100%|██████████| 4/4 [07:46<00:00, 116.62s/it]

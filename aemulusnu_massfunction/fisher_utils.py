@@ -21,6 +21,16 @@ fiducial_cosmology = {'10^9 As':2.09681,
                       'omch2': 0.1198,
                       'nu_mass_ev': 0.07,}
 
+fiducial_log10_rel_step_size = { #for numerical derivativese
+    '10^9 As': -2.6,
+    'ns': -4,
+    'H0': -2.3,
+    'w0': -2.3,
+    'ombh2': -2.2,
+    'omch2': -2.6,
+    'nu_mass_ev': -1.08,
+}
+
 fiducial_cosmo_vals = emulator.get_cosmo_vals(fiducial_cosmology)
 
 fiducial_ccl_cosmo = None
