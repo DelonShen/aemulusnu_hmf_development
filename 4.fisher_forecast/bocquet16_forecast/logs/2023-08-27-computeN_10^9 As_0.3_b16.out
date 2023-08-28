@@ -1,0 +1,10 @@
+5
+bocquet16
+10^9 As -0.3
+fiducial: 
+{'10^9 As': 2.09681, 'ns': 0.9652, 'H0': 67.37, 'w0': -1, 'ombh2': 0.02233, 'omch2': 0.1198, 'nu_mass_ev': 0.07}
+pos step
+{'10^9 As': 3.1477044033420007, 'ns': 0.9652, 'H0': 67.37, 'w0': -1, 'ombh2': 0.02233, 'omch2': 0.1198, 'nu_mass_ev': 0.07}
+/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/cluster_abundance_fisher_10^9 As_-0.3000_b16
+neg step
+{'10^9 As': 1.0459155966579994, 'ns': 0.9652, 'H0': 67.37, 'w0': -1, 'ombh2': 0.02233, 'omch2': 0.1198, 'nu_mass_ev': 0.07}

@@ -6,7 +6,6 @@ import numpy as np
 import functools
 
 ρcrit0 = 2.77533742639e+11 #h^2 Msol / Mpc^3
-cosmo_params = pickle.load(open('../data/cosmo_params.pkl', 'rb'))
 
 def scaleToRedshift(a):
     return 1/a-1

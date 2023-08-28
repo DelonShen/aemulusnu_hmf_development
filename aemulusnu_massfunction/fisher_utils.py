@@ -43,7 +43,7 @@ fiducial_ccl_cosmo = None
 
 #for evaluating dM integral
 M_min = 1e11
-M_max = 1e17
+M_max = 1e16
 
 
 #for cluster richness relation
@@ -55,6 +55,9 @@ Bλ = -0.4
 Mpiv = 5e14 # h^-1 M_sol
 
 
+#misc
+st_hmf = ccl.halos.MassFuncSheth99(mass_def='200m', mass_def_strict=False)
+bocquet16_hmf= ccl.halos.MassFuncBocquet16(mass_def='200m')
 def cluster_richness_relation(M, λ, z):
     #equation (10) to To, Krause+20
     lnλMean = lnλ0 + Aλ* np.log(M/Mpiv) + Bλ*np.log((1+z)/1.45)
@@ -102,10 +105,20 @@ def comoving_volume_elements(z, cosmo_vals):
 
 
 
-def cluster_count_integrand(lam, M, z_val, cosmo_vals,):
+def cluster_count_integrand(lam, M, z_val, cosmo_vals, sheth_tormen=False, bocquet16=False):
     p = cluster_richness_relation(M, lam, z_val) # h / Msun
 
     dn_dM = emulator.predict_dndM(emulator.get_cosmo_dict(cosmo_vals), z_val, M) # h^4 / Mpc^3 Msun
+    if(sheth_tormen):
+        cosmo = get_ccl_cosmology(cosmo_vals)
+        cosmology = emulator.get_cosmo_dict(cosmo_vals)
+        h = cosmology['H0']/100
+        dn_dM = st_hmf(cosmo, M/h, redshiftToScale(z_val)) / (h**4 * M * np.log(10))
+    elif(bocquet16):
+        cosmo = get_ccl_cosmology(cosmo_vals)
+        cosmology = emulator.get_cosmo_dict(cosmo_vals)
+        h = cosmology['H0']/100
+        dn_dM = bocquet16_hmf(cosmo, M/h, redshiftToScale(z_val)) / (h**4 * M * np.log(10))
 
     d2V_dzdOmega = comoving_volume_elements(z_val, cosmo_vals) # Mpc^3 / h^3
 
@@ -115,8 +128,10 @@ def cluster_count_integrand(lam, M, z_val, cosmo_vals,):
 
 from scipy.integrate import tplquad
 
-def N_in_z_and_richness_bin(cosmology, lambda_min, lambda_max, z_min, z_max):
-    cluster_count_integrand_cosmology = partial(cluster_count_integrand, cosmo_vals = tuple(emulator.get_cosmo_vals(cosmology)))
+def N_in_z_and_richness_bin(cosmology, lambda_min, lambda_max, z_min, z_max,
+                            sheth_tormen=False, bocquet16=False):
+    cluster_count_integrand_cosmology = partial(cluster_count_integrand, cosmo_vals = tuple(emulator.get_cosmo_vals(cosmology)), 
+                                                sheth_tormen=sheth_tormen, bocquet16=bocquet16)
 
     result, error = tplquad(cluster_count_integrand_cosmology, z_min, z_max, M_min, M_max, lambda_min, lambda_max, epsrel=1e-4, epsabs=0)
 
@@ -124,7 +139,7 @@ def N_in_z_and_richness_bin(cosmology, lambda_min, lambda_max, z_min, z_max):
 
     return Ωs_rad * result
 
-def N_in_z_bins_and_richness_bins(cosmology, richness_bin_edges, z_bin_edges):
+def N_in_z_bins_and_richness_bins(cosmology, richness_bin_edges, z_bin_edges, sheth_tormen=False, bocquet16=False):
 
     N_values = np.zeros((len(z_bin_edges) - 1, len(richness_bin_edges) - 1))
 
@@ -137,6 +152,6 @@ def N_in_z_bins_and_richness_bins(cosmology, richness_bin_edges, z_bin_edges):
             lambda_max = richness_bin_edges[j + 1]
 
             # Evaluate the function for the given bin
-            N_values[i, j] = N_in_z_and_richness_bin(cosmology, lambda_min, lambda_max, z_min, z_max)
+            N_values[i, j] = N_in_z_and_richness_bin(cosmology, lambda_min, lambda_max, z_min, z_max, sheth_tormen=sheth_tormen,  bocquet16=bocquet16)
 
     return N_values
