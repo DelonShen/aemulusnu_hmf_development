@@ -4,6 +4,7 @@
 param_names=('10^9 As' 'ns' 'H0' 'w0' 'ombh2' 'omch2' 'nu_mass_ev')
 
 #param_names=('ns')
+param_names=('w0')
 step_sizes=() # Initialize the array
 
 for i in $(seq 0.3 0.1 4); do

@@ -50,7 +50,7 @@ class MassFunction:
 
 #        print('Computing sigma spline')
         #get logsigma spline
-        M = 10**np.linspace(11, 17, 150)
+        M = 10**np.linspace(11, 17, 300)
         z = np.linspace(0, 2, 100)
         # Create meshgrid
         M_grid, z_grid = np.meshgrid(M, z)
@@ -94,7 +94,9 @@ class MassFunction:
         σM = np.exp(self.f_logsigma_logM(scaleToRedshift(a), np.log(M)))[0][0]
         oup = self.f_G(σM, d, e, f, g) #unitless
         oup *= self.rhom_a(a)/M**2 # h^4 /Mpc^3 Msun
+
         dlogsiginv_dlogM = -self.f_logsigma_logM.ev(scaleToRedshift(a), np.log(M), dy=1)
+
         oup *= dlogsiginv_dlogM
         return oup # h^4 / (Mpc^3  Msun)
 

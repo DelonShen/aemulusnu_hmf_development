@@ -1,0 +1,24 @@
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/condabin/conda
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/bin/conda
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/bin/conda-env
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/bin/activate
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/bin/deactivate
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/etc/profile.d/conda.sh
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/etc/fish/conf.d/conda.fish
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/shell/condabin/Conda.psm1
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/shell/condabin/conda-hook.ps1
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/lib/python3.10/site-packages/xontrib/conda.xsh
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/etc/profile.d/conda.csh
+no change     /home/users/delon/.bashrc
+No action taken.
+4
+sheth tormen
+w0 -1.3
+fiducial: 
+{'10^9 As': 2.09681, 'ns': 0.9652, 'H0': 67.37, 'w0': -1, 'ombh2': 0.02233, 'omch2': 0.1198, 'nu_mass_ev': 0.07}
+pos step
+{'10^9 As': 2.09681, 'ns': 0.9652, 'H0': 67.37, 'w0': -0.9498812766372727, 'ombh2': 0.02233, 'omch2': 0.1198, 'nu_mass_ev': 0.07}
+/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/cluster_abundance_fisher_w0_-1.3000_st
+neg step
+{'10^9 As': 2.09681, 'ns': 0.9652, 'H0': 67.37, 'w0': -1.0501187233627272, 'ombh2': 0.02233, 'omch2': 0.1198, 'nu_mass_ev': 0.07}
+/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/cluster_abundance_fisher_w0_-1.3000_neg_st

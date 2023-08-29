@@ -38,6 +38,7 @@ class AemulusNu_HMF_Emulator:
         self.MassFunctions = {}
         self.ComputedParams = {}
         with open(emulator_loc, 'rb') as f:
+            print('loading emulator from', emulator_loc)
             self.model, self.in_scaler, self.out_scaler, self.likelihood = pickle.load(f)
             self.model.eval()
             self.likelihood.eval()

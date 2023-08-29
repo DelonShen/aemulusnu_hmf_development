@@ -24,7 +24,7 @@ cosmos_f.close()
 
 a_list_fname = '/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/alist.pkl'
 a_list_f = open(a_list_fname, 'rb')
-a_list = pickle.load(a_list_f) 
+a_list = pickle.load(a_list_f)
 a_list_f.close()
 
 ###TMP

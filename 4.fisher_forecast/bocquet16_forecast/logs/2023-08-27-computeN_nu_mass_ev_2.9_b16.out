@@ -1,0 +1,11 @@
+5
+bocquet16
+nu_mass_ev -2.9
+fiducial: 
+{'10^9 As': 2.09681, 'ns': 0.9652, 'H0': 67.37, 'w0': -1, 'ombh2': 0.02233, 'omch2': 0.1198, 'nu_mass_ev': 0.07}
+pos step
+{'10^9 As': 2.09681, 'ns': 0.9652, 'H0': 67.37, 'w0': -1, 'ombh2': 0.02233, 'omch2': 0.1198, 'nu_mass_ev': 0.0700881247788256}
+/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/cluster_abundance_fisher_nu_mass_ev_-2.9000_b16
+neg step
+{'10^9 As': 2.09681, 'ns': 0.9652, 'H0': 67.37, 'w0': -1, 'ombh2': 0.02233, 'omch2': 0.1198, 'nu_mass_ev': 0.06991187522117441}
+/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/cluster_abundance_fisher_nu_mass_ev_-2.9000_neg_b16

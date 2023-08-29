@@ -82,7 +82,9 @@ def get_ccl_cosmology(cosmo_vals):
                           Omega_b=Ωb,
                           h=h,
                           A_s=cosmology['10^9 As']*10**(-9),
-                          n_s=cosmology['ns'])
+                          n_s=cosmology['ns'],
+                          w0=cosmology['w0'],
+                          m_nu=[cosmology['nu_mass_ev']/3, cosmology['nu_mass_ev']/3, cosmology['nu_mass_ev']/3])
 
     return cosmo
 
