@@ -160,3 +160,46 @@ class MassFunction:
 
     def dRdM(self, M, a):
         return 1/(6**(2/3)*np.pi**(1/3)*M**(2/3)*self.rhom_a(a)**(1/3))
+
+
+
+
+from pyccl.halos.halo_model_base import MassFunc
+
+
+
+def B(a, M, σM, d, e, f, g):
+    oup = e**(d)*g**(-d/2)*gamma(d/2)
+    oup += g**(-f/2)*gamma(f/2)
+    oup = 2/oup
+    return oup
+
+
+def f_G(a, M, σM, d, e, f, g):
+    oup = B(a, M, σM, d, e, f, g)
+    oup *= ((σM/e)**(-d)+σM**(-f))
+    oup *= np.exp(-g/σM**2)
+    return oup
+
+
+class MassFuncAemulusNu_fitting(MassFunc):
+    """
+    """
+    name = 'AemulusNu'
+
+    def __init__(self, *,
+                 mass_def="200m",
+                 mass_def_strict=True):
+        super().__init__(mass_def=mass_def, mass_def_strict=mass_def_strict)
+
+    def _check_mass_def_strict(self, mass_def):
+        return mass_def.Delta == "fof"
+
+    def _setup(self):
+        self.params = {'d':-1, 'e':-1, 'f':-1, 'g':-1}
+
+    def set_params(self, params):
+        self.params = dict(zip(self.params.keys(), params))
+
+    def _get_fsigma(self, cosmo, sigM, a, lnM):
+        return f_G(a, np.exp(lnM), sigM, **self.params)
