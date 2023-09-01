@@ -1,4 +1,4 @@
-import sys
+import sys 
 import numpy as np
 box = sys.argv[1]
 a_fit = eval(sys.argv[2])
@@ -34,29 +34,8 @@ cosmo_params = pickle.load(cosmos_f) #cosmo_params is a dict
 cosmos_f.close()
 
 
-
-import pyccl as ccl
-
 cosmo = cosmo_params[box]
-
-
-h = cosmo['H0']/100
-Ωb =  cosmo['ombh2'] / h**2
-Ωc =  cosmo['omch2'] / h**2
-
-ccl_cosmo = ccl.Cosmology(Omega_c=Ωc,
-                      Omega_b=Ωb,
-                      h=h,
-                      A_s=cosmo['10^9 As']*10**(-9),
-                      n_s=cosmo['ns'],
-                      w0=cosmo['w0'],
-                      m_nu=[cosmo['nu_mass_ev']/3, cosmo['nu_mass_ev']/3, cosmo['nu_mass_ev']/3])
-
-
-
-cosmo = cosmo_params[box]
-
-mass_function = MassFuncAemulusNu_fitting()
+mass_function = MassFunction(cosmo)
 
 h = cosmo['H0']/100
 
@@ -110,7 +89,7 @@ a_list = list(NvMs.keys())
 from scipy.stats import poisson
 
 
-M_numerics = np.logspace(np.log10(100*Mpart), 16, 50) #Msol/h
+M_numerics = np.logspace(np.log10(100*Mpart), 17, 50)
 
 jackknife_covs_fname = '/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/'+box+'_jackknife_covs.pkl'
 jackknife_covs_f = open(jackknife_covs_fname, 'rb')
@@ -135,7 +114,6 @@ def uniform_log_prior(param_values):
             return -np.inf
     return 0
 
-
 def log_prob(param_values):   
     """
     Calculates the probability of the given tinker parameters 
@@ -153,17 +131,20 @@ def log_prob(param_values):
     params = dict(zip(param_names, param_values))
 
     tinker_fs = {}
-
-    mass_function.set_params(param_values)
-    tinker_eval = mass_function(ccl_cosmo, M_numerics/h, a_fit)*vol/(h**3 * M_numerics * np.log(10))
-    f_dNdM = interp1d(M_numerics, tinker_eval, kind='linear', bounds_error=False, fill_value=0.)
-    tinker_fs[a_fit] = f_dNdM
-
+    
+    for a in N_data:
+        tinker_eval = [mass_function.dndM(a, M_c, **params)*vol for M_c in M_numerics]
+        f_dNdM = interp1d(M_numerics, tinker_eval, kind='linear', bounds_error=False, fill_value=0.)
+        tinker_fs[a] = f_dNdM
+        
     model_vals = {}
-    model_vals[a_fit] = np.array([quad(tinker_fs[a], edge_pair[0], edge_pair[1], epsabs=0, epsrel=1e-5)[0]
-        for edge_pair in NvMs[a_fit]['edge_pairs']
-    ])
-
+    for a in N_data:
+        if(scaleToRedshift(a) >=2):
+            continue
+        model_vals[a] = np.array([quad(tinker_fs[a], edge_pair[0], edge_pair[1], epsabs=0, epsrel=1e-5)[0]
+            for edge_pair in NvMs[a]['edge_pairs']
+        ])
+    
     
     residuals = {a: model_vals[a]-N_data[a] for a in model_vals}
     log_probs = [ -0.5 * (len(inv_weighted_cov)* np.log(2*np.pi) + 
@@ -173,6 +154,7 @@ def log_prob(param_values):
     if not np.isfinite(np.sum(log_probs)): 
         return -np.inf
     return np.sum(log_probs)
+
 
 def log_likelihood(param_values):
     lp = uniform_log_prior(param_values)
@@ -194,10 +176,10 @@ detKX = np.linalg.det(KX)
 logdetKX = np.log(detKX)
 
 def log_prior(param_values):
+    
     xmp = param_values - prev_final_param_vals
     arg = np.dot(np.dot(xmp.T, KXinv), xmp)
     return -1/2*(ndim * np.log(2*np.pi) + logdetKX + arg)
-
 def log_likelihood_with_prior(param_values):
     lp = log_prior(param_values)
     if not np.isfinite(lp):
@@ -205,7 +187,7 @@ def log_likelihood_with_prior(param_values):
     return lp + log_prob(param_values)
 
 
-guess = prev_final_param_vals
+guess = prev_final_param_vals 
 print('Starting ML Fit')
 #Start by sampling with a maximum likelihood approach
 from scipy import optimize as optimize
@@ -224,11 +206,12 @@ print(result['x'])
 MLE_params = dict(zip(param_names, result['x']))
 print(MLE_params)
 print('Previous: ', prev_params_final)
-
+    
 with open("/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/%s_%.2f_params.pkl"%(box, a_fit), "wb") as f:
     pickle.dump(MLE_params, f)
-
-yerr_dict = {a:np.sqrt(np.diagonal(weighted_cov[a])) for a in weighted_cov}
+    
+    
+yerr_dict = {a:np.sqrt(np.diagonal(weighted_cov[a])) for a in weighted_cov} 
 c_params = MLE_params
 a = a_fit
 
@@ -249,8 +232,7 @@ yerr = yerr_dict[a]
 dM = np.array([edges[1]-edges[0] for edges in edge_pairs])
 
 
-
-tinker_evaled = mass_function(ccl_cosmo, M_numerics/h, a_fit)*vol/(h**3 * M_numerics * np.log(10))
+tinker_evaled = [mass_function.dndM(a, M_c, **c_params)*vol for M_c in M_numerics]
 f_dNdM =  interp1d(M_numerics, tinker_evaled, kind='linear', bounds_error=False, fill_value=0.)
 
 tinker_eval_MCMC = np.array([quad(f_dNdM, edge[0],  edge[1], epsabs=0, epsrel=1e-5)[0] for edge in edge_pairs])

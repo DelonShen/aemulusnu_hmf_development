@@ -15,7 +15,7 @@ from functools import cache, partial
 ρcrit0 = 2.77533742639e+11 #h^2 Msol / Mpc^3
 
 
-class MassFunction:
+class OLDMassFunction:
     def __init__(self, cosmology, fixed={}):
         '''
         Comoving halo mass function
