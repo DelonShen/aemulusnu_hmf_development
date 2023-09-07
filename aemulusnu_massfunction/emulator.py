@@ -9,6 +9,13 @@ import torch
 import gpytorch
 
 
+from pyccl.halos.halo_model_base import MassFunc
+import pyccl as ccl
+
+from scipy.interpolate import interp1d
+
+
+
 class MultitaskGPModel(gpytorch.models.ExactGP):
     def __init__(self, train_x, train_y, likelihood):
         super(MultitaskGPModel, self).__init__(train_x, train_y, likelihood)
@@ -28,38 +35,61 @@ class MultitaskGPModel(gpytorch.models.ExactGP):
 
 key_ordering = ['10^9 As', 'ns', 'H0', 'w0', 'ombh2', 'omch2', 'nu_mass_ev']
 
-class AemulusNu_HMF_Emulator:
+def get_cosmo_vals(cosmology):
+    return [cosmology[curr_key] for curr_key in key_ordering]
+
+def get_cosmo_dict(cosmo_vals):
+    return dict(zip(key_ordering, cosmo_vals))
+
+
+@cache
+def get_ccl_cosmology(cosmo_vals):
+    cosmology = get_cosmo_dict(cosmo_vals)
+
+    h = cosmology['H0']/100
+    Ωb =  cosmology['ombh2'] / h**2
+    Ωc =  cosmology['omch2'] / h**2
+
+    cosmo = ccl.Cosmology(Omega_c=Ωc,
+                          Omega_b=Ωb,
+                          h=h,
+                          A_s=cosmology['10^9 As']*10**(-9),
+                          n_s=cosmology['ns'],
+                          w0=cosmology['w0'],
+                          m_nu=[cosmology['nu_mass_ev']/3, cosmology['nu_mass_ev']/3, cosmology['nu_mass_ev']/3])
+
+    return cosmo
+
+
+class AemulusNu_HMF_Emulator(MassFunc):
     """
-    Halo Mass Function Emulator,
-    built from Aemulus-ν suite of simulations
     """
-    def __init__(self, emulator_loc = '/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/GP_loBox0_1400.pkl'):
-        #TODO eventaully replace with local emuatlor
-        self.MassFunctions = {}
+    name = 'AemulusNu_HMF_Emulator'
+
+    def __init__(self, *,
+                 emulator_loc= '/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/GP_loBox0_1400.pkl',
+                 mass_def="200m",
+                 mass_def_strict=True):
+        super().__init__(mass_def=mass_def, mass_def_strict=mass_def_strict)
         self.ComputedParams = {}
+        self.f_sigma8 = {}
         with open(emulator_loc, 'rb') as f:
-            print('loading emulator from', emulator_loc)
             self.model, self.in_scaler, self.out_scaler, self.likelihood = pickle.load(f)
             self.model.eval()
             self.likelihood.eval()
 
-    def get_massfunction(self, cosmology):
-        curr_cosmo_values = self.get_cosmo_vals(cosmology)
-
-        if(tuple(curr_cosmo_values) not in self.MassFunctions):
-            self.MassFunctions[tuple(curr_cosmo_values)] = MassFunction(cosmology)
-
-        return self.MassFunctions[tuple(curr_cosmo_values)]
-
-    def get_cosmo_vals(self, cosmology):
-        key_ordering = ['10^9 As', 'ns', 'H0', 'w0', 'ombh2', 'omch2', 'nu_mass_ev']
-        return [cosmology[curr_key] for curr_key in key_ordering]
-
-    def get_cosmo_dict(self, cosmo_vals):
-        return dict(zip(key_ordering, cosmo_vals))
 
 
-    def predict_params(self, cosmology, z):
+    def _check_mass_def_strict(self, mass_def):
+        return mass_def.Delta == "fof"
+
+    def _setup(self):
+        self.params = {'d':-1, 'e':-1, 'f':-1, 'g':-1}
+
+    def set_params(self, params):
+        self.params = dict(zip(self.params.keys(), params))
+
+    def predict_params(self, cosmology, z, sigma8_z):
         """
         Parameters:
             - cosmology (dict): A dictioniary containing the cosmological parameters
@@ -71,6 +101,7 @@ class AemulusNu_HMF_Emulator:
                 - omch2: Ω_m h^2
                 - nu_mass_ev: Neutrino mass sum in [eV]
             - z (float): Redshift to evaluate dn/dM at
+            - sigma8_z (float): sigma8 at redshift z
         Returns:
             - tinker parameters(dict): A dictionary containing the predicted tinker
                                        parameters from the HMF emulator.
@@ -79,13 +110,9 @@ class AemulusNu_HMF_Emulator:
 
         a = redshiftToScale(z)
 
-        mass_function = self.get_massfunction(cosmology)
 
-        m8 = mass_function.R_to_M(8, redshiftToScale(z)) #8 h^-1 Mpc as mass
-        sigma8 = np.exp(mass_function.f_logsigma_logM(z, np.log(m8)))[0][0] #sigma8 at current redshift
-
-        curr_cosmo_values = self.get_cosmo_vals(cosmology)
-        X = self.in_scaler.transform(np.array([curr_cosmo_values + [a, sigma8]]))
+        curr_cosmo_values = get_cosmo_vals(cosmology)
+        X = self.in_scaler.transform(np.array([curr_cosmo_values + [a, sigma8_z]]))
         if(tuple(X[0].tolist()) in self.ComputedParams):
             return self.ComputedParams[tuple(X[0].tolist())]
 
@@ -96,28 +123,42 @@ class AemulusNu_HMF_Emulator:
         return self.ComputedParams[tuple(X[0].tolist())]
 
 
-    def predict_dndM(self, cosmology, z, m):
-        """
-        Parameters:
-            - cosmology (dict): A dictioniary containing the cosmological parameters
-                - 10^9 As: As * 10^9
-                - ns: Spectral index
-                - H0: Hubble parameter in [km/s/Mpc]
-                - w0: Dark Energy Equation fo State
-                - ombh2: Ω_b h^2
-                - omch2: Ω_m h^2
-                - nu_mass_ev: Neutrino mass sum in [eV]
-            - z (float): Redshift to evaluate dn/dM at
-            - m (float): Mass [M_solar / h] to evaluate dn/dM at
-        Returns:
-            - dn/dm(m,z) (float): Halo Mass Function evaluated at mass 'm'
-                           during redshift 'z' for given cosmology
-                           [h^4 Mpc^-3 Msolar^(-1)]
-        """
-        a = redshiftToScale(z)
+    def _compute_f_sigma8(self, cosmology, cosmo):
+        # Define densely sampled redshift range and corresponding scale factor values
+        z_values = np.linspace(0, 3, 500) # Choose an appropriate density
+        a_values = redshiftToScale(z_values)
 
-        tinker_params = self.predict_params(cosmology, z)
+        # Initialize an array to store f_sigma8 values
+        f_sigma8_values = np.zeros_like(z_values)
 
-        mass_function = self.get_massfunction(cosmology)
+        # Calculate f_sigma8 for the range of redshifts
+        for i, a in enumerate(a_values):
+            R = 8 / (cosmology['H0'] / 100)
+            sigma8 = cosmo.sigmaR(R, a=a)
+            f_sigma8_values[i] = sigma8
 
-        return mass_function.dndM(a, m, **tinker_params)
+        cosmo_vals = tuple(get_cosmo_vals(cosmology))
+
+        # Create a spline for f_sigma8 as a function of a
+        f_sigma8_spline = interp1d(a_values, f_sigma8_values, kind='cubic')
+
+        self.f_sigma8[cosmo_vals] = f_sigma8_spline
+
+    def _get_fsigma(self, cosmo, sigM, a, lnM):
+        h = cosmo['h']
+        cosmology = {'10^9 As': 10**9 *cosmo['A_s'],
+                      'ns': cosmo['n_s'],
+                      'H0': cosmo['h']*100,
+                      'w0': cosmo['w0'],
+                      'ombh2': cosmo['Omega_b']*h**2,
+                      'omch2': cosmo['Omega_c']*h**2,
+                      'nu_mass_ev': sum(cosmo['m_nu']),}
+
+        cosmo_vals = tuple(get_cosmo_vals(cosmology))
+
+        if(cosmo_vals not in self.f_sigma8):
+            self._compute_f_sigma8(cosmology, cosmo)
+
+        sigma8_z = self.f_sigma8[cosmo_vals](a)
+        tinker_params = self.predict_params(cosmology, scaleToRedshift(a), sigma8_z)
+        return f_G(a, np.exp(lnM), sigM, **tinker_params)

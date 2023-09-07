@@ -26,12 +26,12 @@ fiducial_log10_rel_step_size = { #for numerical derivativese
     'ns': -4,
     'H0': -2.3,
     'w0': -2.3,
-    'ombh2': -2.2,
-    'omch2': -2.6,
-    'nu_mass_ev': -1.08,
+    'ombh2': -2.6,
+    'omch2': -2.3,
+    'nu_mass_ev': -1.05,
 }
 
-fiducial_cosmo_vals = emulator.get_cosmo_vals(fiducial_cosmology)
+fiducial_cosmo_vals = get_cosmo_vals(fiducial_cosmology)
 
 fiducial_ccl_cosmo = None
 
@@ -58,6 +58,12 @@ Mpiv = 5e14 # h^-1 M_sol
 #misc
 st_hmf = ccl.halos.MassFuncSheth99(mass_def='200m', mass_def_strict=False)
 bocquet16_hmf= ccl.halos.MassFuncBocquet16(mass_def='200m')
+
+
+mass_functions = {'emu': emulator,
+                  'st': st_hmf,
+                  'b16': bocquet16_hmf}
+
 def cluster_richness_relation(M, λ, z):
     #equation (10) to To, Krause+20
     lnλMean = lnλ0 + Aλ* np.log(M/Mpiv) + Bλ*np.log((1+z)/1.45)
@@ -70,35 +76,14 @@ def cluster_richness_relation(M, λ, z):
     arg /= 2 * σlnλ ** 2
     return norm * np.exp(-arg)
 
-@cache
-def get_ccl_cosmology(cosmo_vals):
-    cosmology = emulator.get_cosmo_dict(cosmo_vals)
-
-    h = cosmology['H0']/100
-    Ωb =  cosmology['ombh2'] / h**2
-    Ωc =  cosmology['omch2'] / h**2
-
-    cosmo = ccl.Cosmology(Omega_c=Ωc,
-                          Omega_b=Ωb,
-                          h=h,
-                          A_s=cosmology['10^9 As']*10**(-9),
-                          n_s=cosmology['ns'],
-                          w0=cosmology['w0'],
-                          m_nu=[cosmology['nu_mass_ev']/3, cosmology['nu_mass_ev']/3, cosmology['nu_mass_ev']/3])
-
-    return cosmo
-
 fiducial_ccl_cosmo = get_ccl_cosmology(tuple(fiducial_cosmo_vals))
 
 
-def comoving_volume_elements(z, cosmo_vals):
-    cosmology = emulator.get_cosmo_dict(cosmo_vals)
+def comoving_volume_elements(z, cosmo=fiducial_ccl_cosmo):
 
-    h = cosmology['H0']/100
-    Ωb =  cosmology['ombh2'] / h**2
-    Ωc =  cosmology['omch2'] / h**2
-
-    cosmo = get_ccl_cosmology(cosmo_vals)
+    h = cosmo['h']
+    Ωb =  cosmo['Omega_b']
+    Ωc =  cosmo['Omega_c']
 
     DA = ccl.angular_diameter_distance(cosmo, 1/(1+z)) * h # Mpc / h 
     #According to ccl_background.h, this uses dΩ [radians]
@@ -107,22 +92,13 @@ def comoving_volume_elements(z, cosmo_vals):
 
 
 
-def cluster_count_integrand(lam, M, z_val, cosmo_vals, sheth_tormen=False, bocquet16=False):
+def cluster_count_integrand(lam, M, z_val, cosmo=fiducial_ccl_cosmo, mf='emu'):
     p = cluster_richness_relation(M, lam, z_val) # h / Msun
 
-    dn_dM = emulator.predict_dndM(emulator.get_cosmo_dict(cosmo_vals), z_val, M) # h^4 / Mpc^3 Msun
-    if(sheth_tormen):
-        cosmo = get_ccl_cosmology(cosmo_vals)
-        cosmology = emulator.get_cosmo_dict(cosmo_vals)
-        h = cosmology['H0']/100
-        dn_dM = st_hmf(cosmo, M/h, redshiftToScale(z_val)) / (h**4 * M * np.log(10))
-    elif(bocquet16):
-        cosmo = get_ccl_cosmology(cosmo_vals)
-        cosmology = emulator.get_cosmo_dict(cosmo_vals)
-        h = cosmology['H0']/100
-        dn_dM = bocquet16_hmf(cosmo, M/h, redshiftToScale(z_val)) / (h**4 * M * np.log(10))
+    h = cosmo['h']
 
-    d2V_dzdOmega = comoving_volume_elements(z_val, cosmo_vals) # Mpc^3 / h^3
+    dn_dM = mass_functions[mf](cosmo, M/h, redshiftToScale(z_val)) /(h**3 * M * np.log(10)) # h^4 / Mpc^3 Msun
+    d2V_dzdOmega = comoving_volume_elements(z_val, cosmo=cosmo) # Mpc^3 / h^3
 
 
     return p * dn_dM * d2V_dzdOmega # h / (Msun)
@@ -130,10 +106,8 @@ def cluster_count_integrand(lam, M, z_val, cosmo_vals, sheth_tormen=False, bocqu
 
 from scipy.integrate import tplquad
 
-def N_in_z_and_richness_bin(cosmology, lambda_min, lambda_max, z_min, z_max,
-                            sheth_tormen=False, bocquet16=False):
-    cluster_count_integrand_cosmology = partial(cluster_count_integrand, cosmo_vals = tuple(emulator.get_cosmo_vals(cosmology)), 
-                                                sheth_tormen=sheth_tormen, bocquet16=bocquet16)
+def N_in_z_and_richness_bin(lambda_min, lambda_max, z_min, z_max, mf = 'emu', cosmo=fiducial_ccl_cosmo):
+    cluster_count_integrand_cosmology = partial(cluster_count_integrand, cosmo=cosmo, mf = mf)
 
     result, error = tplquad(cluster_count_integrand_cosmology, z_min, z_max, M_min, M_max, lambda_min, lambda_max, epsrel=1e-4, epsabs=0)
 
@@ -141,19 +115,23 @@ def N_in_z_and_richness_bin(cosmology, lambda_min, lambda_max, z_min, z_max,
 
     return Ωs_rad * result
 
-def N_in_z_bins_and_richness_bins(cosmology, richness_bin_edges, z_bin_edges, sheth_tormen=False, bocquet16=False):
+def N_in_z_bins_and_richness_bins(cosmology, richness_bin_edges, z_bin_edges, mf = 'emu'):
 
     N_values = np.zeros((len(z_bin_edges) - 1, len(richness_bin_edges) - 1))
 
-    for i in trange(len(z_bin_edges) - 1):
+    cosmo_vals = tuple(get_cosmo_vals(cosmology))
+    cosmo = get_ccl_cosmology(cosmo_vals)
+
+    for i in range(len(z_bin_edges) - 1):
+        print('redshift bin %d of %d'%(i+1, len(z_bin_edges)-1))
         z_min = z_bin_edges[i]
         z_max = z_bin_edges[i + 1]
 
-        for j in range(len(richness_bin_edges) - 1):
+        for j in trange(len(richness_bin_edges) - 1):
             lambda_min = richness_bin_edges[j]
             lambda_max = richness_bin_edges[j + 1]
 
             # Evaluate the function for the given bin
-            N_values[i, j] = N_in_z_and_richness_bin(cosmology, lambda_min, lambda_max, z_min, z_max, sheth_tormen=sheth_tormen,  bocquet16=bocquet16)
+            N_values[i, j] = N_in_z_and_richness_bin(lambda_min, lambda_max, z_min, z_max, cosmo=cosmo, mf = mf)
 
     return N_values

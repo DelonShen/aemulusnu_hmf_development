@@ -15,6 +15,8 @@ import math
 import torch
 import gpytorch
 from matplotlib import pyplot as plt
+
+import pyccl as ccl
 leave_out_box = sys.argv[1]
 print('Leaving out', leave_out_box)
 
@@ -81,7 +83,19 @@ for box in tqdm(cosmo_params):
     pkclass.set(cosmo_dict)
     pkclass.compute()
 
-    mass_function = MassFunction(curr_cosmo)
+
+
+    Ωb =  curr_cosmo['ombh2'] / h**2
+    Ωc =  curr_cosmo['omch2'] / h**2
+
+    cosmo = ccl.Cosmology(Omega_c=Ωc,
+                          Omega_b=Ωb,
+                          h=h,
+                          A_s=curr_cosmo['10^9 As']*10**(-9),
+                          n_s=curr_cosmo['ns'],
+                          w0=curr_cosmo['w0'],
+                          m_nu=[curr_cosmo['nu_mass_ev']/3, curr_cosmo['nu_mass_ev']/3, curr_cosmo['nu_mass_ev']/3])
+
 
     for a in a_list:
         z = scaleToRedshift(a)
@@ -94,11 +108,12 @@ for box in tqdm(cosmo_params):
             ]
         )
         sigma8 = pkclass.sigma(8, z, h_units=True)
+        other_sigma8 = cosmo.sigmaR(8/cosmo['h'], a = a)
 
-        m8 = mass_function.R_to_M(8, redshiftToScale(z)) #8 h^-1 Mpc as mass
-        sigma8_other = np.exp(mass_function.f_logsigma_logM(z, np.log(m8)))[0][0] #sigma8 at current redshift
-        print(sigma8, sigma8_other)
-        assert(np.abs((sigma8 - sigma8_other)/sigma8) < 1e-3)
+        assert(np.abs((sigma8 - other_sigma8) / sigma8) < 1e-2) # less than 1% error
+
+
+
 
         if(leave_out_box == box):
             Xlo += [curr_cosmo_values + [a, sigma8]]
@@ -193,8 +208,6 @@ with open("/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/GP_lo%s.p
 
 
 
-
-
 Emulator = AemulusNu_HMF_Emulator(emulator_loc = "/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/GP_lo%s.pkl"%(leave_out_box))
 
 box =leave_out_box
@@ -240,7 +253,7 @@ for a in tqdm(a_list):
         M_data[a] += [M_curr]
         aux_data[a] += [{'a':a, 'edge_pair':edge_pair}]
 
-M_numerics = np.logspace(np.log10(100*Mpart), 17, 50)
+M_numerics = np.logspace(np.log10(100*Mpart), 16, 50)
 
 jackknife_covs_fname = '/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/'+box+'_jackknife_covs.pkl'
 jackknife_covs_f = open(jackknife_covs_fname, 'rb')
@@ -259,6 +272,9 @@ true_params = {}
 for c_X, c_Y, a in zip(Xlo, Ylo, a_list):
     true_params[a] = c_Y
 
+ccl_cosmo = get_ccl_cosmology(get_cosmo_vals(cosmo_params[leave_out_box]))
+
+h = cosmo_params[leave_out_box]['H0']/100
 for a in tqdm(a_list):
     fig1 = plt.figure(figsize =(12, 7))
 
@@ -303,13 +319,13 @@ for a in tqdm(a_list):
 
 
     #Emulator 
-    tinker_eval_MCMC = [Emulator.predict_dndM(cosmo_params[leave_out_box], scaleToRedshift(a), M_c)*vol for M_c in M_numerics]
+    tinker_eval_MCMC = Emulator(ccl_cosmo, M_numerics/h, a)*vol/(h**3 * M_numerics * np.log(10)) # h / Msun
     f_dNdM_MCMC =  interp1d(M_numerics, tinker_eval_MCMC, kind='linear',
                             bounds_error=False, fill_value=0.)
     tinker_eval_MCMC = np.array([quad(f_dNdM_MCMC, edge[0],  edge[1], epsabs=0, epsrel=1e-5)[0] for edge in edge_pairs])
 
     axs[0].scatter(Ms, tinker_eval_MCMC, marker='x', c='red')
-    axs[0].bar(x=edges[:-1], height=tinker_eval_MCMC, width=np.diff(edges), 
+    axs[0].bar(x=edges[:-1], height=tinker_eval_MCMC, width=np.diff(edges),
                align='edge', fill=False, ec='red', label='Emulator')
     axs[1].scatter(Ms, (tinker_eval_MCMC-N)/N, marker='x', color='red')
 #     axs[1].scatter(Ms, (tinker_eval_MCMC-N)/N, marker='x', color='red')
@@ -318,8 +334,9 @@ for a in tqdm(a_list):
 
     #ML Fit
 
-    c_params = dict(zip(param_names, true_params[a]))
-    tinker_eval_MCMC = [Emulator.get_massfunction(cosmo_params[leave_out_box]).dndM(a, M_c, **c_params,)*vol for M_c in M_numerics]
+    mass_function = MassFuncAemulusNu_fitting()
+    mass_function.set_params(true_params[a])
+    tinker_eval_MCMC = mass_function(ccl_cosmo, M_numerics/h, a)*vol/(h**3 * M_numerics * np.log(10)) # h / Msun
     f_dNdM_MCMC =  interp1d(M_numerics, tinker_eval_MCMC, kind='linear', 
                             bounds_error=False, fill_value=0.)
     tinker_eval_MCMC = np.array([quad(f_dNdM_MCMC, edge[0],  edge[1], epsabs=0, epsrel=1e-5)[0] for edge in edge_pairs])
@@ -337,8 +354,6 @@ for a in tqdm(a_list):
     axs[0].legend(frameon=False)
     axs[0].set_ylabel('N')
 
-    
-    
     axs[1].set_xscale('log')
     # axs[1].set_yscale('lin', linthresh=1e-2)    
     axs[1].legend(frameon=False)
@@ -355,5 +370,3 @@ for a in tqdm(a_list):
     axs[1].set_yticks([-.2, -.1, 0, .1, .2])
 
     plt.savefig('/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/figures/emulator/%s_emufit_%.2f.pdf'%(box, a), bbox_inches='tight')
-with open("/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/%s_emu_loo_predicted_params.pkl"%(leave_out_box), "wb") as f:
-    pickle.dump(Emulator.predict_params(cosmo_params[leave_out_box], scaleToRedshift(a)), f)
