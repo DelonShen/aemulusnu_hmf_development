@@ -58,11 +58,13 @@ Mpiv = 5e14 # h^-1 M_sol
 #misc
 st_hmf = ccl.halos.MassFuncSheth99(mass_def='200m', mass_def_strict=False)
 bocquet16_hmf= ccl.halos.MassFuncBocquet16(mass_def='200m')
+tinker08_hmf = ccl.halos.MassFuncTinker08(mass_def='200m')
 
 
 mass_functions = {'emu': emulator,
                   'st': st_hmf,
-                  'b16': bocquet16_hmf}
+                  'b16': bocquet16_hmf,
+                  't08': tinker08_hmf}
 
 def cluster_richness_relation(M, λ, z):
     #equation (10) to To, Krause+20
@@ -92,12 +94,12 @@ def comoving_volume_elements(z, cosmo=fiducial_ccl_cosmo):
 
 
 
-def cluster_count_integrand(lam, M, z_val, cosmo=fiducial_ccl_cosmo, mf='emu'):
+def cluster_count_integrand(lam, M, z_val, cosmo=fiducial_ccl_cosmo, mf = emulator):
     p = cluster_richness_relation(M, lam, z_val) # h / Msun
 
     h = cosmo['h']
 
-    dn_dM = mass_functions[mf](cosmo, M/h, redshiftToScale(z_val)) /(h**3 * M * np.log(10)) # h^4 / Mpc^3 Msun
+    dn_dM = mf(cosmo, M/h, redshiftToScale(z_val)) /(h**3 * M * np.log(10)) # h^4 / Mpc^3 Msun
     d2V_dzdOmega = comoving_volume_elements(z_val, cosmo=cosmo) # Mpc^3 / h^3
 
 
@@ -106,7 +108,7 @@ def cluster_count_integrand(lam, M, z_val, cosmo=fiducial_ccl_cosmo, mf='emu'):
 
 from scipy.integrate import tplquad
 
-def N_in_z_and_richness_bin(lambda_min, lambda_max, z_min, z_max, mf = 'emu', cosmo=fiducial_ccl_cosmo):
+def N_in_z_and_richness_bin(lambda_min, lambda_max, z_min, z_max, mf = emulator, cosmo=fiducial_ccl_cosmo):
     cluster_count_integrand_cosmology = partial(cluster_count_integrand, cosmo=cosmo, mf = mf)
 
     result, error = tplquad(cluster_count_integrand_cosmology, z_min, z_max, M_min, M_max, lambda_min, lambda_max, epsrel=1e-4, epsabs=0)
@@ -115,12 +117,14 @@ def N_in_z_and_richness_bin(lambda_min, lambda_max, z_min, z_max, mf = 'emu', co
 
     return Ωs_rad * result
 
-def N_in_z_bins_and_richness_bins(cosmology, richness_bin_edges, z_bin_edges, mf = 'emu'):
+def N_in_z_bins_and_richness_bins(cosmology, richness_bin_edges, z_bin_edges, mf = emulator):
 
     N_values = np.zeros((len(z_bin_edges) - 1, len(richness_bin_edges) - 1))
 
     cosmo_vals = tuple(get_cosmo_vals(cosmology))
     cosmo = get_ccl_cosmology(cosmo_vals)
+
+    print(mf.name)
 
     for i in range(len(z_bin_edges) - 1):
         print('redshift bin %d of %d'%(i+1, len(z_bin_edges)-1))
