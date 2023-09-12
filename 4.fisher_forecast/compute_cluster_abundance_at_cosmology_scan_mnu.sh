@@ -17,10 +17,10 @@ step_sizes=(2.6 2.3)
 # considering A_lens, we have the Planck PR3 constraint \sum mnu < .286
 # So lets scan from mnu = .06 -> .3?
 
-mnus=()
-for i in $(seq 0.06 0.002 .3); do
-  mnus+=($i)
-done
+mnus=(0.264)
+# for i in $(seq 0.06 0.002 .302); do
+#   mnus+=($i)
+# done
 
 
 
@@ -45,7 +45,7 @@ for((i=0; i<${#mnus[@]}; i++)); do
 #SBATCH --job-name="$job_name"
 #SBATCH --output="$output_log"
 #SBATCH --error="$error_log"
-#SBATCH --time=20:00
+#SBATCH --time=40:00
 #SBATCH -p kipac
 #SBATCH --nodes=1
 #SBATCH --mem=4096

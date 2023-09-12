@@ -1,0 +1,22 @@
+
+CommandNotFoundError: Your shell has not been properly configured to use 'conda activate'.
+To initialize your shell, run
+
+    $ conda init <SHELL_NAME>
+
+Currently supported shells are:
+  - bash
+  - fish
+  - tcsh
+  - xonsh
+  - zsh
+  - powershell
+
+See 'conda init --help' for more information and options.
+
+IMPORTANT: You may need to close and restart your shell after running 'conda init'.
+
+
+/home/users/delon/aemulusnu_massfunction/4.fisher_forecast/compute_cluster_abundance_covariance.py:22: SyntaxWarning: 'str' object is not callable; perhaps you missed a comma?
+  oup_cov_fname = 'oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/fiducial_cluster_abundance_fiducial_covariance_%.4f.pkl'(nu_mass_ev)
+slurmstepd: error: *** JOB 30529791 ON sh02-03n69 CANCELLED AT 2023-09-11T19:35:20 ***
