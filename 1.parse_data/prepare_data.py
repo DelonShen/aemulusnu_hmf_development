@@ -4,7 +4,7 @@ from tqdm import tqdm, trange
 import matplotlib.pyplot as plt
 import os
 import sys
-from utils import *
+from aemulusnu_massfunction.utils import *
 box = sys.argv[1]
 # box = 'Box_n50_0_1400'
 # box = 'Box0_1400'
@@ -166,7 +166,7 @@ for a in tqdm(NvMs):
 #     snapshot_pos  = snapshot_pos[gt200Np]
     assert(len(bin_idx) == len(snapshot_pos))
     #now lets get to spatial jackknife
-    N_DIVS = 8 #each axis is diided into N_DIVS parts so in total the box
+    N_DIVS = 32 #each axis is diided into N_DIVS parts so in total the box
                #is divided into N_DIVS**3 boxes
 
     #compute the size of each smaller cube
@@ -199,8 +199,10 @@ for a in tqdm(NvMs):
     jackknife_mean = np.mean(jackknife_data, axis=0)
 
     jackknife_data = np.array(jackknife_data) - jackknife_mean
-    jackknife_data *= rescale_factor
-    jackknife_covariance = np.cov(jackknife_data.T)
+    
+    #arxiv: 0408569 eqn 6
+    jackknife_covariance = [[rescale_factor * np.sum(jackknife_data.T[i] * jackknife_data.T[j], axis=0) for j in range(len(N))] for i in range(len(N))]
+    jackknife_covariance = np.array(jackknife_covariance)
     
     jackknife[a] = [jackknife_data, jackknife_covariance]
 f_pos.close()
