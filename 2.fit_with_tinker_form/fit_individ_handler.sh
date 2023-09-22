@@ -5,11 +5,11 @@ prev=$2
 # Set the Slurm job parameters
 job_name_prefix="fit-iter-handler-"$curr
 output_dir="logs"
-time_limit="10:00"
+time_limit="40:00"
 partition="kipac"
 num_nodes=1
 mem_per_node=4096
-cpus_per_task=1
+cpus_per_task=4
 
 # Create a Slurm job script for the data file
 job_name="${job_name_prefix}"
