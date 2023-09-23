@@ -17,6 +17,7 @@ import gpytorch
 from matplotlib import pyplot as plt
 
 import pyccl as ccl
+
 leave_out_box = sys.argv[1]
 print('Leaving out', leave_out_box)
 
@@ -29,12 +30,6 @@ a_list_f = open(a_list_fname, 'rb')
 a_list = pickle.load(a_list_f)
 a_list_f.close()
 
-###TMP
-# a_list = [a_list[0], a_list[1]]
-##TMP
-
-
-print('alist', a_list)
 
 weird_boxes = ['Box63_1400', 'Box35_1400', 'Box_n50_38_1400', 'Box5_1400']
 
@@ -58,33 +53,6 @@ for box in tqdm(cosmo_params):
 
     h = curr_cosmo['H0']/100
 
-    cosmo_dict = {
-        'h': h,
-        'Omega_b': curr_cosmo['ombh2'] / h**2,
-        'Omega_cdm': curr_cosmo['omch2'] / h**2,
-        'N_ur': 0.00641,
-        'N_ncdm': 1,
-        'output': 'mPk mTk',
-        'z_pk': '0.0,99',
-        'P_k_max_h/Mpc': 20.,
-        'm_ncdm': curr_cosmo['nu_mass_ev']/3,
-        'deg_ncdm': 3,
-        'T_cmb': 2.7255,
-        'A_s': curr_cosmo['10^9 As'] * 10**-9,
-        'n_s': curr_cosmo['ns'],
-        'Omega_Lambda': 0.0,
-        'w0_fld': curr_cosmo['w0'],
-        'wa_fld': 0.0,
-        'cs2_fld': 1.0,
-        'fluid_equation_of_state': "CLP"
-    }
-
-    pkclass = Class()
-    pkclass.set(cosmo_dict)
-    pkclass.compute()
-
-
-
     Ωb =  curr_cosmo['ombh2'] / h**2
     Ωc =  curr_cosmo['omch2'] / h**2
 
@@ -101,24 +69,11 @@ for box in tqdm(cosmo_params):
         z = scaleToRedshift(a)
         z_to_a[z] = a
         a_to_z[a] = z
-        pk_m_lin = np.array(
-            [
-                pkclass.pk_lin(ki, np.array([z]))*h**3 #units of Mpc^3/h^3
-                for ki in kt * h # 1 / Mpc
-            ]
-        )
-        sigma8 = pkclass.sigma(8, z, h_units=True)
-        other_sigma8 = cosmo.sigmaR(8/cosmo['h'], a = a)
-
-        assert(np.abs((sigma8 - other_sigma8) / sigma8) < 1e-2) # less than 1% error
-
-
-
 
         if(leave_out_box == box):
-            Xlo += [curr_cosmo_values + [a, sigma8]]
+            Xlo += [curr_cosmo_values + [a]]
         else:
-            X+= [curr_cosmo_values + [a, sigma8]]
+            X+= [curr_cosmo_values + [a]]
         with open("/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/%s_%.2f_params.pkl"%(box, a), "rb") as f:
             MLE_params = pickle.load(f)
             param_values = list(MLE_params.values())
@@ -126,12 +81,15 @@ for box in tqdm(cosmo_params):
                 Ylo += [param_values]
             else:
                 Y+= [param_values]
+
+
+
 X = np.array(X)
 Y = np.array(Y)
 Xlo = np.array(Xlo)
 Ylo = np.array(Ylo)
-print(Xlo)
-print(Ylo)
+# print(Xlo)
+# print(Ylo)
 
 print(X.shape)
 print(Y.shape)
@@ -157,26 +115,28 @@ Y_train = torch.from_numpy(Y).float()
 n_tasks = len(Y_train[0])
 
 
+from aemulusnu_massfunction.emulator import *
+
+
 likelihood = gpytorch.likelihoods.MultitaskGaussianLikelihood(num_tasks=n_tasks)
 model = MultitaskGPModel(X_train, Y_train, likelihood)
 
 
 # "Loss" for GPs - the marginal log likelihood
 mll = gpytorch.mlls.ExactMarginalLogLikelihood(likelihood, model)
-optimizer = torch.optim.AdamW(model.parameters(), lr=0.1, amsgrad=True)  # Includes GaussianLikelihood parameters
 
 model.train()
 likelihood.train()
-# Set initial learning rate
-lr = 0.1
+
+
+training_iterations = 200
+
+
+epochs_iter = tqdm(range(training_iterations), desc="Iteration")
+
 
 # Create the optimizer with the initial learning rate
-optimizer = torch.optim.AdamW(model.parameters(), lr=0.1, amsgrad=True)  # Includes GaussianLikelihood parameters
-best_model = None
-best_loss = float('inf')
-
-training_iterations = 300
-epochs_iter = tqdm(range(training_iterations), desc="Iteration")
+optimizer = torch.optim.AdamW(model.parameters(), lr=0.5, amsgrad=True)  # Includes GaussianLikelihood parameters
 
 for i in epochs_iter:
     # Training step
@@ -192,10 +152,16 @@ for i in epochs_iter:
     print('Iter %d/%d - Loss: %.4f' % (i + 1, training_iterations, loss.item()))
 
     # Change learning rate after half of iterations
+    if i == training_iterations//10:
+        lr = 0.1
+        for param_group in optimizer.param_groups:
+            param_group['lr'] = lr
+
     if i == training_iterations//2:
         lr = 0.01
         for param_group in optimizer.param_groups:
             param_group['lr'] = lr
+
 
 from aemulusnu_massfunction.massfunction import *
 
@@ -206,9 +172,8 @@ with open("/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/GP_lo%s.p
                 likelihood,], f)
 
 
-
-
 Emulator = AemulusNu_HMF_Emulator(emulator_loc = "/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/GP_lo%s.pkl"%(leave_out_box))
+
 
 box =leave_out_box
 from aemulusnu_massfunction.massfunction import *
@@ -253,6 +218,7 @@ for a in tqdm(a_list):
         M_data[a] += [M_curr]
         aux_data[a] += [{'a':a, 'edge_pair':edge_pair}]
 
+
 M_numerics = np.logspace(np.log10(100*Mpart), 16, 50)
 
 jackknife_covs_fname = '/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/'+box+'_jackknife_covs.pkl'
@@ -272,10 +238,12 @@ true_params = {}
 for c_X, c_Y, a in zip(Xlo, Ylo, a_list):
     true_params[a] = c_Y
 
-ccl_cosmo = get_ccl_cosmology(get_cosmo_vals(cosmo_params[leave_out_box]))
+ccl_cosmo = get_ccl_cosmology(tuple(get_cosmo_vals(cosmo_params[leave_out_box])))
 
 h = cosmo_params[leave_out_box]['H0']/100
+
 for a in tqdm(a_list):
+    yerr = np.sqrt(np.diagonal(weighted_cov[a]))
     fig1 = plt.figure(figsize =(12, 7))
 
     axs=[fig1.add_axes((0.0,0.4,1,.6)), fig1.add_axes((0.0,0.0,1,.4))]
@@ -291,6 +259,8 @@ for a in tqdm(a_list):
 
     #shade in 1% and 10% error region
     edges = np.array(edges)
+    
+    
 
     y1 = 0.1*np.ones_like(N)
     y1 = np.append(y1, y1[-1])
@@ -327,10 +297,11 @@ for a in tqdm(a_list):
     axs[0].scatter(Ms, tinker_eval_MCMC, marker='x', c='red')
     axs[0].bar(x=edges[:-1], height=tinker_eval_MCMC, width=np.diff(edges),
                align='edge', fill=False, ec='red', label='Emulator')
-    axs[1].scatter(Ms, (tinker_eval_MCMC-N)/N, marker='x', color='red')
-#     axs[1].scatter(Ms, (tinker_eval_MCMC-N)/N, marker='x', color='red')
     with open("/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/%s_%.2f_NvMemulator_loo_output.pkl"%(box, a), "wb") as f:
         pickle.dump({'Ms':Ms, 'tinker_eval':tinker_eval_MCMC, 'N':N, 'edges':edges}, f)
+
+    tmp = np.array([c_tmp*10**(0.01)-c_tmp for c_tmp in Ms])
+    axs[1].errorbar(Ms + tmp, (tinker_eval_MCMC-N)/N, yerr/N, fmt='x', color='red')
 
     #ML Fit
 
@@ -343,11 +314,14 @@ for a in tqdm(a_list):
     axs[0].scatter(Ms, tinker_eval_MCMC, s=50 , marker='x', c='blue')
     axs[0].bar(x=edges[:-1], height=tinker_eval_MCMC, width=np.diff(edges), 
                align='edge', fill=False, ec='blue', label='ML Fit')
-    axs[1].scatter(Ms, (tinker_eval_MCMC-N)/N, marker='x', color='blue')
+    axs[1].errorbar(Ms, (tinker_eval_MCMC-N)/N, yerr/N, fmt='x', color='blue')
+
+
 
     #Data
     axs[0].bar(x=edges[:-1], height=N, width=np.diff(edges),
            align='edge', fill=False, ec='black', label='Data')
+    axs[0].errorbar(Ms, N, yerr, fmt='+', c='black')
 
     axs[0].set_xscale('log')
     axs[0].set_yscale('log')

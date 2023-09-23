@@ -8,7 +8,7 @@ prev_box = sys.argv[3]
 prev_a = eval(sys.argv[4])
 
 
-KX = np.diag([1e-2, 1e-2, 1e-2, 1e-2])
+KX = np.diag([1e-2, 1e-4, 1e-4, 1e-2])
 # KX = np.diag([1e-5, 1e-5, 1e-6, 1e-3])
 
 # if(a_fit == 1.0):
@@ -119,10 +119,8 @@ jackknife_covs_f.close()
 
 jack_covs = {a:jackknife[a][1] for a in N_data}
 
-# Compute the weighted covariance matrix incorporating jackknife and poisson
 weighted_cov = {a: jack_covs[a] for a in jack_covs}
 
-# Inverse of the weighted covariance matrix
 inv_weighted_cov = {a:np.linalg.inv(weighted_cov[a]) for a in weighted_cov}  
 
 scale_cov = {a:np.log(np.linalg.det(weighted_cov[a])) for a in weighted_cov}
@@ -160,7 +158,7 @@ def log_prob(param_values):
     tinker_fs[a_fit] = f_dNdM
 
     model_vals = {}
-    model_vals[a_fit] = np.array([quad(tinker_fs[a], edge_pair[0], edge_pair[1], epsabs=0, epsrel=1e-5)[0]
+    model_vals[a_fit] = np.array([quad(tinker_fs[a_fit], edge_pair[0], edge_pair[1], epsabs=0, epsrel=1e-5)[0]
         for edge_pair in NvMs[a_fit]['edge_pairs']
     ])
 

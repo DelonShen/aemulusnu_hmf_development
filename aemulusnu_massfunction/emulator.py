@@ -22,9 +22,10 @@ class MultitaskGPModel(gpytorch.models.ExactGP):
         self.mean_module = gpytorch.means.MultitaskMean(
             gpytorch.means.LinearMean(input_size=train_x.shape[1]), num_tasks=train_y.shape[1]
         )
+        print(1)
         self.covar_module = gpytorch.kernels.MultitaskKernel(
-             gpytorch.kernels.SpectralMixtureKernel(num_mixtures=3,
-                                                    ard_num_dims=train_x.shape[1]),
+            #gpytorch.kernels.RBFKernel(),
+            gpytorch.kernels.SpectralMixtureKernel(num_mixtures=3,ard_num_dims=train_x.shape[1]),
             num_tasks=train_y.shape[1], rank=1
         )
     def forward(self, x):
@@ -72,7 +73,6 @@ class AemulusNu_HMF_Emulator(MassFunc):
                  mass_def_strict=True):
         super().__init__(mass_def=mass_def, mass_def_strict=mass_def_strict)
         self.ComputedParams = {}
-        self.f_sigma8 = {}
         with open(emulator_loc, 'rb') as f:
             self.model, self.in_scaler, self.out_scaler, self.likelihood = pickle.load(f)
             self.model.eval()
@@ -89,7 +89,7 @@ class AemulusNu_HMF_Emulator(MassFunc):
     def set_params(self, params):
         self.params = dict(zip(self.params.keys(), params))
 
-    def predict_params(self, cosmology, z, sigma8_z):
+    def predict_params(self, cosmology, z):
         """
         Parameters:
             - cosmology (dict): A dictioniary containing the cosmological parameters
@@ -101,7 +101,6 @@ class AemulusNu_HMF_Emulator(MassFunc):
                 - omch2: Ω_m h^2
                 - nu_mass_ev: Neutrino mass sum in [eV]
             - z (float): Redshift to evaluate dn/dM at
-            - sigma8_z (float): sigma8 at redshift z
         Returns:
             - tinker parameters(dict): A dictionary containing the predicted tinker
                                        parameters from the HMF emulator.
@@ -112,7 +111,7 @@ class AemulusNu_HMF_Emulator(MassFunc):
 
 
         curr_cosmo_values = get_cosmo_vals(cosmology)
-        X = self.in_scaler.transform(np.array([curr_cosmo_values + [a, sigma8_z]]))
+        X = self.in_scaler.transform(np.array([curr_cosmo_values + [a]]))
         if(tuple(X[0].tolist()) in self.ComputedParams):
             return self.ComputedParams[tuple(X[0].tolist())]
 
@@ -122,27 +121,6 @@ class AemulusNu_HMF_Emulator(MassFunc):
         self.ComputedParams[tuple(X[0].tolist())] = dict(zip(['d','e','f','g'], mean[0]))
         return self.ComputedParams[tuple(X[0].tolist())]
 
-
-    def _compute_f_sigma8(self, cosmology, cosmo):
-        # Define densely sampled redshift range and corresponding scale factor values
-        z_values = np.linspace(0, 3, 500) # Choose an appropriate density
-        a_values = redshiftToScale(z_values)
-
-        # Initialize an array to store f_sigma8 values
-        f_sigma8_values = np.zeros_like(z_values)
-
-        # Calculate f_sigma8 for the range of redshifts
-        for i, a in enumerate(a_values):
-            R = 8 / (cosmology['H0'] / 100)
-            sigma8 = cosmo.sigmaR(R, a=a)
-            f_sigma8_values[i] = sigma8
-
-        cosmo_vals = tuple(get_cosmo_vals(cosmology))
-
-        # Create a spline for f_sigma8 as a function of a
-        f_sigma8_spline = interp1d(a_values, f_sigma8_values, kind='cubic')
-
-        self.f_sigma8[cosmo_vals] = f_sigma8_spline
 
     def _get_fsigma(self, cosmo, sigM, a, lnM):
         h = cosmo['h']
@@ -156,9 +134,6 @@ class AemulusNu_HMF_Emulator(MassFunc):
 
         cosmo_vals = tuple(get_cosmo_vals(cosmology))
 
-        if(cosmo_vals not in self.f_sigma8):
-            self._compute_f_sigma8(cosmology, cosmo)
 
-        sigma8_z = self.f_sigma8[cosmo_vals](a)
-        tinker_params = self.predict_params(cosmology, scaleToRedshift(a), sigma8_z)
+        tinker_params = self.predict_params(cosmology, scaleToRedshift(a))
         return f_G(a, np.exp(lnM), sigM, **tinker_params)
