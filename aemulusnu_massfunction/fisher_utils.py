@@ -71,7 +71,7 @@ def cluster_richness_relation(M, λ, z):
     lnλMean = lnλ0 + Aλ* np.log(M/Mpiv) + Bλ*np.log((1+z)/1.45)
 
     σintrinsic = 0.3
-    σlnλ = np.sqrt(σintrinsic) #im simplifying eq(9) of To, Krause+20, it seems like second term is small? 
+    σlnλ = np.sqrt(σintrinsic**2 + (np.exp(lnλMean) - 1)/np.exp(2*lnλMean)) #im simplifying eq(9) of To, Krause+20, it seems like second term is small? 
 
     norm = 1/(np.sqrt(2*np.pi) * λ * σlnλ)
     arg = (np.log(λ) - lnλMean)**2 
