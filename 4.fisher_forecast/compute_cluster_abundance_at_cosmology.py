@@ -9,6 +9,8 @@ parameter_log10_rel_step_size = eval(sys.argv[2])
 
 if(len(sys.argv) == 4):
     nu_mass_ev = eval(sys.argv[3])
+    print('changing fiducial neutrino mass to', nu_mass_ev)
+
     fiducial_cosmology = {'10^9 As':2.09681,
                           'ns': 0.9652,
                           'H0': 67.37,

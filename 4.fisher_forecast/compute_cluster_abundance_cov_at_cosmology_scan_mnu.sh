@@ -3,11 +3,11 @@
 
 
 mnus=()
-for i in $(seq 0.06 0.002 .302); do
+for i in $(seq 0.06 0.01 .302); do
   mnus+=($i)
 done
 
-mnus=(0.062)
+# mnus=(0.062)
 
 
 for((i=0; i<${#mnus[@]}; i++)); do

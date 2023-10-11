@@ -19,7 +19,7 @@ fiducial_cosmology = {'10^9 As':2.09681,
                       'w0': -1,
                       'ombh2': 0.02233,
                       'omch2': 0.1198,
-                      'nu_mass_ev': 0.07,}
+                      'nu_mass_ev': 0.06,}
 
 fiducial_log10_rel_step_size = { #for numerical derivativese
     '10^9 As': -2.6,
@@ -28,7 +28,7 @@ fiducial_log10_rel_step_size = { #for numerical derivativese
     'w0': -2.3,
     'ombh2': -2.6,
     'omch2': -2.3,
-    'nu_mass_ev': -1.05,
+    'nu_mass_ev': -1.1,
 }
 
 fiducial_cosmo_vals = get_cosmo_vals(fiducial_cosmology)
@@ -42,7 +42,7 @@ fiducial_ccl_cosmo = None
 
 
 #for evaluating dM integral
-M_min = 1e11
+M_min = 1e13
 M_max = 1e16
 
 
@@ -71,7 +71,10 @@ def cluster_richness_relation(M, λ, z):
     lnλMean = lnλ0 + Aλ* np.log(M/Mpiv) + Bλ*np.log((1+z)/1.45)
 
     σintrinsic = 0.3
-    σlnλ = np.sqrt(σintrinsic**2 + (np.exp(lnλMean) - 1)/np.exp(2*lnλMean)) #im simplifying eq(9) of To, Krause+20, it seems like second term is small? 
+    σlnλ2 = (σintrinsic**2 + (np.exp(lnλMean) - 1)/np.exp(2*lnλMean))
+    σlnλ  = np.sqrt(σlnλ2)
+    if(σlnλ2 < 0):
+        print(M, σlnλ2, z)
 
     norm = 1/(np.sqrt(2*np.pi) * λ * σlnλ)
     arg = (np.log(λ) - lnλMean)**2 
@@ -113,6 +116,8 @@ def N_in_z_and_richness_bin(lambda_min, lambda_max, z_min, z_max, mf = emulator,
 
     result, error = tplquad(cluster_count_integrand_cosmology, z_min, z_max, M_min, M_max, lambda_min, lambda_max, epsrel=1e-4, epsabs=0)
 
+    if(error/result > .001):
+        print(error, result)
     assert(error / result < .001) #.1% accurate
 
     return Ωs_rad * result

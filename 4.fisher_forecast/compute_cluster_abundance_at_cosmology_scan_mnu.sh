@@ -17,10 +17,10 @@ step_sizes=(2.6 2.3)
 # considering A_lens, we have the Planck PR3 constraint \sum mnu < .286
 # So lets scan from mnu = .06 -> .3?
 
-mnus=(0.264)
-# for i in $(seq 0.06 0.002 .302); do
-#   mnus+=($i)
-# done
+mnus=()
+for i in $(seq 0.06 0.01 .302); do
+  mnus+=($i)
+done
 
 
 

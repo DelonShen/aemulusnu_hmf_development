@@ -1,0 +1,22 @@
+
+CommandNotFoundError: Your shell has not been properly configured to use 'conda activate'.
+To initialize your shell, run
+
+    $ conda init <SHELL_NAME>
+
+Currently supported shells are:
+  - bash
+  - fish
+  - tcsh
+  - xonsh
+  - zsh
+  - powershell
+
+See 'conda init --help' for more information and options.
+
+IMPORTANT: You may need to close and restart your shell after running 'conda init'.
+
+
+  0%|                                                      | 0/4 [00:00<?, ?it/s] 25%|███████████▌                                  | 1/4 [00:44<02:12, 44.01s/it] 50%|███████████████████████                       | 2/4 [00:53<00:46, 23.43s/it] 75%|██████████████████████████████████▌           | 3/4 [01:02<00:16, 16.87s/it]100%|██████████████████████████████████████████████| 4/4 [01:12<00:00, 14.16s/it]100%|██████████████████████████████████████████████| 4/4 [01:12<00:00, 18.02s/it]
+  0%|                                                      | 0/4 [00:00<?, ?it/s] 25%|███████████▌                                  | 1/4 [00:31<01:34, 31.38s/it] 50%|███████████████████████                       | 2/4 [00:40<00:37, 18.51s/it] 75%|██████████████████████████████████▌           | 3/4 [00:49<00:14, 14.15s/it]100%|██████████████████████████████████████████████| 4/4 [00:59<00:00, 12.54s/it]100%|██████████████████████████████████████████████| 4/4 [00:59<00:00, 14.98s/it]
+  0%|                                                      | 0/4 [00:00<?, ?it/s] 25%|███████████▌                                  | 1/4 [00:31<01:34, 31.36s/it]slurmstepd: error: *** JOB 32798740 ON sh03-03n48 CANCELLED AT 2023-10-10T14:09:29 ***
