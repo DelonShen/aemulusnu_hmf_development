@@ -11,14 +11,14 @@ emulator = AemulusNu_HMF_Emulator()
 DH = 3000 #[h^{-1} Mpc] 
 
 #fiducial cosmolgy
-#(Plank 2018 (base LCDM) + neutrino mass put in by hand)
+#(Plank 2018 table 2. TT,TE,EE+lowE+lensing  + neutrino mass put in by hand)
 #Table 1.
-fiducial_cosmology = {'10^9 As':2.09681,
-                      'ns': 0.9652,
-                      'H0': 67.37,
+fiducial_cosmology = {'10^9 As':2.1,
+                      'ns': 0.9649,
+                      'H0': 67.36,
                       'w0': -1,
-                      'ombh2': 0.02233,
-                      'omch2': 0.1198,
+                      'ombh2': 0.02237,
+                      'omch2': 0.12,
                       'nu_mass_ev': 0.06,}
 
 fiducial_log10_rel_step_size = { #for numerical derivativese

@@ -78,6 +78,10 @@ from scipy.interpolate import interp1d, UnivariateSpline, InterpolatedUnivariate
 vol = -1 #Mpc^3/h^3
 Mpart = -1
 
+if(a_fit not in all_as):
+    print('not enough data to fit this snapshot', box, a_fit)
+    sys.exit()
+
 for a in tqdm([a_fit]):
     c_data = NvMs[a]
     

@@ -7,13 +7,16 @@ richness_bin_edges = [20., 30., 45., 60., 300.]
 
 
 nu_mass_ev = eval(sys.argv[1])
-fiducial_cosmology = {'10^9 As':2.09681,
-                          'ns': 0.9652,
-                          'H0': 67.37,
-                          'w0': -1,
-                          'ombh2': 0.02233,
-                          'omch2': 0.1198,
-                          'nu_mass_ev': nu_mass_ev,}
+#(Plank 2018 table 2. TT,TE,EE+lowE+lensing  + neutrino mass put in by hand)
+#Table 1.
+fiducial_cosmology = {'10^9 As':2.1,
+                      'ns': 0.9649,
+                      'H0': 67.36,
+                      'w0': -1,
+                      'ombh2': 0.02237,
+                      'omch2': 0.12,
+                      'nu_mass_ev': nu_mass_ev,}
+
 fiducial_cosmo_vals = get_cosmo_vals(fiducial_cosmology)
 fiducial_ccl_cosmo = get_ccl_cosmology(tuple(fiducial_cosmo_vals))
 print(fiducial_cosmology)

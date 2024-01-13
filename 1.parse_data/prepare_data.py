@@ -25,34 +25,21 @@ import pickle
 
 NvMs = {}
 f = open('/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/'+box+'_M200b', 'r')
-# Np_fname = "/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/" + box + "_Np";
-# f2 = open(Np_fname, 'r')
 TMP=0
 skips = 0
-# gt200idxs = {}
 for line in tqdm(f):
-#     line2 = f2.readline()
-#     fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(13,8))
-
+    print('\n\n')
     #extract the masses and position of halos for a given snapshot 
     snapshot_mass = line.strip().split()
-    snapshot_mass = np.array(snapshot_mass, dtype=np.float64)  
-#     snapshot_Np = line2.strip().split()
-#     snapshot_Np = np.array(snapshot_Np, dtype=np.float64)  
-#     print(len(snapshot_mass), len(snapshot_Np))
-#     assert(len(snapshot_mass)==len(snapshot_Np))
-# #     gt200Np = np.where(snapshot_Np >= 200)
-    print(len(snapshot_mass))
-#     snapshot_mass = snapshot_mass[gt200Np]
-    print(len(snapshot_mass))
+    snapshot_mass = np.array(snapshot_mass, dtype=np.float64)
 
-    
+
     #get the volume, redshift, and particle mass in the simulation
     vol = -1
     BOX_SIZE = -1
     a = -1
     Mpart = -1
-    
+
     f_meta = open(rockstar_dir+'out_%d.list'%(SNAPSHOT_IDX), 'r')
 
     for meta_data in f_meta:
@@ -63,77 +50,63 @@ for line in tqdm(f):
         if('Box size' in meta_data):
             vol = eval(meta_data.split()[2])**3
             BOX_SIZE = eval(meta_data.split()[2])
-            break        
+            break
     print('redshift', scaleToRedshift(a))
     SNAPSHOT_IDX+=1
-    if(scaleToRedshift(a) >= 2):
+    if(scaleToRedshift(a) >= 2.4): #skip the high redshift box
+        print('skipping redshift', scaleToRedshift(a))
         skips+=1
         continue
 #     gt200idxs[a] = gt200Np
     left_log10 = np.ceil(np.log10(200*Mpart) * 10) / 10 #e.g. 13.897234 -> 13.9
     print('leftlog10', left_log10)
-    #we'll only consider halos with more mass more than 10^13 Msol/h 
-#     print(np.log10(200*Mpart), np.log10(np.max(snapshot_mass)))
+
     edges_log10 = np.arange(left_log10, 1+np.log10(np.max(snapshot_mass)), 0.1)
     edges = np.array([10**el10 for el10 in edges_log10])
 
     #get the number count of halos in the mass bins
-    N, bin_edge, bin_idx = binned_statistic(snapshot_mass, np.ones_like(snapshot_mass), 
+    N, bin_edge, bin_idx = binned_statistic(snapshot_mass, np.ones_like(snapshot_mass),
                                             statistic='count', bins=edges)
     print('sumN', sum(N))
+    if(sum(N) < 20):
+        print('skipping redshift', scaleToRedshift(a))
+        skips+=1
+        continue
+
     print('N', N)
-#     print('raw mass head', snapshot_mass[:10])
     print('edges', np.log10(edges))
-#     print('%.1e'%np.max(snapshot_mass))
-#     print('200mpart: %.1e'%(200*Mpart))
     c_i = len(N)-1
+
     while(N[c_i] == 0):
         N = N[:c_i]
         bin_edge = bin_edge[:(c_i+1)]
         c_i -= 1
-#         print('---')
-#         print(N)
-#         print(bin_edge)
-#         print('---')
 
-        
     #make large mass bin have at least 20 halos
-    while(N[c_i] < 20):
+    while(c_i >= 0 and N[c_i] < 20):
         N[c_i-1] += N[c_i]
         halos_here = np.where(bin_idx==c_i+1)
         bin_idx[halos_here] = c_i
         N = N[:c_i]
         bin_edge = np.delete(bin_edge,c_i)
         c_i -= 1
-#         print('---')
-#         print(N)
-#         print(bin_edge)
-#         print('---')
+    if(c_i < 0):
+        print('HUH?')
+        assert(1==0)
+
     print('after adaptive', N)
-        
     M_means = []
     correction = np.zeros_like(N)
-    
+
     for j in range(len(N)):
         this_bin = np.where(bin_idx == j+1)
         M_means += [np.mean(snapshot_mass[this_bin])]
 #         print(N[j], len(snapshot_mass[this_bin]))
         assert(len(snapshot_mass[this_bin]) == N[j])
-            
+
     edge_pairs = [[bin_edge[j], bin_edge[j+1]] for j in range(len(bin_edge)-1)]
     assert(len(edge_pairs) == len(N))
-#     ax.bar(x=bin_edge[:-1], height=N, width=np.diff(bin_edge), align='edge', fill=False, label=r'$a=%.2f$'%(a))
 
-#     ax.set_title(curr_run_fname.split('/')[-2])
-#     ax.set_xscale('log')
-#     ax.set_yscale('log')
-#     ax.set_xlabel(r'Mass $[h^{-1}M_\odot]$')
-#     ax.set_ylabel(r'$N$')
-#     ax.legend(frameon=False)
-
-#     plt.savefig('/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/figures/'+curr_run_fname.split('/')[-2]+'_NvsM_a%.1f.pdf'%(a), bbox_inches='tight')
-
-    assert(len(edge_pairs) == len(N))
     NvMs[a] = {'M':M_means, 
                'N':N, 
                'vol':vol, 
@@ -163,8 +136,8 @@ for a in tqdm(NvMs):
     vol = NvMs[a]['vol']
     bin_idx = NvMs[a]['bin_idx']
     correction = NvMs[a]['corrections']
-#     snapshot_pos  = snapshot_pos[gt200Np]
     assert(len(bin_idx) == len(snapshot_pos))
+
     #now lets get to spatial jackknife
     N_DIVS = 32 #each axis is diided into N_DIVS parts so in total the box
                #is divided into N_DIVS**3 boxes
@@ -199,11 +172,11 @@ for a in tqdm(NvMs):
     jackknife_mean = np.mean(jackknife_data, axis=0)
 
     jackknife_data = np.array(jackknife_data) - jackknife_mean
-    
+
     #arxiv: 0408569 eqn 6
     jackknife_covariance = [[rescale_factor * np.sum(jackknife_data.T[i] * jackknife_data.T[j], axis=0) for j in range(len(N))] for i in range(len(N))]
     jackknife_covariance = np.array(jackknife_covariance)
-    
+
     jackknife[a] = [jackknife_data, jackknife_covariance]
 f_pos.close()
 

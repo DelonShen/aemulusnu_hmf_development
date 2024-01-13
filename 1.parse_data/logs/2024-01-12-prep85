@@ -1,0 +1,15 @@
+nohup: ignoring input
+16
+0it [00:00, ?it/s]0it [00:00, ?it/s]
+
+
+
+redshift 3.0
+leftlog10 13.0
+sumN 2.0
+N [2. 0. 0. 0. 0. 0. 0. 0. 0. 0.]
+edges [13.  13.1 13.2 13.3 13.4 13.5 13.6 13.7 13.8 13.9 14. ]
+Traceback (most recent call last):
+  File "/home/users/delon/aemulusnu_massfunction/1.parse_data/prepare_data.py", line 81, in <module>
+    while(N[c_i] < 20):
+IndexError: index -1 is out of bounds for axis 0 with size 0

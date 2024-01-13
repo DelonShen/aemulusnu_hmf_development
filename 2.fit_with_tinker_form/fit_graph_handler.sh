@@ -5,7 +5,7 @@
 # Set the Slurm job parameters
 job_name_prefix="fit-graph-handler"
 output_dir="logs"
-time_limit="480:00"
+time_limit="1440:00"
 partition="kipac"
 num_nodes=1
 mem_per_node=3072

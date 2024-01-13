@@ -18,10 +18,7 @@ X = []
 Y = []
 idx = {}
 cidx = 0
-weird_boxes = ['Box63_1400', 'Box35_1400', 'Box_n50_38_1400', 'Box5_1400']
 for box in cosmo_params:
-    if(box in weird_boxes):
-        continue
     X += [box]
     idx[box] = cidx
     cidx+=1
@@ -155,19 +152,22 @@ def bfs_traversal_run_jobs(mst, start):
         #check if parent still running
         curr_parent = parent[node]
         if(curr_parent is not None):
-            squeue_output = subprocess.check_output(['squeue', '-u', 'delon', '-n', 'fit-iter-handler-%s'%(X[curr_parent]), '-h']).decode().strip()
-#             print('sq', squeue_output)
-            if not squeue_output: #if job done running 
-                print('Running fit for %s'%(X[node]))
-                run_fit_iter(X[node], X[curr_parent])
-                #add its neighboros to the queue
-                for neighbor in range(n):
-                    if mst[node][neighbor] > 0 and not visited[neighbor]:
-                        queue.append(neighbor)
-                        visited[neighbor] = True
-                        parent[neighbor] = node
-            else: #parent job not done running
-#                 print('Fit for %s still running'%(X[curr_parent]))
+            try:
+                squeue_output = subprocess.check_output(['squeue', '-u', 'delon', '-n', 'fit-iter-handler-%s'%(X[curr_parent]), '-h']).decode().strip()
+#                 print('sq', squeue_output)
+                if not squeue_output: #if job done running 
+                    print('Running fit for %s'%(X[node]))
+                    run_fit_iter(X[node], X[curr_parent])
+                    #add its neighboros to the queue
+                    for neighbor in range(n):
+                        if mst[node][neighbor] > 0 and not visited[neighbor]:
+                            queue.append(neighbor)
+                            visited[neighbor] = True
+                            parent[neighbor] = node
+                else: #parent job not done running
+#                     print('Fit for %s still running'%(X[curr_parent]))
+                    queue.append(node)
+            except:
                 queue.append(node)
         else:
             for neighbor in range(n):

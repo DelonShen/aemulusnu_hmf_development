@@ -11,13 +11,14 @@ if(len(sys.argv) == 4):
     nu_mass_ev = eval(sys.argv[3])
     print('changing fiducial neutrino mass to', nu_mass_ev)
 
-    fiducial_cosmology = {'10^9 As':2.09681,
-                          'ns': 0.9652,
-                          'H0': 67.37,
+    fiducial_cosmology = {'10^9 As':2.1,
+                          'ns': 0.9649,
+                          'H0': 67.36,
                           'w0': -1,
-                          'ombh2': 0.02233,
-                          'omch2': 0.1198,
+                          'ombh2': 0.02237,
+                          'omch2': 0.12,
                           'nu_mass_ev': nu_mass_ev,}
+
     fiducial_cosmo_vals = get_cosmo_vals(fiducial_cosmology)
     fiducial_ccl_cosmo = get_ccl_cosmology(tuple(fiducial_cosmo_vals))
 
