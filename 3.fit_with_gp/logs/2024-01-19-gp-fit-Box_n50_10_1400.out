@@ -1,0 +1,228 @@
+Leaving out Box_n50_10_1400
+Box47_1400 2.3038301302700224
+{'ns': 0.97000003, 'H0': 67.0, 'w0': -1.0, 'ombh2': 0.0223, 'omch2': 0.12, 'nu_mass_ev': 0.07071068, '10^9 As': 2.10100315}
+(2234, 8)
+(2234, 4)
+scaling input
+(2234, 8)
+scaling output
+(2234, 4)
+Iter 1/200 - Loss: 2.2968
+Iter 2/200 - Loss: 2.0240
+Iter 3/200 - Loss: 1.7725
+Iter 4/200 - Loss: 1.5423
+Iter 5/200 - Loss: 1.3341
+Iter 6/200 - Loss: 1.1484
+Iter 7/200 - Loss: 0.9867
+Iter 8/200 - Loss: 0.8514
+Iter 9/200 - Loss: 0.7457
+Iter 10/200 - Loss: 0.6724
+Iter 11/200 - Loss: 0.6320
+Iter 12/200 - Loss: 0.6187
+Iter 13/200 - Loss: 0.6196
+Iter 14/200 - Loss: 0.6187
+Iter 15/200 - Loss: 0.6034
+Iter 16/200 - Loss: 0.5689
+Iter 17/200 - Loss: 0.5163
+Iter 18/200 - Loss: 0.4507
+Iter 19/200 - Loss: 0.3795
+Iter 20/200 - Loss: 0.3103
+Iter 21/200 - Loss: 0.2485
+Iter 22/200 - Loss: 0.1962
+Iter 23/200 - Loss: 0.1537
+Iter 24/200 - Loss: 0.1189
+Iter 25/200 - Loss: 0.0882
+Iter 26/200 - Loss: 0.0585
+Iter 27/200 - Loss: 0.0277
+Iter 28/200 - Loss: -0.0054
+Iter 29/200 - Loss: -0.0410
+Iter 30/200 - Loss: -0.0791
+Iter 31/200 - Loss: -0.1188
+Iter 32/200 - Loss: -0.1591
+Iter 33/200 - Loss: -0.1984
+Iter 34/200 - Loss: -0.2350
+Iter 35/200 - Loss: -0.2675
+Iter 36/200 - Loss: -0.2953
+Iter 37/200 - Loss: -0.3194
+Iter 38/200 - Loss: -0.3423
+Iter 39/200 - Loss: -0.3661
+Iter 40/200 - Loss: -0.3915
+Iter 41/200 - Loss: -0.4173
+Iter 42/200 - Loss: -0.4417
+Iter 43/200 - Loss: -0.4637
+Iter 44/200 - Loss: -0.4830
+Iter 45/200 - Loss: -0.5002
+Iter 46/200 - Loss: -0.5158
+Iter 47/200 - Loss: -0.5304
+Iter 48/200 - Loss: -0.5446
+Iter 49/200 - Loss: -0.5586
+Iter 50/200 - Loss: -0.5725
+Iter 51/200 - Loss: -0.5861
+Iter 52/200 - Loss: -0.5992
+Iter 53/200 - Loss: -0.6119
+Iter 54/200 - Loss: -0.6237
+Iter 55/200 - Loss: -0.6346
+Iter 56/200 - Loss: -0.6451
+Iter 57/200 - Loss: -0.6551
+Iter 58/200 - Loss: -0.6648
+Iter 59/200 - Loss: -0.6745
+Iter 60/200 - Loss: -0.6838
+Iter 61/200 - Loss: -0.6923
+Iter 62/200 - Loss: -0.6998
+Iter 63/200 - Loss: -0.7064
+Iter 64/200 - Loss: -0.7124
+Iter 65/200 - Loss: -0.7179
+Iter 66/200 - Loss: -0.7232
+Iter 67/200 - Loss: -0.7280
+Iter 68/200 - Loss: -0.7324
+Iter 69/200 - Loss: -0.7362
+Iter 70/200 - Loss: -0.7395
+Iter 71/200 - Loss: -0.7425
+Iter 72/200 - Loss: -0.7453
+Iter 73/200 - Loss: -0.7480
+Iter 74/200 - Loss: -0.7504
+Iter 75/200 - Loss: -0.7526
+Iter 76/200 - Loss: -0.7545
+Iter 77/200 - Loss: -0.7564
+Iter 78/200 - Loss: -0.7583
+Iter 79/200 - Loss: -0.7602
+Iter 80/200 - Loss: -0.7621
+Iter 81/200 - Loss: -0.7639
+Iter 82/200 - Loss: -0.7655
+Iter 83/200 - Loss: -0.7671
+Iter 84/200 - Loss: -0.7686
+Iter 85/200 - Loss: -0.7701
+Iter 86/200 - Loss: -0.7717
+Iter 87/200 - Loss: -0.7734
+Iter 88/200 - Loss: -0.7753
+Iter 89/200 - Loss: -0.7774
+Iter 90/200 - Loss: -0.7798
+Iter 91/200 - Loss: -0.7827
+Iter 92/200 - Loss: -0.7861
+Iter 93/200 - Loss: -0.7897
+Iter 94/200 - Loss: -0.7936
+Iter 95/200 - Loss: -0.7975
+Iter 96/200 - Loss: -0.8012
+Iter 97/200 - Loss: -0.8048
+Iter 98/200 - Loss: -0.8082
+Iter 99/200 - Loss: -0.8114
+Iter 100/200 - Loss: -0.8145
+Iter 101/200 - Loss: -0.8175
+Iter 102/200 - Loss: -0.8204
+Iter 103/200 - Loss: -0.8231
+Iter 104/200 - Loss: -0.8257
+Iter 105/200 - Loss: -0.8281
+Iter 106/200 - Loss: -0.8303
+Iter 107/200 - Loss: -0.8325
+Iter 108/200 - Loss: -0.8346
+Iter 109/200 - Loss: -0.8366
+Iter 110/200 - Loss: -0.8386
+Iter 111/200 - Loss: -0.8405
+Iter 112/200 - Loss: -0.8425
+Iter 113/200 - Loss: -0.8445
+Iter 114/200 - Loss: -0.8464
+Iter 115/200 - Loss: -0.8483
+Iter 116/200 - Loss: -0.8501
+Iter 117/200 - Loss: -0.8518
+Iter 118/200 - Loss: -0.8534
+Iter 119/200 - Loss: -0.8550
+Iter 120/200 - Loss: -0.8566
+Iter 121/200 - Loss: -0.8580
+Iter 122/200 - Loss: -0.8594
+Iter 123/200 - Loss: -0.8607
+Iter 124/200 - Loss: -0.8620
+Iter 125/200 - Loss: -0.8633
+Iter 126/200 - Loss: -0.8645
+Iter 127/200 - Loss: -0.8657
+Iter 128/200 - Loss: -0.8670
+Iter 129/200 - Loss: -0.8681
+Iter 130/200 - Loss: -0.8693
+Iter 131/200 - Loss: -0.8704
+Iter 132/200 - Loss: -0.8716
+Iter 133/200 - Loss: -0.8727
+Iter 134/200 - Loss: -0.8738
+Iter 135/200 - Loss: -0.8749
+Iter 136/200 - Loss: -0.8760
+Iter 137/200 - Loss: -0.8771
+Iter 138/200 - Loss: -0.8782
+Iter 139/200 - Loss: -0.8793
+Iter 140/200 - Loss: -0.8804
+Iter 141/200 - Loss: -0.8815
+Iter 142/200 - Loss: -0.8826
+Iter 143/200 - Loss: -0.8838
+Iter 144/200 - Loss: -0.8848
+Iter 145/200 - Loss: -0.8860
+Iter 146/200 - Loss: -0.8872
+Iter 147/200 - Loss: -0.8883
+Iter 148/200 - Loss: -0.8895
+Iter 149/200 - Loss: -0.8907
+Iter 150/200 - Loss: -0.8919
+Iter 151/200 - Loss: -0.8930
+reducing lr to 0.01
+Iter 152/200 - Loss: -0.8941
+Iter 153/200 - Loss: -0.8942
+Iter 154/200 - Loss: -0.8944
+Iter 155/200 - Loss: -0.8945
+Iter 156/200 - Loss: -0.8946
+Iter 157/200 - Loss: -0.8947
+Iter 158/200 - Loss: -0.8948
+Iter 159/200 - Loss: -0.8950
+Iter 160/200 - Loss: -0.8951
+Iter 161/200 - Loss: -0.8952
+Iter 162/200 - Loss: -0.8953
+Iter 163/200 - Loss: -0.8954
+Iter 164/200 - Loss: -0.8955
+Iter 165/200 - Loss: -0.8957
+Iter 166/200 - Loss: -0.8958
+Iter 167/200 - Loss: -0.8959
+Iter 168/200 - Loss: -0.8960
+Iter 169/200 - Loss: -0.8961
+Iter 170/200 - Loss: -0.8962
+Iter 171/200 - Loss: -0.8964
+Iter 172/200 - Loss: -0.8965
+Iter 173/200 - Loss: -0.8966
+Iter 174/200 - Loss: -0.8967
+Iter 175/200 - Loss: -0.8968
+Iter 176/200 - Loss: -0.8970
+Iter 177/200 - Loss: -0.8970
+Iter 178/200 - Loss: -0.8972
+Iter 179/200 - Loss: -0.8973
+Iter 180/200 - Loss: -0.8974
+Iter 181/200 - Loss: -0.8975
+Iter 182/200 - Loss: -0.8976
+Iter 183/200 - Loss: -0.8977
+Iter 184/200 - Loss: -0.8978
+Iter 185/200 - Loss: -0.8979
+Iter 186/200 - Loss: -0.8981
+Iter 187/200 - Loss: -0.8982
+Iter 188/200 - Loss: -0.8983
+Iter 189/200 - Loss: -0.8984
+Iter 190/200 - Loss: -0.8985
+Iter 191/200 - Loss: -0.8986
+Iter 192/200 - Loss: -0.8987
+Iter 193/200 - Loss: -0.8989
+Iter 194/200 - Loss: -0.8990
+Iter 195/200 - Loss: -0.8990
+Iter 196/200 - Loss: -0.8991
+Iter 197/200 - Loss: -0.8993
+Iter 198/200 - Loss: -0.8993
+Iter 199/200 - Loss: -0.8995
+Iter 200/200 - Loss: -0.8996
+OrderedDict([('likelihood.raw_task_noises', tensor([-5.1985, -6.4619, -7.2807, -7.0081])), ('likelihood.raw_task_noises_constraint.lower_bound', tensor(1.0000e-04)), ('likelihood.raw_task_noises_constraint.upper_bound', tensor(inf)), ('mean_module.base_means.0.raw_constant', tensor(0.1868)), ('mean_module.base_means.1.raw_constant', tensor(-0.1801)), ('mean_module.base_means.2.raw_constant', tensor(0.2804)), ('mean_module.base_means.3.raw_constant', tensor(-0.4631)), ('covar_module.task_covar_module.covar_factor', tensor([[-0.7741],
+        [ 1.1722],
+        [-0.8478],
+        [ 0.7635]])), ('covar_module.task_covar_module.raw_var', tensor([-0.3326, -3.5032, -0.5824, -0.2188])), ('covar_module.task_covar_module.raw_var_constraint.lower_bound', tensor(0.)), ('covar_module.task_covar_module.raw_var_constraint.upper_bound', tensor(inf)), ('covar_module.data_covar_module.raw_mixture_weights', tensor([-1.7086, -1.7086, -0.1628])), ('covar_module.data_covar_module.raw_mixture_means', tensor([[[-1.7627, -1.5644, -2.1779, -2.1797, -1.7398, -2.2561, -2.6191,
+          -1.9055]],
+
+        [[-1.7627, -1.5644, -2.1779, -2.1797, -1.7398, -2.2561, -2.6191,
+          -1.9055]],
+
+        [[-3.0563, -3.9519, -2.3430, -2.1894, -3.8232, -2.0799, -2.7742,
+          -1.7200]]])), ('covar_module.data_covar_module.raw_mixture_scales', tensor([[[ 0.5949,  3.8308, -1.2327, -1.4004,  0.5288, -1.5990, -1.7109,
+           0.0585]],
+
+        [[ 0.5949,  3.8308, -1.2327, -1.4004,  0.5288, -1.5990, -1.7109,
+           0.0585]],
+
+        [[-2.8543, -3.4670, -1.4542, -1.4373, -3.4416, -0.7084, -1.9518,
+          -1.6965]]])), ('covar_module.data_covar_module.raw_mixture_scales_constraint.lower_bound', tensor(0.)), ('covar_module.data_covar_module.raw_mixture_scales_constraint.upper_bound', tensor(inf)), ('covar_module.data_covar_module.raw_mixture_means_constraint.lower_bound', tensor(0.)), ('covar_module.data_covar_module.raw_mixture_means_constraint.upper_bound', tensor(inf)), ('covar_module.data_covar_module.raw_mixture_weights_constraint.lower_bound', tensor(0.)), ('covar_module.data_covar_module.raw_mixture_weights_constraint.upper_bound', tensor(inf))])

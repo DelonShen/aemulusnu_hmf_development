@@ -30,8 +30,7 @@ a_list_f = open(a_list_fname, 'rb')
 a_list = pickle.load(a_list_f)
 a_list_f.close()
 
-
-weird_boxes = ['Box63_1400', 'Box35_1400', 'Box_n50_38_1400', 'Box5_1400']
+weird_boxes = []
 
 
 errors = {a:{} for a in a_list}
@@ -67,21 +66,22 @@ for box in tqdm(cosmo_params):
 
     for a in a_list:
         z = scaleToRedshift(a)
+#         if(z>2):
+#             continue
         z_to_a[z] = a
         a_to_z[a] = z
-
-        if(leave_out_box == box):
-            Xlo += [curr_cosmo_values + [a]]
-        else:
-            X+= [curr_cosmo_values + [a]]
-        with open("/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/%s_%.2f_params.pkl"%(box, a), "rb") as f:
-            MLE_params = pickle.load(f)
-            param_values = list(MLE_params.values())
-            if(leave_out_box == box):
-                Ylo += [param_values]
-            else:
-                Y+= [param_values]
-
+        try:
+            with open("/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/%s_%.2f_params.pkl"%(box, a), "rb") as f:
+                MLE_params = pickle.load(f)
+                param_values = list(MLE_params.values())
+                if(leave_out_box == box):
+                    Xlo += [curr_cosmo_values + [a]]
+                    Ylo += [param_values]
+                else:
+                    Y+= [param_values]
+                    X+= [curr_cosmo_values + [a]]
+        except:
+            print(box, z)
 
 
 X = np.array(X)
@@ -115,10 +115,11 @@ Y_train = torch.from_numpy(Y).float()
 n_tasks = len(Y_train[0])
 
 
+
 from aemulusnu_massfunction.emulator import *
 
 
-likelihood = gpytorch.likelihoods.MultitaskGaussianLikelihood(num_tasks=n_tasks)
+likelihood = gpytorch.likelihoods.MultitaskGaussianLikelihood(num_tasks=n_tasks, has_global_noise=False, has_task_noise=True)
 model = MultitaskGPModel(X_train, Y_train, likelihood)
 
 
@@ -129,16 +130,15 @@ model.train()
 likelihood.train()
 
 
-training_iterations = 200
+training_iterations = 500
 
-
-epochs_iter = tqdm(range(training_iterations), desc="Iteration")
+# epochs_iter = tqdm(range(training_iterations), desc="Iteration")
 
 
 # Create the optimizer with the initial learning rate
-optimizer = torch.optim.AdamW(model.parameters(), lr=0.5, amsgrad=True)  # Includes GaussianLikelihood parameters
+optimizer = torch.optim.AdamW(model.parameters(), lr=0.1, amsgrad=True)  # Includes GaussianLikelihood parameters
 
-for i in epochs_iter:
+for i in range(training_iterations):
     # Training step
     model.train()
     likelihood.train()
@@ -146,22 +146,27 @@ for i in epochs_iter:
     optimizer.zero_grad()
     output = model(X_train)
     loss = -mll(output, Y_train)
-    epochs_iter.set_postfix(loss=loss.item())
+#     epochs_iter.set_postfix(loss=loss.item())
     loss.backward()
     optimizer.step()
     print('Iter %d/%d - Loss: %.4f' % (i + 1, training_iterations, loss.item()))
 
     # Change learning rate after half of iterations
-    if i == training_iterations//10:
-        lr = 0.1
-        for param_group in optimizer.param_groups:
-            param_group['lr'] = lr
+#     if i == 5:
+#         lr = 0.1
+#         for param_group in optimizer.param_groups:
+#             param_group['lr'] = lr
 
-    if i == training_iterations//2:
-        lr = 0.01
-        for param_group in optimizer.param_groups:
-            param_group['lr'] = lr
 
+#     if i == 150:
+#         lr = 0.01
+#         print('reducing lr to 0.01')
+#         for param_group in optimizer.param_groups:
+#             param_group['lr'] = lr
+#-.926
+
+
+print(model.state_dict())
 
 from aemulusnu_massfunction.massfunction import *
 
@@ -171,9 +176,7 @@ with open("/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/GP_lo%s.p
                 out_scaler,
                 likelihood,], f)
 
-
 Emulator = AemulusNu_HMF_Emulator(emulator_loc = "/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/GP_lo%s.pkl"%(leave_out_box))
-
 
 box =leave_out_box
 from aemulusnu_massfunction.massfunction import *
@@ -186,7 +189,6 @@ NvM_f.close()
 N_data = {}
 M_data = {}
 aux_data = {}
-from scipy.interpolate import interp1d, UnivariateSpline, InterpolatedUnivariateSpline
 
 vol = -1 #Mpc^3/h^3
 Mpart = -1
@@ -194,6 +196,8 @@ Mpart = -1
 for a in tqdm(a_list):
 #     if(a != 1): #TEST
 #         continue
+    if(a not in NvMs):
+        continue
     c_data = NvMs[a]
 
     Ms = c_data['M'] #units of h^-1 Msolar
@@ -217,8 +221,9 @@ for a in tqdm(a_list):
         N_data[a] += [N_curr]
         M_data[a] += [M_curr]
         aux_data[a] += [{'a':a, 'edge_pair':edge_pair}]
-
-
+        
+        
+        
 M_numerics = np.logspace(np.log10(100*Mpart), 16, 50)
 
 jackknife_covs_fname = '/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/'+box+'_jackknife_covs.pkl'
@@ -242,7 +247,8 @@ ccl_cosmo = get_ccl_cosmology(tuple(get_cosmo_vals(cosmo_params[leave_out_box]))
 
 h = cosmo_params[leave_out_box]['H0']/100
 
-for a in tqdm(a_list):
+
+for a in tqdm(N_data):
     yerr = np.sqrt(np.diagonal(weighted_cov[a]))
     fig1 = plt.figure(figsize =(12, 7))
 
@@ -289,9 +295,7 @@ for a in tqdm(a_list):
 
 
     #Emulator 
-    tinker_eval_MCMC = Emulator(ccl_cosmo, M_numerics/h, a)*vol/(h**3 * M_numerics * np.log(10)) # h / Msun
-    f_dNdM_MCMC =  interp1d(M_numerics, tinker_eval_MCMC, kind='linear',
-                            bounds_error=False, fill_value=0.)
+    f_dNdM_MCMC =  lambda M:Emulator(ccl_cosmo, M/h, a)*vol/(h**3 * M * np.log(10)) # h / Msun
     tinker_eval_MCMC = np.array([quad(f_dNdM_MCMC, edge[0],  edge[1], epsabs=0, epsrel=1e-5)[0] for edge in edge_pairs])
 
     axs[0].scatter(Ms, tinker_eval_MCMC, marker='x', c='red')
@@ -307,9 +311,7 @@ for a in tqdm(a_list):
 
     mass_function = MassFuncAemulusNu_fitting()
     mass_function.set_params(true_params[a])
-    tinker_eval_MCMC = mass_function(ccl_cosmo, M_numerics/h, a)*vol/(h**3 * M_numerics * np.log(10)) # h / Msun
-    f_dNdM_MCMC =  interp1d(M_numerics, tinker_eval_MCMC, kind='linear', 
-                            bounds_error=False, fill_value=0.)
+    f_dNdM_MCMC =  lambda M:mass_function(ccl_cosmo, M/h, a)*vol/(h**3 * M * np.log(10)) # h / Msun
     tinker_eval_MCMC = np.array([quad(f_dNdM_MCMC, edge[0],  edge[1], epsabs=0, epsrel=1e-5)[0] for edge in edge_pairs])
     axs[0].scatter(Ms, tinker_eval_MCMC, s=50 , marker='x', c='blue')
     axs[0].bar(x=edges[:-1], height=tinker_eval_MCMC, width=np.diff(edges), 

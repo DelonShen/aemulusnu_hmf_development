@@ -1,14 +1,39 @@
+import time
+print('timing')
+start_time = time.time()
+
 import sys
+
+
+from aemulusnu_massfunction.utils import *
+from aemulusnu_massfunction.massfunction import *
+
+
 import numpy as np
+from scipy import optimize as optimize
+
 box = sys.argv[1]
 a_fit = eval(sys.argv[2])
 
+print('##############################')
+print()
+print()
 
 prev_box = sys.argv[3]
 prev_a = eval(sys.argv[4])
 
 
-KX = np.diag([1e-2, 1e-4, 1e-4, 1e-2])
+# _curr_z = scaleToRedshift(a_fit)
+# _prev_z = scaleToRedshift(prev_a)
+# _delta_z = _curr_z - _prev_z
+# KX = np.diag([1e-1, 5e-2, 1e-4, 1e-4])#*(1+_delta_z)
+
+
+KX = np.diag([1e-2, 1e-4, 1e-4, 1e-4])
+# KX = np.diag([1e-2, 1e-4, 1e-4, 1e-2])
+
+
+print(KX)
 # KX = np.diag([1e-5, 1e-5, 1e-6, 1e-3])
 
 # if(a_fit == 1.0):
@@ -17,9 +42,6 @@ KX = np.diag([1e-2, 1e-4, 1e-4, 1e-2])
 param_names = ['d','e','f','g']
 ndim = len(param_names)
 
-
-from aemulusnu_massfunction.utils import *
-from aemulusnu_massfunction.massfunction import *
 
 from tqdm import tqdm, trange
 import matplotlib.pyplot as plt
@@ -36,7 +58,9 @@ cosmos_f.close()
 
 
 import pyccl as ccl
-
+end_time = time.time()
+elapsed_time = end_time - start_time
+print(f"importing libraries tookk {elapsed_time} seconds.")
 cosmo = cosmo_params[box]
 
 
@@ -72,7 +96,6 @@ all_zs = list(map(scaleToRedshift, all_as))
 N_data = {}
 M_data = {}
 aux_data = {}
-from scipy.interpolate import interp1d, UnivariateSpline, InterpolatedUnivariateSpline
 
 
 vol = -1 #Mpc^3/h^3
@@ -82,7 +105,7 @@ if(a_fit not in all_as):
     print('not enough data to fit this snapshot', box, a_fit)
     sys.exit()
 
-for a in tqdm([a_fit]):
+for a in [a_fit]:
     c_data = NvMs[a]
     
     Ms = c_data['M'] #units of h^-1 Msolar
@@ -157,12 +180,12 @@ def log_prob(param_values):
     tinker_fs = {}
 
     mass_function.set_params(param_values)
-    tinker_eval = mass_function(ccl_cosmo, M_numerics/h, a_fit)*vol/(h**3 * M_numerics * np.log(10))
-    f_dNdM = interp1d(M_numerics, tinker_eval, kind='linear', bounds_error=False, fill_value=0.)
+#     tinker_eval = mass_function(ccl_cosmo, M_numerics/h, a_fit)*vol/(h**3 * M_numerics * np.log(10))
+    f_dNdM = lambda M:mass_function(ccl_cosmo, M/h, a_fit)*vol/(h**3 * M * np.log(10))
     tinker_fs[a_fit] = f_dNdM
 
     model_vals = {}
-    model_vals[a_fit] = np.array([quad(tinker_fs[a_fit], edge_pair[0], edge_pair[1], epsabs=0, epsrel=1e-5)[0]
+    model_vals[a_fit] = np.array([quad(tinker_fs[a_fit], edge_pair[0], edge_pair[1], epsabs=0, epsrel=5e-3)[0]
         for edge_pair in NvMs[a_fit]['edge_pairs']
     ])
 
@@ -198,6 +221,8 @@ logdetKX = np.log(detKX)
 def log_prior(param_values):
     xmp = param_values - prev_final_param_vals
     arg = np.dot(np.dot(xmp.T, KXinv), xmp)
+    if(not np.isclose(a_fit, prev_a) and param_values[-1] < prev_final_param_vals[-1]): #assert exponnteitla supression increases as redshift increases
+        return -np.inf
     return -1/2*(ndim * np.log(2*np.pi) + logdetKX + arg)
 
 def log_likelihood_with_prior(param_values):
@@ -210,11 +235,13 @@ def log_likelihood_with_prior(param_values):
 guess = prev_final_param_vals
 print('Starting ML Fit')
 #Start by sampling with a maximum likelihood approach
-from scipy import optimize as optimize
 
 bounds = [(0,5) for _ in range(len(guess))]
 nll = lambda *args: -log_likelihood_with_prior(*args)
-result = optimize.minimize(nll, guess, method="Nelder-Mead", bounds = bounds, options={
+# import cProfile
+# cProfile.run("optimize.minimize(nll, guess, method='Nelder-Mead', bounds = bounds, options={'maxiter': len(guess)*10000})")
+
+result = optimize.minimize(nll, guess,  bounds = bounds, method='Nelder-Mead', options={
     'maxiter': len(guess)*10000
 })
 result['param_names'] = param_names
@@ -252,8 +279,8 @@ dM = np.array([edges[1]-edges[0] for edges in edge_pairs])
 
 
 
-tinker_evaled = mass_function(ccl_cosmo, M_numerics/h, a_fit)*vol/(h**3 * M_numerics * np.log(10))
-f_dNdM =  interp1d(M_numerics, tinker_evaled, kind='linear', bounds_error=False, fill_value=0.)
+# tinker_evaled = mass_function(ccl_cosmo, M_numerics/h, a_fit)*vol/(h**3 * M_numerics * np.log(10))
+f_dNdM =  lambda M:mass_function(ccl_cosmo, M/h, a_fit)*vol/(h**3 * M * np.log(10))
 
 tinker_eval_MCMC = np.array([quad(f_dNdM, edge[0],  edge[1], epsabs=0, epsrel=1e-5)[0] for edge in edge_pairs])
 
@@ -314,3 +341,6 @@ axs[1].set_xlim((10**left, np.max(edges)))
 axs[1].set_ylim((-.29, .29))
 axs[1].set_yticks([-.2, -.1, 0, .1, .2])
 plt.savefig('/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/figures/%s_fit_%.2f.pdf'%(box, a), bbox_inches='tight')
+
+print()
+print()

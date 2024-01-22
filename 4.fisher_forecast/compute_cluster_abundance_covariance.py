@@ -31,33 +31,7 @@ N_fiducial = N_in_z_bins_and_richness_bins(fiducial_cosmology, richness_bin_edge
 
 
 import matplotlib.pyplot as plt
-plt.rcParams['font.size'] = 8
-
-
-plt.figure( dpi=600)
-plt.tick_params(
-    bottom=False,
-    top=True,
-labelbottom=False,
-labeltop=True)
-plt.gca().xaxis.set_ticks_position('none') 
-plt.gca().yaxis.set_ticks_position('none') 
-
-
-# Add ticks for the block divisions
-tick_positions_z = [0,1,2,3]
-
-tick_z_labels = [r'$\lambda_\alpha:[%d, %d]$'%(a,b) for a,b in zip(richness_bin_edges, richness_bin_edges[1:])]
-plt.xticks(tick_positions_z, tick_z_labels, ha='center')
-
-tick_z_labels = [r'$z^i:[%.1f, %.1f]$'%(a,b) for a,b in zip(z_bin_edges, z_bin_edges[1:])]
-plt.yticks(tick_positions_z, tick_z_labels, rotation=90, va='center')
-
-
-plt.imshow(np.log10(N_fiducial), cmap='rainbow', vmin=0, vmax=5)
-plt.colorbar()
-plt.title(r'Fiducial $\log_{10} N^i_{\lambda_\alpha}$'+'\n')
-plt.savefig('/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/fiducial_cluster_abundance_nu_mass_%.4f.pdf'%(nu_mass_ev), dpi=600, bbox_inches = "tight")
+plt.rcParams['font.size'] = 11
 
 
 

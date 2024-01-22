@@ -1,0 +1,555 @@
+Leaving out Box45_1400
+Box47_1400 2.3038301302700224
+{'ns': 0.97000003, 'H0': 67.0, 'w0': -1.0, 'ombh2': 0.0223, 'omch2': 0.12, 'nu_mass_ev': 0.07071068, '10^9 As': 2.10100315}
+(2234, 8)
+(2234, 4)
+scaling input
+(2234, 8)
+scaling output
+(2234, 4)
+Iter 1/500 - Loss: 2.3834
+Iter 2/500 - Loss: 2.1045
+Iter 3/500 - Loss: 1.8468
+Iter 4/500 - Loss: 1.6104
+Iter 5/500 - Loss: 1.3958
+Iter 6/500 - Loss: 1.2041
+Iter 7/500 - Loss: 1.0385
+Iter 8/500 - Loss: 0.9011
+Iter 9/500 - Loss: 0.7905
+Iter 10/500 - Loss: 0.7061
+Iter 11/500 - Loss: 0.6453
+Iter 12/500 - Loss: 0.6036
+Iter 13/500 - Loss: 0.5722
+Iter 14/500 - Loss: 0.5423
+Iter 15/500 - Loss: 0.5099
+Iter 16/500 - Loss: 0.4744
+Iter 17/500 - Loss: 0.4353
+Iter 18/500 - Loss: 0.3911
+Iter 19/500 - Loss: 0.3409
+Iter 20/500 - Loss: 0.2855
+Iter 21/500 - Loss: 0.2270
+Iter 22/500 - Loss: 0.1688
+Iter 23/500 - Loss: 0.1138
+Iter 24/500 - Loss: 0.0636
+Iter 25/500 - Loss: 0.0187
+Iter 26/500 - Loss: -0.0214
+Iter 27/500 - Loss: -0.0576
+Iter 28/500 - Loss: -0.0917
+Iter 29/500 - Loss: -0.1259
+Iter 30/500 - Loss: -0.1612
+Iter 31/500 - Loss: -0.1983
+Iter 32/500 - Loss: -0.2372
+Iter 33/500 - Loss: -0.2774
+Iter 34/500 - Loss: -0.3181
+Iter 35/500 - Loss: -0.3582
+Iter 36/500 - Loss: -0.3966
+Iter 37/500 - Loss: -0.4323
+Iter 38/500 - Loss: -0.4650
+Iter 39/500 - Loss: -0.4945
+Iter 40/500 - Loss: -0.5217
+Iter 41/500 - Loss: -0.5478
+Iter 42/500 - Loss: -0.5742
+Iter 43/500 - Loss: -0.6017
+Iter 44/500 - Loss: -0.6300
+Iter 45/500 - Loss: -0.6581
+Iter 46/500 - Loss: -0.6851
+Iter 47/500 - Loss: -0.7107
+Iter 48/500 - Loss: -0.7347
+Iter 49/500 - Loss: -0.7573
+Iter 50/500 - Loss: -0.7790
+Iter 51/500 - Loss: -0.8000
+Iter 52/500 - Loss: -0.8204
+Iter 53/500 - Loss: -0.8404
+Iter 54/500 - Loss: -0.8597
+Iter 55/500 - Loss: -0.8778
+Iter 56/500 - Loss: -0.8943
+Iter 57/500 - Loss: -0.9088
+Iter 58/500 - Loss: -0.9220
+Iter 59/500 - Loss: -0.9348
+Iter 60/500 - Loss: -0.9477
+Iter 61/500 - Loss: -0.9608
+Iter 62/500 - Loss: -0.9734
+Iter 63/500 - Loss: -0.9849
+Iter 64/500 - Loss: -0.9953
+Iter 65/500 - Loss: -1.0049
+Iter 66/500 - Loss: -1.0140
+Iter 67/500 - Loss: -1.0228
+Iter 68/500 - Loss: -1.0312
+Iter 69/500 - Loss: -1.0390
+Iter 70/500 - Loss: -1.0460
+Iter 71/500 - Loss: -1.0523
+Iter 72/500 - Loss: -1.0580
+Iter 73/500 - Loss: -1.0633
+Iter 74/500 - Loss: -1.0683
+Iter 75/500 - Loss: -1.0729
+Iter 76/500 - Loss: -1.0771
+Iter 77/500 - Loss: -1.0807
+Iter 78/500 - Loss: -1.0837
+Iter 79/500 - Loss: -1.0859
+Iter 80/500 - Loss: -1.0870
+Iter 81/500 - Loss: -1.0880
+Iter 82/500 - Loss: -1.0917
+Iter 83/500 - Loss: -1.0926
+Iter 84/500 - Loss: -1.0936
+Iter 85/500 - Loss: -1.0961
+Iter 86/500 - Loss: -1.0958
+Iter 87/500 - Loss: -1.0981
+Iter 88/500 - Loss: -1.0985
+Iter 89/500 - Loss: -1.0996
+Iter 90/500 - Loss: -1.1007
+Iter 91/500 - Loss: -1.1011
+Iter 92/500 - Loss: -1.1024
+Iter 93/500 - Loss: -1.1025
+Iter 94/500 - Loss: -1.1038
+Iter 95/500 - Loss: -1.1039
+Iter 96/500 - Loss: -1.1050
+Iter 97/500 - Loss: -1.1051
+Iter 98/500 - Loss: -1.1058
+Iter 99/500 - Loss: -1.1059
+Iter 100/500 - Loss: -1.1064
+Iter 101/500 - Loss: -1.1066
+Iter 102/500 - Loss: -1.1069
+Iter 103/500 - Loss: -1.1072
+Iter 104/500 - Loss: -1.1073
+Iter 105/500 - Loss: -1.1076
+Iter 106/500 - Loss: -1.1076
+Iter 107/500 - Loss: -1.1079
+Iter 108/500 - Loss: -1.1080
+Iter 109/500 - Loss: -1.1083
+Iter 110/500 - Loss: -1.1083
+Iter 111/500 - Loss: -1.1086
+Iter 112/500 - Loss: -1.1088
+Iter 113/500 - Loss: -1.1092
+Iter 114/500 - Loss: -1.1098
+Iter 115/500 - Loss: -1.1106
+Iter 116/500 - Loss: -1.1122
+Iter 117/500 - Loss: -1.1145
+Iter 118/500 - Loss: -1.1179
+Iter 119/500 - Loss: -1.1221
+Iter 120/500 - Loss: -1.1265
+Iter 121/500 - Loss: -1.1305
+Iter 122/500 - Loss: -1.1340
+Iter 123/500 - Loss: -1.1374
+Iter 124/500 - Loss: -1.1407
+Iter 125/500 - Loss: -1.1440
+Iter 126/500 - Loss: -1.1474
+Iter 127/500 - Loss: -1.1508
+Iter 128/500 - Loss: -1.1540
+Iter 129/500 - Loss: -1.1567
+Iter 130/500 - Loss: -1.1589
+Iter 131/500 - Loss: -1.1605
+Iter 132/500 - Loss: -1.1618
+Iter 133/500 - Loss: -1.1629
+Iter 134/500 - Loss: -1.1640
+Iter 135/500 - Loss: -1.1650
+Iter 136/500 - Loss: -1.1660
+Iter 137/500 - Loss: -1.1670
+Iter 138/500 - Loss: -1.1680
+Iter 139/500 - Loss: -1.1690
+Iter 140/500 - Loss: -1.1701
+Iter 141/500 - Loss: -1.1713
+Iter 142/500 - Loss: -1.1727
+Iter 143/500 - Loss: -1.1742
+Iter 144/500 - Loss: -1.1759
+Iter 145/500 - Loss: -1.1778
+Iter 146/500 - Loss: -1.1798
+Iter 147/500 - Loss: -1.1819
+Iter 148/500 - Loss: -1.1841
+Iter 149/500 - Loss: -1.1864
+Iter 150/500 - Loss: -1.1887
+Iter 151/500 - Loss: -1.1911
+Iter 152/500 - Loss: -1.1935
+Iter 153/500 - Loss: -1.1958
+Iter 154/500 - Loss: -1.1981
+Iter 155/500 - Loss: -1.2002
+Iter 156/500 - Loss: -1.2023
+Iter 157/500 - Loss: -1.2043
+Iter 158/500 - Loss: -1.2061
+Iter 159/500 - Loss: -1.2077
+Iter 160/500 - Loss: -1.2092
+Iter 161/500 - Loss: -1.2106
+Iter 162/500 - Loss: -1.2118
+Iter 163/500 - Loss: -1.2130
+Iter 164/500 - Loss: -1.2140
+Iter 165/500 - Loss: -1.2149
+Iter 166/500 - Loss: -1.2158
+Iter 167/500 - Loss: -1.2167
+Iter 168/500 - Loss: -1.2175
+Iter 169/500 - Loss: -1.2183
+Iter 170/500 - Loss: -1.2190
+Iter 171/500 - Loss: -1.2199
+Iter 172/500 - Loss: -1.2207
+Iter 173/500 - Loss: -1.2215
+Iter 174/500 - Loss: -1.2223
+Iter 175/500 - Loss: -1.2231
+Iter 176/500 - Loss: -1.2239
+Iter 177/500 - Loss: -1.2247
+Iter 178/500 - Loss: -1.2254
+Iter 179/500 - Loss: -1.2262
+Iter 180/500 - Loss: -1.2270
+Iter 181/500 - Loss: -1.2278
+Iter 182/500 - Loss: -1.2286
+Iter 183/500 - Loss: -1.2294
+Iter 184/500 - Loss: -1.2301
+Iter 185/500 - Loss: -1.2310
+Iter 186/500 - Loss: -1.2317
+Iter 187/500 - Loss: -1.2325
+Iter 188/500 - Loss: -1.2333
+Iter 189/500 - Loss: -1.2340
+Iter 190/500 - Loss: -1.2348
+Iter 191/500 - Loss: -1.2355
+Iter 192/500 - Loss: -1.2362
+Iter 193/500 - Loss: -1.2370
+Iter 194/500 - Loss: -1.2377
+Iter 195/500 - Loss: -1.2385
+Iter 196/500 - Loss: -1.2393
+Iter 197/500 - Loss: -1.2401
+Iter 198/500 - Loss: -1.2409
+Iter 199/500 - Loss: -1.2418
+Iter 200/500 - Loss: -1.2427
+Iter 201/500 - Loss: -1.2436
+Iter 202/500 - Loss: -1.2445
+Iter 203/500 - Loss: -1.2454
+Iter 204/500 - Loss: -1.2463
+Iter 205/500 - Loss: -1.2472
+Iter 206/500 - Loss: -1.2481
+Iter 207/500 - Loss: -1.2490
+Iter 208/500 - Loss: -1.2499
+Iter 209/500 - Loss: -1.2509
+Iter 210/500 - Loss: -1.2519
+Iter 211/500 - Loss: -1.2530
+Iter 212/500 - Loss: -1.2542
+Iter 213/500 - Loss: -1.2555
+Iter 214/500 - Loss: -1.2568
+Iter 215/500 - Loss: -1.2583
+Iter 216/500 - Loss: -1.2597
+Iter 217/500 - Loss: -1.2612
+Iter 218/500 - Loss: -1.2626
+Iter 219/500 - Loss: -1.2639
+Iter 220/500 - Loss: -1.2652
+Iter 221/500 - Loss: -1.2663
+Iter 222/500 - Loss: -1.2675
+Iter 223/500 - Loss: -1.2685
+Iter 224/500 - Loss: -1.2696
+Iter 225/500 - Loss: -1.2706
+Iter 226/500 - Loss: -1.2715
+Iter 227/500 - Loss: -1.2725
+Iter 228/500 - Loss: -1.2736
+Iter 229/500 - Loss: -1.2746
+Iter 230/500 - Loss: -1.2757
+Iter 231/500 - Loss: -1.2767
+Iter 232/500 - Loss: -1.2778
+Iter 233/500 - Loss: -1.2788
+Iter 234/500 - Loss: -1.2799
+Iter 235/500 - Loss: -1.2809
+Iter 236/500 - Loss: -1.2818
+Iter 237/500 - Loss: -1.2828
+Iter 238/500 - Loss: -1.2837
+Iter 239/500 - Loss: -1.2846
+Iter 240/500 - Loss: -1.2854
+Iter 241/500 - Loss: -1.2863
+Iter 242/500 - Loss: -1.2871
+Iter 243/500 - Loss: -1.2880
+Iter 244/500 - Loss: -1.2889
+Iter 245/500 - Loss: -1.2898
+Iter 246/500 - Loss: -1.2908
+Iter 247/500 - Loss: -1.2918
+Iter 248/500 - Loss: -1.2928
+Iter 249/500 - Loss: -1.2937
+Iter 250/500 - Loss: -1.2946
+Iter 251/500 - Loss: -1.2953
+Iter 252/500 - Loss: -1.2960
+Iter 253/500 - Loss: -1.2967
+Iter 254/500 - Loss: -1.2973
+Iter 255/500 - Loss: -1.2979
+Iter 256/500 - Loss: -1.2984
+Iter 257/500 - Loss: -1.2990
+Iter 258/500 - Loss: -1.2995
+Iter 259/500 - Loss: -1.3000
+Iter 260/500 - Loss: -1.3005
+Iter 261/500 - Loss: -1.3009
+Iter 262/500 - Loss: -1.3013
+Iter 263/500 - Loss: -1.3017
+Iter 264/500 - Loss: -1.3021
+Iter 265/500 - Loss: -1.3024
+Iter 266/500 - Loss: -1.3028
+Iter 267/500 - Loss: -1.3031
+Iter 268/500 - Loss: -1.3034
+Iter 269/500 - Loss: -1.3037
+Iter 270/500 - Loss: -1.3039
+Iter 271/500 - Loss: -1.3042
+Iter 272/500 - Loss: -1.3044
+Iter 273/500 - Loss: -1.3047
+Iter 274/500 - Loss: -1.3049
+Iter 275/500 - Loss: -1.3051
+Iter 276/500 - Loss: -1.3053
+Iter 277/500 - Loss: -1.3055
+Iter 278/500 - Loss: -1.3057
+Iter 279/500 - Loss: -1.3058
+Iter 280/500 - Loss: -1.3060
+Iter 281/500 - Loss: -1.3062
+Iter 282/500 - Loss: -1.3063
+Iter 283/500 - Loss: -1.3065
+Iter 284/500 - Loss: -1.3066
+Iter 285/500 - Loss: -1.3068
+Iter 286/500 - Loss: -1.3069
+Iter 287/500 - Loss: -1.3070
+Iter 288/500 - Loss: -1.3071
+Iter 289/500 - Loss: -1.3073
+Iter 290/500 - Loss: -1.3074
+Iter 291/500 - Loss: -1.3075
+Iter 292/500 - Loss: -1.3076
+Iter 293/500 - Loss: -1.3077
+Iter 294/500 - Loss: -1.3078
+Iter 295/500 - Loss: -1.3079
+Iter 296/500 - Loss: -1.3080
+Iter 297/500 - Loss: -1.3081
+Iter 298/500 - Loss: -1.3082
+Iter 299/500 - Loss: -1.3083
+Iter 300/500 - Loss: -1.3084
+Iter 301/500 - Loss: -1.3085
+Iter 302/500 - Loss: -1.3086
+Iter 303/500 - Loss: -1.3086
+Iter 304/500 - Loss: -1.3087
+Iter 305/500 - Loss: -1.3088
+Iter 306/500 - Loss: -1.3089
+Iter 307/500 - Loss: -1.3090
+Iter 308/500 - Loss: -1.3091
+Iter 309/500 - Loss: -1.3091
+Iter 310/500 - Loss: -1.3092
+Iter 311/500 - Loss: -1.3093
+Iter 312/500 - Loss: -1.3093
+Iter 313/500 - Loss: -1.3094
+Iter 314/500 - Loss: -1.3095
+Iter 315/500 - Loss: -1.3096
+Iter 316/500 - Loss: -1.3096
+Iter 317/500 - Loss: -1.3097
+Iter 318/500 - Loss: -1.3098
+Iter 319/500 - Loss: -1.3098
+Iter 320/500 - Loss: -1.3099
+Iter 321/500 - Loss: -1.3100
+Iter 322/500 - Loss: -1.3101
+Iter 323/500 - Loss: -1.3101
+Iter 324/500 - Loss: -1.3102
+Iter 325/500 - Loss: -1.3102
+Iter 326/500 - Loss: -1.3103
+Iter 327/500 - Loss: -1.3104
+Iter 328/500 - Loss: -1.3104
+Iter 329/500 - Loss: -1.3105
+Iter 330/500 - Loss: -1.3106
+Iter 331/500 - Loss: -1.3106
+Iter 332/500 - Loss: -1.3107
+Iter 333/500 - Loss: -1.3107
+Iter 334/500 - Loss: -1.3108
+Iter 335/500 - Loss: -1.3108
+Iter 336/500 - Loss: -1.3109
+Iter 337/500 - Loss: -1.3110
+Iter 338/500 - Loss: -1.3110
+Iter 339/500 - Loss: -1.3111
+Iter 340/500 - Loss: -1.3111
+Iter 341/500 - Loss: -1.3112
+Iter 342/500 - Loss: -1.3113
+Iter 343/500 - Loss: -1.3113
+Iter 344/500 - Loss: -1.3114
+Iter 345/500 - Loss: -1.3114
+Iter 346/500 - Loss: -1.3115
+Iter 347/500 - Loss: -1.3115
+Iter 348/500 - Loss: -1.3116
+Iter 349/500 - Loss: -1.3116
+Iter 350/500 - Loss: -1.3117
+Iter 351/500 - Loss: -1.3118
+Iter 352/500 - Loss: -1.3118
+Iter 353/500 - Loss: -1.3119
+Iter 354/500 - Loss: -1.3119
+Iter 355/500 - Loss: -1.3119
+Iter 356/500 - Loss: -1.3120
+Iter 357/500 - Loss: -1.3120
+Iter 358/500 - Loss: -1.3121
+Iter 359/500 - Loss: -1.3122
+Iter 360/500 - Loss: -1.3122
+Iter 361/500 - Loss: -1.3123
+Iter 362/500 - Loss: -1.3123
+Iter 363/500 - Loss: -1.3124
+Iter 364/500 - Loss: -1.3124
+Iter 365/500 - Loss: -1.3125
+Iter 366/500 - Loss: -1.3125
+Iter 367/500 - Loss: -1.3126
+Iter 368/500 - Loss: -1.3126
+Iter 369/500 - Loss: -1.3127
+Iter 370/500 - Loss: -1.3127
+Iter 371/500 - Loss: -1.3128
+Iter 372/500 - Loss: -1.3128
+Iter 373/500 - Loss: -1.3129
+Iter 374/500 - Loss: -1.3129
+Iter 375/500 - Loss: -1.3130
+Iter 376/500 - Loss: -1.3130
+Iter 377/500 - Loss: -1.3131
+Iter 378/500 - Loss: -1.3131
+Iter 379/500 - Loss: -1.3132
+Iter 380/500 - Loss: -1.3132
+Iter 381/500 - Loss: -1.3133
+Iter 382/500 - Loss: -1.3133
+Iter 383/500 - Loss: -1.3134
+Iter 384/500 - Loss: -1.3134
+Iter 385/500 - Loss: -1.3134
+Iter 386/500 - Loss: -1.3135
+Iter 387/500 - Loss: -1.3136
+Iter 388/500 - Loss: -1.3136
+Iter 389/500 - Loss: -1.3136
+Iter 390/500 - Loss: -1.3137
+Iter 391/500 - Loss: -1.3138
+Iter 392/500 - Loss: -1.3138
+Iter 393/500 - Loss: -1.3139
+Iter 394/500 - Loss: -1.3139
+Iter 395/500 - Loss: -1.3139
+Iter 396/500 - Loss: -1.3140
+Iter 397/500 - Loss: -1.3140
+Iter 398/500 - Loss: -1.3141
+Iter 399/500 - Loss: -1.3141
+Iter 400/500 - Loss: -1.3142
+Iter 401/500 - Loss: -1.3142
+Iter 402/500 - Loss: -1.3143
+Iter 403/500 - Loss: -1.3143
+Iter 404/500 - Loss: -1.3144
+Iter 405/500 - Loss: -1.3144
+Iter 406/500 - Loss: -1.3145
+Iter 407/500 - Loss: -1.3145
+Iter 408/500 - Loss: -1.3146
+Iter 409/500 - Loss: -1.3146
+Iter 410/500 - Loss: -1.3147
+Iter 411/500 - Loss: -1.3147
+Iter 412/500 - Loss: -1.3148
+Iter 413/500 - Loss: -1.3148
+Iter 414/500 - Loss: -1.3149
+Iter 415/500 - Loss: -1.3149
+Iter 416/500 - Loss: -1.3150
+Iter 417/500 - Loss: -1.3150
+Iter 418/500 - Loss: -1.3151
+Iter 419/500 - Loss: -1.3151
+Iter 420/500 - Loss: -1.3152
+Iter 421/500 - Loss: -1.3152
+Iter 422/500 - Loss: -1.3153
+Iter 423/500 - Loss: -1.3153
+Iter 424/500 - Loss: -1.3154
+Iter 425/500 - Loss: -1.3154
+Iter 426/500 - Loss: -1.3155
+Iter 427/500 - Loss: -1.3155
+Iter 428/500 - Loss: -1.3156
+Iter 429/500 - Loss: -1.3156
+Iter 430/500 - Loss: -1.3157
+Iter 431/500 - Loss: -1.3157
+Iter 432/500 - Loss: -1.3158
+Iter 433/500 - Loss: -1.3158
+Iter 434/500 - Loss: -1.3159
+Iter 435/500 - Loss: -1.3159
+Iter 436/500 - Loss: -1.3160
+Iter 437/500 - Loss: -1.3160
+Iter 438/500 - Loss: -1.3161
+Iter 439/500 - Loss: -1.3161
+Iter 440/500 - Loss: -1.3162
+Iter 441/500 - Loss: -1.3162
+Iter 442/500 - Loss: -1.3163
+Iter 443/500 - Loss: -1.3163
+Iter 444/500 - Loss: -1.3164
+Iter 445/500 - Loss: -1.3164
+Iter 446/500 - Loss: -1.3165
+Iter 447/500 - Loss: -1.3165
+Iter 448/500 - Loss: -1.3166
+Iter 449/500 - Loss: -1.3166
+Iter 450/500 - Loss: -1.3167
+Iter 451/500 - Loss: -1.3167
+Iter 452/500 - Loss: -1.3168
+Iter 453/500 - Loss: -1.3168
+Iter 454/500 - Loss: -1.3169
+Iter 455/500 - Loss: -1.3169
+Iter 456/500 - Loss: -1.3170
+Iter 457/500 - Loss: -1.3171
+Iter 458/500 - Loss: -1.3171
+Iter 459/500 - Loss: -1.3172
+Iter 460/500 - Loss: -1.3172
+Iter 461/500 - Loss: -1.3172
+Iter 462/500 - Loss: -1.3173
+Iter 463/500 - Loss: -1.3174
+Iter 464/500 - Loss: -1.3174
+Iter 465/500 - Loss: -1.3175
+Iter 466/500 - Loss: -1.3175
+Iter 467/500 - Loss: -1.3176
+Iter 468/500 - Loss: -1.3176
+Iter 469/500 - Loss: -1.3177
+Iter 470/500 - Loss: -1.3177
+Iter 471/500 - Loss: -1.3178
+Iter 472/500 - Loss: -1.3178
+Iter 473/500 - Loss: -1.3179
+Iter 474/500 - Loss: -1.3179
+Iter 475/500 - Loss: -1.3180
+Iter 476/500 - Loss: -1.3180
+Iter 477/500 - Loss: -1.3181
+Iter 478/500 - Loss: -1.3181
+Iter 479/500 - Loss: -1.3182
+Iter 480/500 - Loss: -1.3182
+Iter 481/500 - Loss: -1.3183
+Iter 482/500 - Loss: -1.3184
+Iter 483/500 - Loss: -1.3184
+Iter 484/500 - Loss: -1.3184
+Iter 485/500 - Loss: -1.3185
+Iter 486/500 - Loss: -1.3186
+Iter 487/500 - Loss: -1.3186
+Iter 488/500 - Loss: -1.3187
+Iter 489/500 - Loss: -1.3187
+Iter 490/500 - Loss: -1.3188
+Iter 491/500 - Loss: -1.3188
+Iter 492/500 - Loss: -1.3189
+Iter 493/500 - Loss: -1.3189
+Iter 494/500 - Loss: -1.3190
+Iter 495/500 - Loss: -1.3190
+Iter 496/500 - Loss: -1.3191
+Iter 497/500 - Loss: -1.3191
+Iter 498/500 - Loss: -1.3192
+Iter 499/500 - Loss: -1.3192
+Iter 500/500 - Loss: -1.3193
+OrderedDict([('likelihood.raw_task_noises', tensor([-6.4457, -8.3217, -7.8877, -9.2046])), ('likelihood.raw_task_noises_constraint.lower_bound', tensor(1.0000e-04)), ('likelihood.raw_task_noises_constraint.upper_bound', tensor(inf)), ('mean_module.base_means.0.weights', tensor([[-1.0056e+00],
+        [-2.5070e-01],
+        [-5.7885e-01],
+        [-3.4341e-02],
+        [-2.1773e-04],
+        [-4.7084e-01],
+        [ 1.8802e+00],
+        [-1.3070e+00]])), ('mean_module.base_means.0.bias', tensor([1.1061])), ('mean_module.base_means.1.weights', tensor([[ 0.3382],
+        [ 0.1353],
+        [-0.2187],
+        [-0.4389],
+        [-0.2426],
+        [ 0.9366],
+        [-0.4653],
+        [ 1.0668]])), ('mean_module.base_means.1.bias', tensor([-0.8165])), ('mean_module.base_means.2.weights', tensor([[ 0.5878],
+        [ 0.1003],
+        [ 0.5650],
+        [ 0.7133],
+        [-0.0618],
+        [ 0.4070],
+        [-0.4832],
+        [ 2.2224]])), ('mean_module.base_means.2.bias', tensor([-1.8919])), ('mean_module.base_means.3.weights', tensor([[-0.1924],
+        [ 0.1275],
+        [-1.1023],
+        [-1.0738],
+        [-0.0538],
+        [ 1.2835],
+        [-0.5954],
+        [-1.0105]])), ('mean_module.base_means.3.bias', tensor([0.6201])), ('covar_module.task_covar_module.covar_factor', tensor([[-1.2250],
+        [ 0.1349],
+        [ 0.5678],
+        [-0.3349]])), ('covar_module.task_covar_module.raw_var', tensor([-3.7980,  0.4509, -1.7082,  0.2928])), ('covar_module.task_covar_module.raw_var_constraint.lower_bound', tensor(0.)), ('covar_module.task_covar_module.raw_var_constraint.upper_bound', tensor(inf)), ('covar_module.data_covar_module.raw_mixture_weights', tensor([-0.5268, -0.5268, -3.0679])), ('covar_module.data_covar_module.raw_mixture_means', tensor([[[-2.1964, -3.0046, -1.6315, -2.0021, -2.4883, -1.1973, -2.8817,
+          -1.4812]],
+
+        [[-2.1964, -3.0046, -1.6315, -2.0021, -2.4883, -1.1973, -2.8817,
+          -1.4812]],
+
+        [[-2.6580, -2.7560, -0.5610, -0.7251,  0.5597, -0.7273, -0.7954,
+          -1.5874]]])), ('covar_module.data_covar_module.raw_mixture_scales', tensor([[[-0.6508, -2.4534, -2.9981, -2.4415, -1.7258, -2.5124, -2.7089,
+          -1.7629]],
+
+        [[-0.6508, -2.4534, -2.9981, -2.4415, -1.7258, -2.5124, -2.7089,
+          -1.7629]],
+
+        [[-2.4305, -2.5490, 11.2164, 13.2861, 11.9957, -1.0459, 16.7602,
+           0.8753]]])), ('covar_module.data_covar_module.raw_mixture_scales_constraint.lower_bound', tensor(0.)), ('covar_module.data_covar_module.raw_mixture_scales_constraint.upper_bound', tensor(inf)), ('covar_module.data_covar_module.raw_mixture_means_constraint.lower_bound', tensor(0.)), ('covar_module.data_covar_module.raw_mixture_means_constraint.upper_bound', tensor(inf)), ('covar_module.data_covar_module.raw_mixture_weights_constraint.lower_bound', tensor(0.)), ('covar_module.data_covar_module.raw_mixture_weights_constraint.upper_bound', tensor(inf))])

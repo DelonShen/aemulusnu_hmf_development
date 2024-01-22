@@ -5,10 +5,10 @@ prev=$2
 # Set the Slurm job parameters
 job_name_prefix="fit-iter-handler-"$curr
 output_dir="logs"
-time_limit="60:00"
+time_limit="8:00"
 partition="kipac"
 num_nodes=1
-mem_per_node=4096
+mem_per_cpu=8192
 cpus_per_task=4
 
 # Create a Slurm job script for the data file
@@ -26,7 +26,7 @@ sbatch <<EOF
 #SBATCH --time=${time_limit}
 #SBATCH -p ${partition}
 #SBATCH --nodes=${num_nodes}
-#SBATCH --mem=${mem_per_node}
+#SBATCH --mem-per-cpu=${mem_per_cpu}
 #SBATCH --cpus-per-task=${cpus_per_task}
 
 python -u fit_individ_iter_handler.py $curr $prev

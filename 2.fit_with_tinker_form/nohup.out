@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/home/users/delon/aemulusnu_massfunction/2.fit_with_tinker_form/asdf.py", line 2, in <module>
+    sleep(10000000)
+KeyboardInterrupt

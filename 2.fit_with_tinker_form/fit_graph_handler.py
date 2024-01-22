@@ -18,7 +18,11 @@ X = []
 Y = []
 idx = {}
 cidx = 0
+# weird_boxes = ['Box63_1400', 'Box35_1400', 'Box_n50_38_1400', 'Box5_1400']
 for box in cosmo_params:
+#     if(box in weird_boxes):
+#         print('skip', box)
+#         continue
     X += [box]
     idx[box] = cidx
     cidx+=1

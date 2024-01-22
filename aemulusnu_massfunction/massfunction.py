@@ -23,8 +23,7 @@ from pyccl.halos.halo_model_base import MassFunc
 def B(a, M, σM, d, e, f, g):
     oup = e**(d)*g**(-d/2)*gamma(d/2)
     oup += g**(-f/2)*gamma(f/2)
-    oup = 2/oup
-    return oup
+    return 2/oup
 
 
 def f_G(a, M, σM, d, e, f, g):
@@ -44,7 +43,7 @@ class MassFuncAemulusNu_fitting(MassFunc):
         super().__init__(mass_def=mass_def, mass_def_strict=mass_def_strict)
 
     def _check_mass_def_strict(self, mass_def):
-        return mass_def.Delta == "fof"
+        return mass_def.Delta == "200m"
 
     def _setup(self):
         self.params = {'d':-1, 'e':-1, 'f':-1, 'g':-1}
