@@ -28,7 +28,7 @@ fiducial_log10_rel_step_size = { #for numerical derivativese
     'w0': -2.3,
     'ombh2': -2.6,
     'omch2': -2.3,
-    'nu_mass_ev': -1.1,
+    'nu_mass_ev': -2.3,
 }
 
 fiducial_cosmo_vals = get_cosmo_vals(fiducial_cosmology)

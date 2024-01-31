@@ -1,35 +1,32 @@
 #!/bin/bash
 
-param_names=('10^9 As' 'ns' 'H0' 'w0' 'ombh2' 'omch2')
 
-# param_names=('10^9 As' 'omch2')
-#param_names=('10^9 As' 'H0' 'w0' 'ombh2' 'omch2')
-#param_names=('H0' 'w0' 'ombh2')
 step_sizes=() # Initialize the array
 
-#param_names=('H0' 'w0' 'ombh2')
-# for i in $(seq 1 0.1 3.5); do
+# param_names=('10^9 As' 'H0' 'w0' 'ombh2' 'omch2')
+# for i in $(seq 1.3 0.2 3.3); do
 #   step_sizes+=($i)
 # done
 
 
-
-param_names=('ombh2')
- for i in $(seq 1 0.025 3.5); do
-   step_sizes+=($i)
- done
 
 #param_names=('ns')
 #
-# for i in $(seq 2 0.1 5); do
-#   step_sizes+=($i)
-# done
-
-#param_names=('nu_mass_ev')
-#
-#for i in $(seq 0.3 0.025 2); do
+#for i in $(seq 3 0.2 5); do
 #  step_sizes+=($i)
 #done
+
+param_names=('nu_mass_ev')
+
+# for i in $(seq 0.3 0.2 1.5); do
+# step_sizes+=($i)
+# done
+
+for i in $(seq 1.5 0.2 3.5); do
+step_sizes+=($i)
+done
+
+
 
 for ((i=0; i<${#param_names[@]}; i++)); do
     for ((j=0; j<${#step_sizes[@]}; j++)); do

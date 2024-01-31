@@ -1,0 +1,8 @@
+python -u compute_cluster_abundance_at_cosmology.py "nu_mass_ev" -1.7
+python -u compute_cluster_abundance_at_cosmology.py "nu_mass_ev" -1.9
+python -u compute_cluster_abundance_at_cosmology.py "nu_mass_ev" -2.1
+python -u compute_cluster_abundance_at_cosmology.py "nu_mass_ev" -2.3
+python -u compute_cluster_abundance_at_cosmology.py "nu_mass_ev" -2.5
+python -u compute_cluster_abundance_at_cosmology.py "nu_mass_ev" -2.7
+python -u compute_cluster_abundance_at_cosmology.py "nu_mass_ev" -2.9
+python -u compute_cluster_abundance_at_cosmology.py "nu_mass_ev" -3.1

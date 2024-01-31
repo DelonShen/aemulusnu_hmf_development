@@ -1,0 +1,7 @@
+python -u compute_cluster_abundance_at_cosmology.py "10^9 As" -2.6
+python -u compute_cluster_abundance_at_cosmology.py "ns" -4.0
+python -u compute_cluster_abundance_at_cosmology.py "H0" -2.3
+python -u compute_cluster_abundance_at_cosmology.py "w0" -2.3
+python -u compute_cluster_abundance_at_cosmology.py "ombh2" -2.6
+python -u compute_cluster_abundance_at_cosmology.py "omch2" -2.3
+python -u compute_cluster_abundance_at_cosmology.py "nu_mass_ev" -1.1
