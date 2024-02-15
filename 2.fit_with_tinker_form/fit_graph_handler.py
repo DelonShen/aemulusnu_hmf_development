@@ -140,7 +140,7 @@ import time
 
 def run_fit_iter(box, prev_box):
     #run the fit job for this guy 
-    subprocess.run('./fit_individ_handler.sh %s %s'%(box, prev_box), shell=True)
+    subprocess.run('./fit_box_handler.sh %s %s'%(box, prev_box), shell=True)
 
 def bfs_traversal_run_jobs(mst, start):
     n = len(mst)
@@ -157,7 +157,7 @@ def bfs_traversal_run_jobs(mst, start):
         curr_parent = parent[node]
         if(curr_parent is not None):
             try:
-                squeue_output = subprocess.check_output(['squeue', '-u', 'delon', '-n', 'fit-iter-handler-%s'%(X[curr_parent]), '-h']).decode().strip()
+                squeue_output = subprocess.check_output(['squeue', '-u', 'delon', '-n', 'fit-box-handler-%s'%(X[curr_parent]), '-h']).decode().strip()
 #                 print('sq', squeue_output)
                 if not squeue_output: #if job done running 
                     print('Running fit for %s'%(X[node]))

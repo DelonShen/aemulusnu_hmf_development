@@ -63,26 +63,22 @@ for box in tqdm(cosmo_params):
                           w0=curr_cosmo['w0'],
                           m_nu=[curr_cosmo['nu_mass_ev']/3, curr_cosmo['nu_mass_ev']/3, curr_cosmo['nu_mass_ev']/3])
 
-
+    try:
+        with open("/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/%s_params.pkl"%(box), "rb") as f:
+            MLE_params = pickle.load(f)
+            param_values = list(MLE_params.values())
+            if(leave_out_box == box):
+                Xlo += [curr_cosmo_values]
+                Ylo += [param_values]
+            else:
+                Y+= [param_values]
+                X+= [curr_cosmo_values]
+    except:
+        print(box, z)
     for a in a_list:
         z = scaleToRedshift(a)
-#         if(z>2):
-#             continue
         z_to_a[z] = a
         a_to_z[a] = z
-        try:
-            with open("/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/%s_%.2f_params.pkl"%(box, a), "rb") as f:
-                MLE_params = pickle.load(f)
-                param_values = list(MLE_params.values())
-                if(leave_out_box == box):
-                    Xlo += [curr_cosmo_values + [a]]
-                    Ylo += [param_values]
-                else:
-                    Y+= [param_values]
-                    X+= [curr_cosmo_values + [a]]
-        except:
-            print(box, z)
-
 
 X = np.array(X)
 Y = np.array(Y)
@@ -115,11 +111,12 @@ Y_train = torch.from_numpy(Y).float()
 n_tasks = len(Y_train[0])
 
 
-
 from aemulusnu_massfunction.emulator import *
 
 
-likelihood = gpytorch.likelihoods.MultitaskGaussianLikelihood(num_tasks=n_tasks, has_global_noise=False, has_task_noise=True)
+likelihood = gpytorch.likelihoods.MultitaskGaussianLikelihood(num_tasks=n_tasks,
+                                                              has_global_noise=False, 
+                                                              has_task_noise=True)
 model = MultitaskGPModel(X_train, Y_train, likelihood)
 
 
@@ -130,15 +127,14 @@ model.train()
 likelihood.train()
 
 
-training_iterations = 500
-
-# epochs_iter = tqdm(range(training_iterations), desc="Iteration")
+training_iterations = 2000
+epochs_iter = tqdm(range(training_iterations), desc="Iteration")
 
 
 # Create the optimizer with the initial learning rate
-optimizer = torch.optim.AdamW(model.parameters(), lr=0.1, amsgrad=True)  # Includes GaussianLikelihood parameters
+optimizer = torch.optim.AdamW(model.parameters(), lr=0.01, amsgrad=True)  # Includes GaussianLikelihood parameters
 
-for i in range(training_iterations):
+for i in epochs_iter:
     # Training step
     model.train()
     likelihood.train()
@@ -146,25 +142,10 @@ for i in range(training_iterations):
     optimizer.zero_grad()
     output = model(X_train)
     loss = -mll(output, Y_train)
-#     epochs_iter.set_postfix(loss=loss.item())
+    epochs_iter.set_postfix(loss=loss.item())
     loss.backward()
     optimizer.step()
     print('Iter %d/%d - Loss: %.4f' % (i + 1, training_iterations, loss.item()))
-
-    # Change learning rate after half of iterations
-#     if i == 5:
-#         lr = 0.1
-#         for param_group in optimizer.param_groups:
-#             param_group['lr'] = lr
-
-
-#     if i == 150:
-#         lr = 0.01
-#         print('reducing lr to 0.01')
-#         for param_group in optimizer.param_groups:
-#             param_group['lr'] = lr
-#-.926
-
 
 print(model.state_dict())
 
@@ -310,7 +291,13 @@ for a in tqdm(N_data):
     #ML Fit
 
     mass_function = MassFuncAemulusNu_fitting()
-    mass_function.set_params(true_params[a])
+    
+    with open("/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/%s_%.2f_params.pkl"%(box, a), "rb") as f:
+        MLE_params = pickle.load(f)
+        print(list(MLE_params.values()))
+        mass_function.set_params(list(MLE_params.values()))
+
+
     f_dNdM_MCMC =  lambda M:mass_function(ccl_cosmo, M/h, a)*vol/(h**3 * M * np.log(10)) # h / Msun
     tinker_eval_MCMC = np.array([quad(f_dNdM_MCMC, edge[0],  edge[1], epsabs=0, epsrel=1e-5)[0] for edge in edge_pairs])
     axs[0].scatter(Ms, tinker_eval_MCMC, s=50 , marker='x', c='blue')
