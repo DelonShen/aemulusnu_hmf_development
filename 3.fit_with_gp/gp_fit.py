@@ -63,6 +63,7 @@ for box in tqdm(cosmo_params):
                           w0=curr_cosmo['w0'],
                           m_nu=[curr_cosmo['nu_mass_ev']/3, curr_cosmo['nu_mass_ev']/3, curr_cosmo['nu_mass_ev']/3])
 
+
     try:
         with open("/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/%s_params.pkl"%(box), "rb") as f:
             MLE_params = pickle.load(f)
