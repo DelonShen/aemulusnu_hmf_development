@@ -100,7 +100,7 @@ chi_spline = InterpolatedUnivariateSpline(z_values, chi_values)
 
 
 from scipy.integrate import quad, dblquad
-from scipy.special import spherical_jn as jn
+from scipy.special import jv
 
 
 from functools import cache
@@ -114,7 +114,7 @@ def variance_integral(kperp1, kperp2, z_val):
     #kperp*h has units 1 / Mpc
     Plin = pkclass.pk_lin(kperp*h, np.array([z_val]))*h**3 #units of Mpc^3/h^3 
     chi = chi_spline(z_val)
-    arg = 2*jn(1, kperp*chi*θs) / (kperp*chi*θs) #unitless
+    arg = 2*jv(1, kperp*chi*θs) / (kperp*chi*θs) #unitless
     return Plin * arg**2 / (2*np.pi)**2 #units of Mpc^3/h^3 ~ distance^3
 
 

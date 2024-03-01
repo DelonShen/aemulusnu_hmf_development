@@ -142,7 +142,7 @@ def uniform_log_prior(param_values):
     for i, (p0, p1) in enumerate(paired_params):
         for a in a_list:
             param = p(p0, p1, a)
-            if(param < 0 or param > 5):
+            if(param < 0):# or param > 5):
                 return -np.inf
 
     #g = g0 + (a-0.5) g1
@@ -151,8 +151,8 @@ def uniform_log_prior(param_values):
     # => g1 < 0
     # g bigger => exp suppression happens at smaller mass
     # so we should exclude g1 > 0
-    if(param_values[-1] > 0 ): 
-        return -np.inf
+#     if(param_values[-1] > 0 ): 
+#         return -np.inf
     return 0
 
 def log_likelihood(param_values):

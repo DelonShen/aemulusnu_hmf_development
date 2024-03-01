@@ -2,11 +2,11 @@
 
 
 
-mnus=()
-for i in $(seq 0.06 0.01 .302); do
-  mnus+=($i)
-done
-
+mnus=(0.06)
+#for i in $(seq 0.06 0.01 .302); do
+#  mnus+=($i)
+#done
+#
 # mnus=(0.062)
 
 
