@@ -29,7 +29,6 @@ class MassFuncAemulusNu_fitting_all_snapshot(MassFunc):
     """
     """
     name = 'AemulusNu'
-    mirror_cosmos = {}
 
     def __init__(self, *,
                  mass_def="200m",

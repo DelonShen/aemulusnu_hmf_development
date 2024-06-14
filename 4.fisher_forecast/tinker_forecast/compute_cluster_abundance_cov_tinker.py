@@ -1,6 +1,6 @@
-from aemulusnu_massfunction.emulator import *
+from aemulusnu_massfunction.emulator_training import *
 from aemulusnu_massfunction.fisher_utils import *
-
+from scipy.integrate import quad
 
 z_bin_edges = [0.2, 0.4, 0.6, 0.8, 1.0]
 richness_bin_edges = [20., 30., 45., 60., 300.]

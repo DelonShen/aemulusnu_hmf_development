@@ -6,8 +6,8 @@ import numpy as np
 import functools
 import sys
 from tqdm import tqdm, trange
-from aemulusnu_massfunction.utils import *
-from aemulusnu_massfunction.emulator import *
+from aemulusnu_mf_lib.utils import *
+from aemulusnu_massfunction.emulator_training import *
 
 from classy import Class
 
@@ -112,8 +112,6 @@ Y_train = torch.from_numpy(Y).float()
 n_tasks = len(Y_train[0])
 
 
-from aemulusnu_massfunction.emulator import *
-
 
 likelihood = gpytorch.likelihoods.MultitaskGaussianLikelihood(num_tasks=n_tasks,
                                                               has_global_noise=False, 
@@ -128,7 +126,7 @@ model.train()
 likelihood.train()
 
 
-training_iterations = 2000
+training_iterations = 3000
 epochs_iter = tqdm(range(training_iterations), desc="Iteration")
 
 
@@ -150,7 +148,6 @@ for i in epochs_iter:
 
 print(model.state_dict())
 
-from aemulusnu_massfunction.massfunction import *
 
 with open("/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/GP_lo%s.pkl"%(leave_out_box), "wb") as f:
     pickle.dump([model,
@@ -161,7 +158,6 @@ with open("/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/GP_lo%s.p
 Emulator = AemulusNu_HMF_Emulator(emulator_loc = "/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/GP_lo%s.pkl"%(leave_out_box))
 
 box =leave_out_box
-from aemulusnu_massfunction.massfunction import *
 
 NvM_fname = '/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/'+box+'_NvsM.pkl'
 NvM_f = open(NvM_fname, 'rb')
@@ -291,9 +287,9 @@ for a in tqdm(N_data):
 
     #ML Fit
 
-    mass_function = MassFuncAemulusNu_fitting()
+    mass_function = MassFuncAemulusNu_fitting_all_snapshot()
     
-    with open("/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/%s_%.2f_params.pkl"%(box, a), "rb") as f:
+    with open("/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/%s_params.pkl"%(box), "rb") as f:
         MLE_params = pickle.load(f)
         print(list(MLE_params.values()))
         mass_function.set_params(list(MLE_params.values()))

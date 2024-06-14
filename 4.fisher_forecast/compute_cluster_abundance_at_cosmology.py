@@ -1,4 +1,4 @@
-from aemulusnu_massfunction.emulator import *
+from aemulusnu_massfunction.emulator_training import *
 from aemulusnu_massfunction.fisher_utils import *
 import pickle
 import sys

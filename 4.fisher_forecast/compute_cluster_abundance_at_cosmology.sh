@@ -3,18 +3,18 @@
 
 # step_sizes=() # Initialize the array
 
-param_names=('10^9 As' 'H0' 'w0' 'ombh2' 'omch2' 'nu_mass_ev')
-for i in $(seq 1.1 0.3 3.5); do
-  step_sizes+=($i)
-done
-
-
-
-# param_names=('ns')
-
-# for i in $(seq 3 0.2 5); do
-#  step_sizes+=($i)
+# param_names=('10^9 As' 'H0' 'w0' 'ombh2' 'omch2' 'nu_mass_ev')
+# for i in $(seq 1.1 0.3 3.5); do
+#   step_sizes+=($i)
 # done
+
+
+
+param_names=('ns')
+
+for i in $(seq 3 0.2 5); do
+ step_sizes+=($i)
+done
 
 # param_names=('nu_mass_ev')
 

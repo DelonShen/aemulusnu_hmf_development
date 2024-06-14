@@ -1,0 +1,23 @@
+
+CommandNotFoundError: Your shell has not been properly configured to use 'conda activate'.
+To initialize your shell, run
+
+    $ conda init <SHELL_NAME>
+
+Currently supported shells are:
+  - bash
+  - fish
+  - tcsh
+  - xonsh
+  - zsh
+  - powershell
+
+See 'conda init --help' for more information and options.
+
+IMPORTANT: You may need to close and restart your shell after running 'conda init'.
+
+
+Traceback (most recent call last):
+  File "/home/users/delon/aemulusnu_massfunction/4.fisher_forecast/tinker_forecast/compute_cluster_abundance_at_cosmology.py", line 1, in <module>
+    from aemulusnu_massfunction.emulator import *
+ModuleNotFoundError: No module named 'aemulusnu_massfunction.emulator'

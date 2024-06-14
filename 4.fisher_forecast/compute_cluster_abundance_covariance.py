@@ -1,6 +1,6 @@
-from aemulusnu_massfunction.emulator import *
+from aemulusnu_massfunction.emulator_training import *
 from aemulusnu_massfunction.fisher_utils import *
-
+from scipy.integrate import quad
 
 z_bin_edges = [0.2, 0.4, 0.6, 0.8, 1.0]
 richness_bin_edges = [20., 30., 45., 60., 300.]
@@ -263,4 +263,4 @@ for a in tick_positions_z:
     plt.axhline(a+2, color='black', linestyle='-', linewidth=lw)
 
 plt.title(r'$\log_{10}{\rm Cov}(N^i_{\lambda_\alpha} , N^j_{\lambda_\beta})$' + '\n')
-plt.savefig('/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/fiducial_cluster_abundance_cov_nu_mass_%.4f.pdf'%(nu_mass_ev), dpi=600, bbox_inches = "tight")
+plt.savefig('fiducial_cluster_abundance_cov_nu_mass_%.4f.pdf'%(nu_mass_ev), dpi=600, bbox_inches = "tight")
