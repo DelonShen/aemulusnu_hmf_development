@@ -1,5 +1,5 @@
-from aemulusnu_massfunction.utils import *
-from aemulusnu_massfunction.massfunction import *
+from aemulusnu_massfunction.massfunction_fitting_tinker import *
+from aemulusnu_mf_lib.utils import *
 
 import numpy as np
 from tqdm import tqdm, trange
@@ -30,8 +30,6 @@ for box in cosmo_params:
     
 X = np.array(X)
 Y = np.array(Y)
-
-from aemulusnu_massfunction.utils import Standardizer
 
 # Assuming Y is your input matrix with shape (n_samples, n_features)
 # Create an instance of StandardScaler

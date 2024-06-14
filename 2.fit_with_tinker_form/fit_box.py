@@ -1,9 +1,10 @@
 import sys
 
 
-from aemulusnu_massfunction.utils import *
-from aemulusnu_massfunction.massfunction import *
+from aemulusnu_massfunction.massfunction_fitting_tinker import *
+from aemulusnu_mf_lib.utils import *
 
+from scipy.integrate import quad
 
 import numpy as np
 from scipy import optimize as optimize
@@ -33,8 +34,6 @@ param_names = ['d0','d1',
 ndim = len(param_names)
 
 
-from aemulusnu_massfunction.utils import *
-from aemulusnu_massfunction.massfunction import *
 
 import numpy as np
 from tqdm import tqdm, trange
