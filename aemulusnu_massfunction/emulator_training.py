@@ -204,7 +204,8 @@ class AemulusNu_HMF_Emulator(MassFunc):
         
         if(tuple(curr_cosmo_values) not in self.ComputedParams):
             with torch.no_grad(), gpytorch.settings.fast_pred_var():
-                predictions = self.likelihood(self.model(torch.from_numpy(X).float()))
+#                 predictions = self.likelihood(self.model(torch.from_numpy(X).float()))
+                predictions = self.model(torch.from_numpy(X).float())
                 mean = self.out_scaler.inverse_transform(predictions.mean.numpy())
             self.ComputedParams[tuple(curr_cosmo_values)] = dict(zip(self.param_names, mean[0]))
             
