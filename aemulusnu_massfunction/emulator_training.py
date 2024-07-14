@@ -3,8 +3,8 @@ import pickle
 import numpy as np
 from types import MethodType
 
-from aemulusnu_mf_lib.utils import *
-from aemulusnu_mf_lib.massfunction import *
+from aemulusnu_hmf_lib.utils import *
+from aemulusnu_hmf_lib.massfunction import *
 
 import torch
 import gpytorch
@@ -12,10 +12,10 @@ import gpytorch
 
 from pyccl.halos.halo_model_base import MassFunc
 import pyccl as ccl
-from aemulusnu_mf_lib import *
-from aemulusnu_mf_lib.ccl_patches import *
+from aemulusnu_hmf_lib import *
+from aemulusnu_hmf_lib.ccl_patches import *
 
-from aemulusnu_mf_lib.massfunction import *
+from aemulusnu_hmf_lib.massfunction import *
 
 from pyccl.halos.halo_model_base import MassFunc
 from pyccl import physical_constants as const
@@ -27,6 +27,7 @@ import aemulusnu_massfunction
 from aemulusnu_massfunction.massfunction_fitting_tinker import *
 
 import os
+from pyccl import ccllib as lib
 
 package_path = os.path.dirname(aemulusnu_massfunction.__file__)
 
@@ -38,8 +39,10 @@ class MultitaskGPModel(gpytorch.models.ExactGP):
             gpytorch.means.LinearMean(input_size=train_x.shape[1]), num_tasks=train_y.shape[1]
         )
         self.covar_module = gpytorch.kernels.MultitaskKernel(
-#             gpytorch.kernels.RBFKernel(),
-            gpytorch.kernels.SpectralMixtureKernel(num_mixtures=8,ard_num_dims=train_x.shape[1]),
+#             gpytorch.kernels.SpectralMixtureKernel(num_mixtures=8,ard_num_dims=train_x.shape[1]) + 
+            gpytorch.kernels.ScaleKernel(gpytorch.kernels.MaternKernel(nu=1/2, ard_num_dims=train_x.shape[1]), 
+                                         ard_num_dims=train_x.shape[1]) +
+            gpytorch.kernels.ConstantKernel(),
             num_tasks=train_y.shape[1], rank=1
         )
     def forward(self, x):
@@ -133,6 +136,7 @@ class AemulusNu_HMF_Emulator(MassFunc):
 
         cosmo['extra_parameters']['mirror_cosmo']._compute_linear_power = MethodType(custom_compute_linear_power,
                                                                                      cosmo['extra_parameters']['mirror_cosmo'])
+
         
     def __call__(self, cosmo, M, a):
         """ Returns the mass function for input parameters. 
@@ -203,7 +207,7 @@ class AemulusNu_HMF_Emulator(MassFunc):
         X = self.in_scaler.transform(np.array([curr_cosmo_values]))
         
         if(tuple(curr_cosmo_values) not in self.ComputedParams):
-            with torch.no_grad(), gpytorch.settings.fast_pred_var():
+            with torch.no_grad():#, gpytorch.settings.fast_pred_var():
 #                 predictions = self.likelihood(self.model(torch.from_numpy(X).float()))
                 predictions = self.model(torch.from_numpy(X).float())
                 mean = self.out_scaler.inverse_transform(predictions.mean.numpy())

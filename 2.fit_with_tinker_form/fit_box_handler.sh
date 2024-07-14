@@ -5,7 +5,7 @@ prev=$2
 # Set the Slurm job parameters
 job_name_prefix="fit-box-handler-"$curr
 output_dir="logs"
-time_limit="120:00"
+time_limit="30:00"
 partition="kipac"
 num_nodes=1
 mem_per_cpu=8192

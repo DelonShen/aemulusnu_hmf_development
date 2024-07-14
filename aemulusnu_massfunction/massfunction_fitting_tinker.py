@@ -6,10 +6,10 @@ import sys
 import numpy as np
 from scipy.interpolate import RectBivariateSpline
 from scipy.special import gamma
-from aemulusnu_mf_lib import *
-from aemulusnu_mf_lib.ccl_patches import *
+from aemulusnu_hmf_lib import *
+from aemulusnu_hmf_lib.ccl_patches import *
 
-from aemulusnu_mf_lib.massfunction import *
+from aemulusnu_hmf_lib.massfunction import *
 
 import pyccl as ccl
 from classy import Class

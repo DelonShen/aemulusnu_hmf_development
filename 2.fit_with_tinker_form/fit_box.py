@@ -2,7 +2,7 @@ import sys
 
 
 from aemulusnu_massfunction.massfunction_fitting_tinker import *
-from aemulusnu_mf_lib.utils import *
+from aemulusnu_hmf_lib.utils import *
 
 from scipy.integrate import quad
 
@@ -20,12 +20,36 @@ print()
 prev_box = sys.argv[2]
 
 
+# KX = np.diag([1e-3, 8e-4,
+#               1e-1, 8e-2,
+#               5e-2, 8e-1,
+#               3e-4, 8e-3])
 
 KX = np.diag([1e-2, 1e-2,
               1e-3, 1e-3,
               5e-4, 5e-4,
               1e-4, 1e-4])
 
+
+# KX = np.diag([1e-3, 8e-4,
+#               1e-1, 8e-2,
+#               5e-2, 8e-1,
+#               3e-4, 8e-3])
+# KX = np.diag([1e-2, 1e-3,
+#               1e-3, 1e-3,
+#               5e-4, 5e-4,
+#               1e-4, 1e-3])
+# KX = np.diag([1e-8, 1e-3,
+#               1e-3, 3e-3,
+#               1e-4, 1e-8,
+#               1e-4, 3e-3])
+
+# KX = np.diag([1e-8, 1e-2,
+#               5e-4, 1e-3,
+#               5e-3, 1e-8,
+#               1e-4, 1e-3])
+
+print(KX)
 
 param_names = ['d0','d1',
                'e0','e1',
@@ -144,14 +168,6 @@ def uniform_log_prior(param_values):
             if(param < 0):# or param > 5):
                 return -np.inf
 
-    #g = g0 + (a-0.5) g1
-    # a smaller -> earlier time
-    # want g to get bigger at earlier time
-    # => g1 < 0
-    # g bigger => exp suppression happens at smaller mass
-    # so we should exclude g1 > 0
-#     if(param_values[-1] > 0 ): 
-#         return -np.inf
     return 0
 
 def log_likelihood(param_values):

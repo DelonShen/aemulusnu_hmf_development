@@ -1,0 +1,3 @@
+nohup ./short_graph_for_debugging.sh &> logs/2024-07-12-fit_debug &
+wait 1s
+tail -f logs/2024-07-12-fit_debug

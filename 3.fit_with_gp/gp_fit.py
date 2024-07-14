@@ -6,7 +6,7 @@ import numpy as np
 import functools
 import sys
 from tqdm import tqdm, trange
-from aemulusnu_mf_lib.utils import *
+from aemulusnu_hmf_lib.utils import *
 from aemulusnu_massfunction.emulator_training import *
 
 from classy import Class
@@ -100,7 +100,7 @@ print(X.shape)
 
 
 print('scaling output')
-out_scaler = Standardizer()
+out_scaler = Identity()
 out_scaler.fit(Y)
 Y = out_scaler.transform(Y)
 print(Y.shape)
@@ -113,9 +113,16 @@ n_tasks = len(Y_train[0])
 
 
 
+
 likelihood = gpytorch.likelihoods.MultitaskGaussianLikelihood(num_tasks=n_tasks,
-                                                              has_global_noise=False, 
-                                                              has_task_noise=True)
+                                                              has_global_noise=True, 
+                                                              has_task_noise=False,
+                                                              noise_constraint=gpytorch.constraints.LessThan(1e-8)
+                                                             )
+likelihood.noise = 1e-8  # Some small value, but don't make it too small or numerical performance will suffer. 
+likelihood.raw_noise.requires_grad_(False)  # Mark that we don't want to train the noise.
+
+
 model = MultitaskGPModel(X_train, Y_train, likelihood)
 
 
@@ -126,7 +133,7 @@ model.train()
 likelihood.train()
 
 
-training_iterations = 3000
+training_iterations = 1000
 epochs_iter = tqdm(range(training_iterations), desc="Iteration")
 
 
@@ -145,6 +152,24 @@ for i in epochs_iter:
     loss.backward()
     optimizer.step()
     print('Iter %d/%d - Loss: %.4f' % (i + 1, training_iterations, loss.item()))
+
+#     if i == 100:
+#         lr = 0.01
+#         print('reducing lr to %f'%lr)
+#         for param_group in optimizer.param_groups:
+#             param_group['lr'] = lr
+
+    if i == 500:
+        lr = 0.001
+        print('reducing lr to %f'%lr)
+        for param_group in optimizer.param_groups:
+            param_group['lr'] = lr
+
+    if i == 1000:
+        lr = 0.0001
+        print('reducing lr to %f'%lr)
+        for param_group in optimizer.param_groups:
+            param_group['lr'] = lr
 
 print(model.state_dict())
 

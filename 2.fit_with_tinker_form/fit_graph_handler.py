@@ -1,5 +1,5 @@
 from aemulusnu_massfunction.massfunction_fitting_tinker import *
-from aemulusnu_mf_lib.utils import *
+from aemulusnu_hmf_lib.utils import *
 
 import numpy as np
 from tqdm import tqdm, trange
@@ -33,7 +33,7 @@ Y = np.array(Y)
 
 # Assuming Y is your input matrix with shape (n_samples, n_features)
 # Create an instance of StandardScaler
-scaler = Standardizer()
+scaler = Normalizer()
 
 # Fit the scaler to the data
 scaler.fit(Y)

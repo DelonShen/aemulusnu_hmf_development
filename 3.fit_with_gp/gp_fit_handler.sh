@@ -4,7 +4,7 @@ curr=$1
 # Set the Slurm job parameters
 job_name_prefix="gp-fit-"$curr
 output_dir="logs"
-time_limit="60:00"
+time_limit="15:00"
 partition="kipac"
 num_nodes=1
 mem_per_node=32768
