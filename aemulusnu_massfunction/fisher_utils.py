@@ -138,13 +138,13 @@ DH = 3000 #[h^{-1} Mpc]
 #fiducial cosmolgy
 #(Plank 2018 table 2. TT,TE,EE+lowE+lensing  + neutrino mass put in by hand)
 #Table 1.
-fiducial_cosmology = {'10^9 As':2.1,
-                      'ns': 0.9649,
-                      'H0': 67.36,
-                      'w0': -1,
-                      'ombh2': 0.02237,
-                      'omch2': 0.12,
-                      'nu_mass_ev': 0.06,}
+# fiducial_cosmology = {'10^9 As':2.1,
+#                       'ns': 0.9649,
+#                       'H0': 67.36,
+#                       'w0': -1,
+#                       'ombh2': 0.02237,
+#                       'omch2': 0.12,
+#                       'nu_mass_ev': 0.06,}
 
 fiducial_log10_rel_step_size = { #for numerical derivativese
     '10^9 As': -2.6,
@@ -156,9 +156,6 @@ fiducial_log10_rel_step_size = { #for numerical derivativese
     'nu_mass_ev': -2.3,
 }
 
-fiducial_cosmo_vals = get_cosmo_vals(fiducial_cosmology)
-
-fiducial_ccl_cosmo = None
 
 
 #from krause
@@ -204,10 +201,9 @@ def cluster_richness_relation(M, λ, z):
     arg /= 2 * σlnλ ** 2
     return norm * np.exp(-arg)
 
-fiducial_ccl_cosmo = get_ccl_cosmology(tuple(fiducial_cosmo_vals))
 
 
-def comoving_volume_elements(z, cosmo=fiducial_ccl_cosmo):
+def comoving_volume_elements(z, cosmo):
 
     h = cosmo['h']
     Ωb =  cosmo['Omega_b']
@@ -220,7 +216,7 @@ def comoving_volume_elements(z, cosmo=fiducial_ccl_cosmo):
 
 
 
-def cluster_count_integrand(lam, M, z_val, cosmo=fiducial_ccl_cosmo, mf = emulator):
+def cluster_count_integrand(lam, M, z_val, cosmo, mf = emulator):
     p = cluster_richness_relation(M, lam, z_val) # h / Msun
 
     h = cosmo['h']
@@ -234,7 +230,7 @@ def cluster_count_integrand(lam, M, z_val, cosmo=fiducial_ccl_cosmo, mf = emulat
 
 from scipy.integrate import tplquad
 
-def N_in_z_and_richness_bin(lambda_min, lambda_max, z_min, z_max, mf = emulator, cosmo=fiducial_ccl_cosmo):
+def N_in_z_and_richness_bin(lambda_min, lambda_max, z_min, z_max, cosmo, mf = emulator):
     cluster_count_integrand_cosmology = partial(cluster_count_integrand, cosmo=cosmo, mf = mf)
 
     result, error = tplquad(cluster_count_integrand_cosmology, z_min, z_max, M_min, M_max, lambda_min, lambda_max, epsrel=1e-4, epsabs=0)

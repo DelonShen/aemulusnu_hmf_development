@@ -1,14 +1,13 @@
+import sys 
+
+nu_mass_ev = eval(sys.argv[1])
 from aemulusnu_massfunction.emulator_training import *
 from aemulusnu_massfunction.fisher_utils import *
 from scipy.integrate import quad
-
-z_bin_edges = [0.2, 0.4, 0.6, 0.8, 1.0]
-richness_bin_edges = [20., 30., 45., 60., 300.]
+fiducial_h = 0.6736
 
 
-nu_mass_ev = eval(sys.argv[1])
-#(Plank 2018 table 2. TT,TE,EE+lowE+lensing  + neutrino mass put in by hand)
-#Table 1.
+# #(Plank 2018 table 2. TT,TE,EE+lowE+lensing  + neutrino mass put in by hand)
 fiducial_cosmology = {'10^9 As':2.1,
                       'ns': 0.9649,
                       'H0': 67.36,
@@ -17,12 +16,58 @@ fiducial_cosmology = {'10^9 As':2.1,
                       'omch2': 0.12,
                       'nu_mass_ev': nu_mass_ev,}
 
+
+
+#(Same as above but put in DES Y3 OmegaM and Sigma8)
+print('DES Y3')
+Ωmh2 =  0.339*fiducial_h**2 # Y3 3x2pt
+Ωνh2 = nu_mass_ev/(93.14) #see astro-ph/0603494
+#From the BBN seciton of DES Y3 paper
+Ωbh2 = 2.195/100
+Ωch2 = Ωmh2-Ωbh2-Ωνh2
+fiducial_cosmology = {'10^9 As': 1.520813,  #from σ8 for DES Y3 3x2 and convert_sigma8_to_As.ipynb
+                      'ns': 0.9649,
+                      'H0': 67.36,
+                      'w0': -1,
+                      'ombh2': Ωbh2,
+                      'omch2': Ωch2,
+                      'nu_mass_ev': nu_mass_ev,}
+
 fiducial_cosmo_vals = get_cosmo_vals(fiducial_cosmology)
 fiducial_ccl_cosmo = get_ccl_cosmology(tuple(fiducial_cosmo_vals))
+
+
+
+
+
+
+
+z_bin_edges = [0.2, 0.4, 0.6, 0.8, 1.0]
+richness_bin_edges = [20., 30., 45., 60., 300.]
+
+
+
 print(fiducial_cosmology)
 
 
-oup_cov_fname = '/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/fiducial_cluster_abundance_covariance_nu_mass_%.4f.pkl'%(nu_mass_ev)
+oup_cov_fname = 'fiducial_cluster_abundance_covariance_'
+
+for key in fiducial_cosmology:
+    ckey = key
+    if key == '10^9 As':
+        ckey = '1e9As'
+    oup_cov_fname += '%s_%f_'%(ckey, fiducial_cosmology[key])
+
+oup_cov_fname = list(oup_cov_fname)
+
+for i,char in enumerate(oup_cov_fname):
+    if(char == '.'):
+        oup_cov_fname[i] = 'p'
+
+oup_cov_fname = oup_cov_fname[:-1]
+
+oup_cov_fname = ''.join(oup_cov_fname)
+oup_cov_fname += '.pkl'
 print('outputting cov to', oup_cov_fname)
 
 
@@ -44,7 +89,6 @@ cluster_count_cov = np.zeros((len(z_bin_edges) - 1, len(z_bin_edges) - 1, len(ri
 halo_bias = ccl.halos.HaloBiasTinker10()
 
 
-fiducial_h = fiducial_cosmology['H0']/100
 halo_bias(fiducial_ccl_cosmo, 1e14 *  fiducial_h, 1) #[Mass] is Msun / h
 
 
@@ -263,4 +307,4 @@ for a in tick_positions_z:
     plt.axhline(a+2, color='black', linestyle='-', linewidth=lw)
 
 plt.title(r'$\log_{10}{\rm Cov}(N^i_{\lambda_\alpha} , N^j_{\lambda_\beta})$' + '\n')
-plt.savefig('fiducial_cluster_abundance_cov_nu_mass_%.4f.pdf'%(nu_mass_ev), dpi=600, bbox_inches = "tight")
+# plt.savefig('fiducial_cluster_abundance_cov_nu_mass_%.4f.pdf'%(nu_mass_ev), dpi=600, bbox_inches = "tight")

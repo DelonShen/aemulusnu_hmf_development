@@ -1,0 +1,27 @@
+
+CommandNotFoundError: Your shell has not been properly configured to use 'conda activate'.
+To initialize your shell, run
+
+    $ conda init <SHELL_NAME>
+
+Currently supported shells are:
+  - bash
+  - fish
+  - tcsh
+  - xonsh
+  - zsh
+  - powershell
+
+See 'conda init --help' for more information and options.
+
+IMPORTANT: You may need to close and restart your shell after running 'conda init'.
+
+
+Traceback (most recent call last):
+  File "/home/users/delon/aemulusnu_massfunction/4.fisher_forecast/tinker_forecast/compute_cluster_abundance_at_cosmology.py", line 1, in <module>
+    from aemulusnu_massfunction.emulator_training import *
+  File "/home/users/delon/aemulusnu_massfunction/aemulusnu_massfunction/emulator_training.py", line 27, in <module>
+    from aemulusnu_massfunction.massfunction_fitting_tinker import *
+  File "/home/users/delon/aemulusnu_massfunction/aemulusnu_massfunction/massfunction_fitting_tinker.py", line 15, in <module>
+    from classy import Class
+ImportError: /oak/stanford/orgs/kipac/users/delon/miniconda3/envs/massfunction/bin/../lib/libstdc++.so.6: version `GLIBCXX_3.4.30' not found (required by /oak/stanford/orgs/kipac/users/delon/packages/class/python/classy.cpython-39-x86_64-linux-gnu.so)

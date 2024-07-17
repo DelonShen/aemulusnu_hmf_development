@@ -24,7 +24,7 @@ for ((i=0; i<${#param_names[@]}; i++)); do
         echo $param
         echo -$step_size
         # Generate job name with index
-        job_name="computeN_"$param"_$step_size"
+        job_name="computeN_DESy3_"$param"_$step_size"
         # Define output and error log file paths
         output_log="logs/$(date +%Y-%m-%d)-$job_name.out"
         error_log="logs/$(date +%Y-%m-%d)-$job_name.err"
