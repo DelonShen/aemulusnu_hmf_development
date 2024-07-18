@@ -1,0 +1,2 @@
+srun: error: sh03-03n58: tasks 0-7: Exited with exit code 1
+srun: Terminating StepId=50096036.0

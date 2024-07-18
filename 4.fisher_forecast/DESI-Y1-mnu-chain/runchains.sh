@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Generate job name with index
-job_name="desi-y1-vary-mnu"
+job_name="desi-y1-BBN-bao-vary-mnu"
 # Define output and error log file paths
 output_log="$(date +%Y-%m-%d)-$job_name.out"
 error_log="$(date +%Y-%m-%d)-$job_name.err"
@@ -24,6 +24,6 @@ export OMP_NUM_THREADS=4
 export OMP_PLACES=threads
 export OMP_PROC_BIND=spread
 
-srun -n 8 -c 4 cobaya-run -r DESI-Y1.yaml
+srun -n 8 -c 4 cobaya-run -r DESIY1_BBN_ThetaS_vary_mnu.yaml
 
 EOF

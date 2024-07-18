@@ -1,0 +1,154 @@
+[0 : output] Output to be read-from/written-into folder '/scratch/users/delon/chains', with prefix 'DESIY1_BBN_ThetaS_vanilla_sample_Omega_m'
+[0 : camb] `camb` module loaded successfully from /oak/stanford/orgs/kipac/users/delon/cobaya_cosmo/code/CAMB/camb
+[1 : bao.desi_2024_bao_all] Initialized.
+[2 : bao.desi_2024_bao_all] Initialized.
+[6 : bao.desi_2024_bao_all] Initialized.
+[7 : bao.desi_2024_bao_all] Initialized.
+[3 : bao.desi_2024_bao_all] Initialized.
+[4 : bao.desi_2024_bao_all] Initialized.
+[5 : bao.desi_2024_bao_all] Initialized.
+[0 : bao.desi_2024_bao_all] Initialized.
+[7 : model] *ERROR* Could not find anything to use input parameter(s) {'omegam'}.
+[5 : model] *ERROR* Could not find anything to use input parameter(s) {'omegam'}.
+[4 : model] *ERROR* Could not find anything to use input parameter(s) {'omegam'}.
+[1 : model] *ERROR* Could not find anything to use input parameter(s) {'omegam'}.
+[6 : model] *ERROR* Could not find anything to use input parameter(s) {'omegam'}.
+[3 : model] *ERROR* Could not find anything to use input parameter(s) {'omegam'}.
+[0 : model] *ERROR* Could not find anything to use input parameter(s) {'omegam'}.
+[2 : model] *ERROR* Could not find anything to use input parameter(s) {'omegam'}.
+[1 : exception handler] *ERROR* Could not find anything to use input parameter(s) {'omegam'}.
+[5 : exception handler] *ERROR* Could not find anything to use input parameter(s) {'omegam'}.
+[0 : exception handler] *ERROR* Could not find anything to use input parameter(s) {'omegam'}.
+[2 : exception handler] *ERROR* Could not find anything to use input parameter(s) {'omegam'}.
+[4 : exception handler] *ERROR* Could not find anything to use input parameter(s) {'omegam'}.
+[6 : exception handler] *ERROR* Could not find anything to use input parameter(s) {'omegam'}.
+[3 : exception handler] *ERROR* Could not find anything to use input parameter(s) {'omegam'}.
+[7 : exception handler] *ERROR* Could not find anything to use input parameter(s) {'omegam'}.
+[0 : exception handler] ---------------------------------------
+
+Traceback (most recent call last):
+  File "/oak/stanford/orgs/kipac/users/delon/miniconda3/envs/nu/bin/cobaya-run", line 33, in <module>
+    sys.exit(load_entry_point('cobaya', 'console_scripts', 'cobaya-run')())
+  File "/home/users/delon/.local/lib/python3.9/site-packages/cobaya/run.py", line 191, in run_script
+    run(info, **arguments.__dict__)
+  File "/home/users/delon/.local/lib/python3.9/site-packages/cobaya/run.py", line 120, in run
+    with Model(updated_info["params"], updated_info["likelihood"],
+  File "/home/users/delon/.local/lib/python3.9/site-packages/cobaya/model.py", line 254, in __init__
+    self._set_dependencies_and_providers(skip_unused_theories=skip_unused_theories)
+  File "/home/users/delon/.local/lib/python3.9/site-packages/cobaya/model.py", line 838, in _set_dependencies_and_providers
+    raise LoggedError(
+cobaya.log.LoggedError: Could not find anything to use input parameter(s) {'omegam'}.
+-------------------------------------------------------------
+
+[1 : exception handler] ---------------------------------------
+
+Traceback (most recent call last):
+  File "/oak/stanford/orgs/kipac/users/delon/miniconda3/envs/nu/bin/cobaya-run", line 33, in <module>
+    sys.exit(load_entry_point('cobaya', 'console_scripts', 'cobaya-run')())
+  File "/home/users/delon/.local/lib/python3.9/site-packages/cobaya/run.py", line 191, in run_script
+    run(info, **arguments.__dict__)
+  File "/home/users/delon/.local/lib/python3.9/site-packages/cobaya/run.py", line 120, in run
+    with Model(updated_info["params"], updated_info["likelihood"],
+  File "/home/users/delon/.local/lib/python3.9/site-packages/cobaya/model.py", line 254, in __init__
+    self._set_dependencies_and_providers(skip_unused_theories=skip_unused_theories)
+  File "/home/users/delon/.local/lib/python3.9/site-packages/cobaya/model.py", line 838, in _set_dependencies_and_providers
+    raise LoggedError(
+cobaya.log.LoggedError: Could not find anything to use input parameter(s) {'omegam'}.
+-------------------------------------------------------------
+
+[5 : exception handler] ---------------------------------------
+
+Traceback (most recent call last):
+  File "/oak/stanford/orgs/kipac/users/delon/miniconda3/envs/nu/bin/cobaya-run", line 33, in <module>
+    sys.exit(load_entry_point('cobaya', 'console_scripts', 'cobaya-run')())
+  File "/home/users/delon/.local/lib/python3.9/site-packages/cobaya/run.py", line 191, in run_script
+    run(info, **arguments.__dict__)
+  File "/home/users/delon/.local/lib/python3.9/site-packages/cobaya/run.py", line 120, in run
+    with Model(updated_info["params"], updated_info["likelihood"],
+  File "/home/users/delon/.local/lib/python3.9/site-packages/cobaya/model.py", line 254, in __init__
+    self._set_dependencies_and_providers(skip_unused_theories=skip_unused_theories)
+  File "/home/users/delon/.local/lib/python3.9/site-packages/cobaya/model.py", line 838, in _set_dependencies_and_providers
+    raise LoggedError(
+cobaya.log.LoggedError: Could not find anything to use input parameter(s) {'omegam'}.
+-------------------------------------------------------------
+
+[3 : exception handler] ---------------------------------------
+
+Traceback (most recent call last):
+  File "/oak/stanford/orgs/kipac/users/delon/miniconda3/envs/nu/bin/cobaya-run", line 33, in <module>
+    sys.exit(load_entry_point('cobaya', 'console_scripts', 'cobaya-run')())
+  File "/home/users/delon/.local/lib/python3.9/site-packages/cobaya/run.py", line 191, in run_script
+    run(info, **arguments.__dict__)
+  File "/home/users/delon/.local/lib/python3.9/site-packages/cobaya/run.py", line 120, in run
+    with Model(updated_info["params"], updated_info["likelihood"],
+  File "/home/users/delon/.local/lib/python3.9/site-packages/cobaya/model.py", line 254, in __init__
+    self._set_dependencies_and_providers(skip_unused_theories=skip_unused_theories)
+  File "/home/users/delon/.local/lib/python3.9/site-packages/cobaya/model.py", line 838, in _set_dependencies_and_providers
+    raise LoggedError(
+cobaya.log.LoggedError: Could not find anything to use input parameter(s) {'omegam'}.
+-------------------------------------------------------------
+
+[2 : exception handler] ---------------------------------------
+
+Traceback (most recent call last):
+  File "/oak/stanford/orgs/kipac/users/delon/miniconda3/envs/nu/bin/cobaya-run", line 33, in <module>
+    sys.exit(load_entry_point('cobaya', 'console_scripts', 'cobaya-run')())
+  File "/home/users/delon/.local/lib/python3.9/site-packages/cobaya/run.py", line 191, in run_script
+    run(info, **arguments.__dict__)
+  File "/home/users/delon/.local/lib/python3.9/site-packages/cobaya/run.py", line 120, in run
+    with Model(updated_info["params"], updated_info["likelihood"],
+  File "/home/users/delon/.local/lib/python3.9/site-packages/cobaya/model.py", line 254, in __init__
+    self._set_dependencies_and_providers(skip_unused_theories=skip_unused_theories)
+  File "/home/users/delon/.local/lib/python3.9/site-packages/cobaya/model.py", line 838, in _set_dependencies_and_providers
+    raise LoggedError(
+cobaya.log.LoggedError: Could not find anything to use input parameter(s) {'omegam'}.
+-------------------------------------------------------------
+
+[4 : exception handler] ---------------------------------------
+
+Traceback (most recent call last):
+  File "/oak/stanford/orgs/kipac/users/delon/miniconda3/envs/nu/bin/cobaya-run", line 33, in <module>
+    sys.exit(load_entry_point('cobaya', 'console_scripts', 'cobaya-run')())
+  File "/home/users/delon/.local/lib/python3.9/site-packages/cobaya/run.py", line 191, in run_script
+    run(info, **arguments.__dict__)
+  File "/home/users/delon/.local/lib/python3.9/site-packages/cobaya/run.py", line 120, in run
+    with Model(updated_info["params"], updated_info["likelihood"],
+  File "/home/users/delon/.local/lib/python3.9/site-packages/cobaya/model.py", line 254, in __init__
+    self._set_dependencies_and_providers(skip_unused_theories=skip_unused_theories)
+  File "/home/users/delon/.local/lib/python3.9/site-packages/cobaya/model.py", line 838, in _set_dependencies_and_providers
+    raise LoggedError(
+cobaya.log.LoggedError: Could not find anything to use input parameter(s) {'omegam'}.
+-------------------------------------------------------------
+
+[6 : exception handler] ---------------------------------------
+
+Traceback (most recent call last):
+  File "/oak/stanford/orgs/kipac/users/delon/miniconda3/envs/nu/bin/cobaya-run", line 33, in <module>
+    sys.exit(load_entry_point('cobaya', 'console_scripts', 'cobaya-run')())
+  File "/home/users/delon/.local/lib/python3.9/site-packages/cobaya/run.py", line 191, in run_script
+    run(info, **arguments.__dict__)
+  File "/home/users/delon/.local/lib/python3.9/site-packages/cobaya/run.py", line 120, in run
+    with Model(updated_info["params"], updated_info["likelihood"],
+  File "/home/users/delon/.local/lib/python3.9/site-packages/cobaya/model.py", line 254, in __init__
+    self._set_dependencies_and_providers(skip_unused_theories=skip_unused_theories)
+  File "/home/users/delon/.local/lib/python3.9/site-packages/cobaya/model.py", line 838, in _set_dependencies_and_providers
+    raise LoggedError(
+cobaya.log.LoggedError: Could not find anything to use input parameter(s) {'omegam'}.
+-------------------------------------------------------------
+
+[7 : exception handler] ---------------------------------------
+
+Traceback (most recent call last):
+  File "/oak/stanford/orgs/kipac/users/delon/miniconda3/envs/nu/bin/cobaya-run", line 33, in <module>
+    sys.exit(load_entry_point('cobaya', 'console_scripts', 'cobaya-run')())
+  File "/home/users/delon/.local/lib/python3.9/site-packages/cobaya/run.py", line 191, in run_script
+    run(info, **arguments.__dict__)
+  File "/home/users/delon/.local/lib/python3.9/site-packages/cobaya/run.py", line 120, in run
+    with Model(updated_info["params"], updated_info["likelihood"],
+  File "/home/users/delon/.local/lib/python3.9/site-packages/cobaya/model.py", line 254, in __init__
+    self._set_dependencies_and_providers(skip_unused_theories=skip_unused_theories)
+  File "/home/users/delon/.local/lib/python3.9/site-packages/cobaya/model.py", line 838, in _set_dependencies_and_providers
+    raise LoggedError(
+cobaya.log.LoggedError: Could not find anything to use input parameter(s) {'omegam'}.
+-------------------------------------------------------------
+

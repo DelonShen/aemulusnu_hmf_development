@@ -21,19 +21,19 @@ fiducial_cosmology = {'10^9 As':2.1,
 
 
 #(Same as above but put in DES Y3 OmegaM and Sigma8)
-print('DES Y3')
-Ωmh2 =  0.339*fiducial_h**2 # Y3 3x2pt
-Ωνh2 = 0.06/(93.14) #see astro-ph/0603494
-#From the BBN seciton of DES Y3 paper
-Ωbh2 = 2.195/100
-Ωch2 = Ωmh2-Ωbh2-Ωνh2
-fiducial_cosmology = {'10^9 As': 1.520813,  #from σ8 for DES Y3 3x2 and convert_sigma8_to_As.ipynb
-                      'ns': 0.9649,
-                      'H0': 67.36,
-                      'w0': -1,
-                      'ombh2': Ωbh2,
-                      'omch2': Ωch2,
-                      'nu_mass_ev': 0.06,}
+# print('DES Y3')
+# Ωmh2 =  0.339*fiducial_h**2 # Y3 3x2pt
+# Ωνh2 = 0.06/(93.14) #see astro-ph/0603494
+# #From the BBN seciton of DES Y3 paper
+# Ωbh2 = 2.195/100
+# Ωch2 = Ωmh2-Ωbh2-Ωνh2
+# fiducial_cosmology = {'10^9 As': 1.520813,  #from σ8 for DES Y3 3x2 and convert_sigma8_to_As.ipynb
+#                       'ns': 0.9649,
+#                       'H0': 67.36,
+#                       'w0': -1,
+#                       'ombh2': Ωbh2,
+#                       'omch2': Ωch2,
+#                       'nu_mass_ev': 0.06,}
 
 
 

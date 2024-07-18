@@ -12,7 +12,7 @@ step_sizes=() # Initialize the array
 
 param_names=('ns')
 
-for i in $(seq 3 0.2 5); do
+for i in $(seq 1 0.2 3); do
  step_sizes+=($i)
 done
 
