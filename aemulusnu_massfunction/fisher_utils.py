@@ -147,13 +147,13 @@ DH = 3000 #[h^{-1} Mpc]
 #                       'nu_mass_ev': 0.06,}
 
 fiducial_log10_rel_step_size = { #for numerical derivativese
-    '10^9 As': -2.9,
-    'ns': -3.6,
-    'H0': -2.3,
+    '10^9 As': -2.2,
+    'ns': -3.2,
+    'H0': -1.8,
     'w0': -2.3,
-    'ombh2': -2.6,
-    'omch2': -2.3,
-    'nu_mass_ev': -1.7,
+    'ombh2': -1.8,
+    'omch2': -2.0,
+    'nu_mass_ev': -2,
 }
 
 

@@ -65,7 +65,7 @@ print(parameter_changed, parameter_log10_rel_step_size)
 
 
 
-oup_fname = '/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/cluster_abundance_tinker_fisher_changing_%s_log10rel_step%.4f_cosmo_'%(parameter_changed, parameter_log10_rel_step_size)
+oup_fname = '/scratch/users/delon/aemulusnu_massfunction/cluster_abundance_tinker_fisher_changing_%s_log10rel_step%.4f_cosmo_'%(parameter_changed, parameter_log10_rel_step_size)
 
 for key in fiducial_cosmology:
     ckey = key
