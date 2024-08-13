@@ -1,5 +1,5 @@
 from aemulusnu_massfunction.massfunction_fitting_tinker import *
-from aemulusnu_hmf_lib.utils import *
+from aemulusnu_hmf.utils import *
 
 import numpy as np
 from tqdm import tqdm, trange

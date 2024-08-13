@@ -2,7 +2,8 @@ import sys
 
 
 from aemulusnu_massfunction.massfunction_fitting_tinker import *
-from aemulusnu_hmf_lib.utils import *
+from aemulusnu_hmf.utils import *
+import aemulusnu_hmf.massfunction as hmf
 
 from scipy.integrate import quad
 
@@ -73,7 +74,6 @@ cosmo_params = pickle.load(cosmos_f) #cosmo_params is a dict
 cosmos_f.close()
 
 
-import pyccl as ccl
 
 cosmo = cosmo_params[box]
 
@@ -82,16 +82,8 @@ h = cosmo['H0']/100
 Ωb =  cosmo['ombh2'] / h**2
 Ωc =  cosmo['omch2'] / h**2
 
-ccl_cosmo = ccl.Cosmology(Omega_c=Ωc,
-                      Omega_b=Ωb,
-                      h=h,
-                      A_s=cosmo['10^9 As']*10**(-9),
-                      n_s=cosmo['ns'],
-                      w0=cosmo['w0'],
-                      m_nu=[cosmo['nu_mass_ev']/3, cosmo['nu_mass_ev']/3, cosmo['nu_mass_ev']/3])
+cosmology = hmf.cosmology(cosmo)
 
-
-h = cosmo['H0']/100
 
 NvM_fname = '/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/'+box+'_NvsM.pkl'
 NvM_f = open(NvM_fname, 'rb')
@@ -189,7 +181,7 @@ def log_likelihood(param_values):
 
     mass_function.set_params(param_values)
     for a_fit in a_list:
-        f_tinker_eval = lambda M:mass_function(ccl_cosmo, M/h, a_fit)*vol/(h**3 * M * np.log(10))
+        f_tinker_eval = lambda M:mass_function(cosmology, M, a_fit)*vol
         tinker_fs[a_fit] = f_tinker_eval
         model_vals[a_fit] = np.array([quad(tinker_fs[a_fit], edge_pair[0], edge_pair[1], epsabs=0, epsrel=5e-3)[0]
             for edge_pair in NvMs[a_fit]['edge_pairs']
@@ -283,8 +275,7 @@ for a in a_list:
 
     mass_function.set_params(result['x'])
 
-    f_dNdM =  lambda M:mass_function(ccl_cosmo, M/h, a)*vol/(h**3 * M * np.log(10))
-
+    f_dNdM =  lambda M:mass_function(cosmology, M, a)*vol
     fit_eval = np.array([quad(f_dNdM, edge[0],  edge[1], epsabs=0, epsrel=1e-5)[0] for edge in edge_pairs])
 
     with open("/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/%s_%.2f_NvMfit_output.pkl"%(box, a), "wb") as f:
@@ -341,7 +332,6 @@ for a in a_list:
     axs[1].set_xlim((10**left, np.max(edges)))
     axs[1].set_ylim((-.29, .29))
     axs[1].set_yticks([-.2, -.1, 0, .1, .2])
-    plt.show()
     plt.savefig('/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/figures/%s_fit_%.2f.pdf'%(box, a), bbox_inches='tight')
 
 
