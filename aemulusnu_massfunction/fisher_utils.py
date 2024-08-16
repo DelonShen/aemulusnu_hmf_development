@@ -1,135 +1,134 @@
 from .emulator_training import *
-# import pyccl as ccl
+import pyccl as ccl
 
 from scipy.interpolate import RectBivariateSpline
 
 from functools import cache, partial
+from aemulusnu_hmf import massfunction as hmf
 
 # emulator = AemulusNu_HMF_Emulator()
-emulator = None
+emulator = MassFuncAemulusNu_GP_emulator_training()
 
 
-# from pyccl.halos import MassFunc, get_delta_c
-
-# class MassFuncTinker08Costanzi13(MassFunc):
-#     """Implements the mass function of `Tinker et al. 2008
-#     <https://arxiv.org/abs/0803.2706>`_. This parametrization accepts S.O.
-#     masses with :math:`200 < \\Delta < 3200`, defined with respect to the
-#     matter density. This can be automatically translated to S.O. masses
-#     defined with respect to the critical density.
-
-#     Modified to use Costanzi et al. 2013 (JCAP12(2013)012) nuCDM HMF prescription
-
-#     Args:
-#         mass_def (:class:`~pyccl.halos.massdef.MassDef` or :obj:`str`):
-#             a mass definition object, or a name string.
-#         mass_def_strict (:obj:`bool`): if ``False``, consistency of the mass
-#             definition will be ignored.
-#     """
-#     name = 'custom Tinker08'
-
-#     def __init__(self, *,
-#                  mass_def="200m",
-#                  mass_def_strict=True):
-#         super().__init__(mass_def=mass_def, mass_def_strict=mass_def_strict)
-#     def _get_logM_sigM(self, cosmo, M, a, *, return_dlns=False):
-#         """Compute ``logM``, ``sigM``, and (optionally) ``dlns_dlogM``.
-#             Using Costanzi et al. 2013 (JCAP12(2013)012) perscription
-#             to evaluate HMF in nuCDM cosmology, we replace P_m with P_cb
-#             """
-#         if('mirror_cosmo' not in cosmo['extra_parameters']):
-#             self.init_cosmo(cosmo)
-
-#         mirror_cosmo = cosmo['extra_parameters']['mirror_cosmo']
-#         mirror_cosmo.compute_sigma()  # initialize sigma(M) splines if needed
-#         logM = np.log10(M)
-#         # sigma(M)
-#         status = 0
-#         sigM, status = lib.sigM_vec(mirror_cosmo.cosmo, a, logM, len(logM), status)
-#         check(status, cosmo=mirror_cosmo)
-#         if not return_dlns:
-#             return logM, sigM
-
-#         # dlogsigma(M)/dlog10(M)
-#         dlns_dlogM, status = lib.dlnsigM_dlogM_vec(mirror_cosmo.cosmo, a, logM,
-#                                                    len(logM), status)
-#         check(status, cosmo=mirror_cosmo)
-#         return logM, sigM, dlns_dlogM
-
-#     def init_cosmo(self, cosmo):
-#         cosmo['extra_parameters']['mirror_cosmo'] = ccl.Cosmology(Omega_c=cosmo['Omega_c'],
-#                                                  Omega_b=cosmo['Omega_b'],
-#                                                  h=cosmo['h'],
-#                                                  A_s=cosmo['A_s'],
-#                                                  n_s=cosmo['n_s'],
-#                                                  w0=cosmo['w0'],
-#                                                  m_nu=cosmo['m_nu'])
-#         funcType = type(cosmo['extra_parameters']['mirror_cosmo']._compute_linear_power)
-
-#         cosmo['extra_parameters']['mirror_cosmo']._compute_linear_power = MethodType(custom_compute_linear_power,
-#                                                                                      cosmo['extra_parameters']['mirror_cosmo'])
-        
-#     def __call__(self, cosmo, M, a):
-#         """ Returns the mass function for input parameters. 
-#             Using Costanzi et al. 2013 (JCAP12(2013)012) perscription
-#             to evaluate HMF in nuCDM cosmology
-
-#         Args:
-#             cosmo (:class:`~pyccl.cosmology.Cosmology`): A Cosmology object.
-#             M (:obj:`float` or `array`): halo mass.
-#             a (:obj:`float`): scale factor.
-
-#         Returns:
-#             (:obj:`float` or `array`): mass function \
-#                 :math:`dn/d\\log_{10}M` in units of Mpc^-3 (comoving).
-#         """
-#         if('mirror_cosmo' not in cosmo['extra_parameters']):
-#             self.init_cosmo(cosmo)
-            
-#         M_use = np.atleast_1d(M)
-#         logM, sigM, dlns_dlogM = self._get_logM_sigM( 
-#             cosmo, M_use, a, return_dlns=True)
-
-#         rho = (const.RHO_CRITICAL
-#                * (cosmo['Omega_c'] + cosmo['Omega_b'])
-#                * cosmo['h']**2)
-
-#         f = self._get_fsigma(cosmo, sigM, a, 2.302585092994046 * logM)
-#         mf = f * rho * dlns_dlogM / M_use
-#         if np.ndim(M) == 0:
-#             return mf[0]
-#         return mf
-
-
-#     def _check_mass_def_strict(self, mass_def):
-#         return mass_def.Delta == "200m"
-
-#     def _setup(self):
-#         delta = np.array(
-#             [200., 300., 400., 600., 800., 1200., 1600., 2400., 3200.])
-#         alpha = np.array(
-#             [0.186, 0.200, 0.212, 0.218, 0.248, 0.255, 0.260, 0.260, 0.260])
-#         beta = np.array(
-#             [1.47, 1.52, 1.56, 1.61, 1.87, 2.13, 2.30, 2.53, 2.66])
-#         gamma = np.array(
-#             [2.57, 2.25, 2.05, 1.87, 1.59, 1.51, 1.46, 1.44, 1.41])
-#         phi = np.array(
-#             [1.19, 1.27, 1.34, 1.45, 1.58, 1.80, 1.97, 2.24, 2.44])
-#         ldelta = np.log10(delta)
-#         self.pA0 = interp1d(ldelta, alpha)
-#         self.pa0 = interp1d(ldelta, beta)
-#         self.pb0 = interp1d(ldelta, gamma)
-#         self.pc = interp1d(ldelta, phi)
-
-#     def _get_fsigma(self, cosmo, sigM, a, lnM):
-#         ld = np.log10(self.mass_def._get_Delta_m(cosmo, a))
-#         pA = self.pA0(ld) * a**0.14
-#         pa = self.pa0(ld) * a**0.06
-#         pd = 10.**(-(0.75/(ld - 1.8750612633))**1.2)
-#         pb = self.pb0(ld) * a**pd
-#         return pA * ((pb / sigM)**pa + 1) * np.exp(-self.pc(ld)/sigM**2)
-    
-    
+#class CCLMassFuncTinker08Costanzi13(MassFunc):
+#    """Implements the mass function of `Tinker et al. 2008
+#    <https://arxiv.org/abs/0803.2706>`_. This parametrization accepts S.O.
+#    masses with :math:`200 < \\Delta < 3200`, defined with respect to the
+#    matter density. This can be automatically translated to S.O. masses
+#    defined with respect to the critical density.
+#
+#    Modified to use Costanzi et al. 2013 (JCAP12(2013)012) nuCDM HMF prescription
+#
+#    Args:
+#        mass_def (:class:`~pyccl.halos.massdef.MassDef` or :obj:`str`):
+#            a mass definition object, or a name string.
+#        mass_def_strict (:obj:`bool`): if ``False``, consistency of the mass
+#            definition will be ignored.
+#    """
+#    name = 'custom Tinker08'
+#
+#    def __init__(self, *,
+#                 mass_def="200m",
+#                 mass_def_strict=True):
+#        super().__init__(mass_def=mass_def, mass_def_strict=mass_def_strict)
+#    def _get_logM_sigM(self, cosmo, M, a, *, return_dlns=False):
+#        """Compute ``logM``, ``sigM``, and (optionally) ``dlns_dlogM``.
+#            Using Costanzi et al. 2013 (JCAP12(2013)012) perscription
+#            to evaluate HMF in nuCDM cosmology, we replace P_m with P_cb
+#            """
+#        if('mirror_cosmo' not in cosmo['extra_parameters']):
+#            self.init_cosmo(cosmo)
+#
+#        mirror_cosmo = cosmo['extra_parameters']['mirror_cosmo']
+#        mirror_cosmo.compute_sigma()  # initialize sigma(M) splines if needed
+#        logM = np.log10(M)
+#        # sigma(M)
+#        status = 0
+#        sigM, status = lib.sigM_vec(mirror_cosmo.cosmo, a, logM, len(logM), status)
+#        check(status, cosmo=mirror_cosmo)
+#        if not return_dlns:
+#            return logM, sigM
+#
+#        # dlogsigma(M)/dlog10(M)
+#        dlns_dlogM, status = lib.dlnsigM_dlogM_vec(mirror_cosmo.cosmo, a, logM,
+#                                                   len(logM), status)
+#        check(status, cosmo=mirror_cosmo)
+#        return logM, sigM, dlns_dlogM
+#
+#    def init_cosmo(self, cosmo):
+#        cosmo['extra_parameters']['mirror_cosmo'] = ccl.Cosmology(Omega_c=cosmo['Omega_c'],
+#                                                 Omega_b=cosmo['Omega_b'],
+#                                                 h=cosmo['h'],
+#                                                 A_s=cosmo['A_s'],
+#                                                 n_s=cosmo['n_s'],
+#                                                 w0=cosmo['w0'],
+#                                                 m_nu=cosmo['m_nu'])
+#        funcType = type(cosmo['extra_parameters']['mirror_cosmo']._compute_linear_power)
+#
+#        cosmo['extra_parameters']['mirror_cosmo']._compute_linear_power = MethodType(custom_compute_linear_power,
+#                                                                                     cosmo['extra_parameters']['mirror_cosmo'])
+#      
+#    def __call__(self, cosmo, M, a):
+#        """ Returns the mass function for input parameters. 
+#            Using Costanzi et al. 2013 (JCAP12(2013)012) perscription
+#            to evaluate HMF in nuCDM cosmology
+#
+#        Args:
+#            cosmo (:class:`~pyccl.cosmology.Cosmology`): A Cosmology object.
+#            M (:obj:`float` or `array`): halo mass.
+#            a (:obj:`float`): scale factor.
+#
+#        Returns:
+#            (:obj:`float` or `array`): mass function \
+#                :math:`dn/d\\log_{10}M` in units of Mpc^-3 (comoving).
+#        """
+#        if('mirror_cosmo' not in cosmo['extra_parameters']):
+#            self.init_cosmo(cosmo)
+#          
+#        M_use = np.atleast_1d(M)
+#        logM, sigM, dlns_dlogM = self._get_logM_sigM( 
+#            cosmo, M_use, a, return_dlns=True)
+#
+#        rho = (const.RHO_CRITICAL
+#               * (cosmo['Omega_c'] + cosmo['Omega_b'])
+#               * cosmo['h']**2)
+#
+#        f = self._get_fsigma(cosmo, sigM, a, 2.302585092994046 * logM)
+#        mf = f * rho * dlns_dlogM / M_use
+#        if np.ndim(M) == 0:
+#            return mf[0]
+#        return mf
+#
+#
+#    def _check_mass_def_strict(self, mass_def):
+#        return mass_def.Delta == "200m"
+#
+#    def _setup(self):
+#        delta = np.array(
+#            [200., 300., 400., 600., 800., 1200., 1600., 2400., 3200.])
+#        alpha = np.array(
+#            [0.186, 0.200, 0.212, 0.218, 0.248, 0.255, 0.260, 0.260, 0.260])
+#        beta = np.array(
+#            [1.47, 1.52, 1.56, 1.61, 1.87, 2.13, 2.30, 2.53, 2.66])
+#        gamma = np.array(
+#            [2.57, 2.25, 2.05, 1.87, 1.59, 1.51, 1.46, 1.44, 1.41])
+#        phi = np.array(
+#            [1.19, 1.27, 1.34, 1.45, 1.58, 1.80, 1.97, 2.24, 2.44])
+#        ldelta = np.log10(delta)
+#        self.pA0 = interp1d(ldelta, alpha)
+#        self.pa0 = interp1d(ldelta, beta)
+#        self.pb0 = interp1d(ldelta, gamma)
+#        self.pc = interp1d(ldelta, phi)
+#
+#    def _get_fsigma(self, cosmo, sigM, a, lnM):
+#        ld = np.log10(self.mass_def._get_Delta_m(cosmo, a))
+#        pA = self.pA0(ld) * a**0.14
+#        pa = self.pa0(ld) * a**0.06
+#        pd = 10.**(-(0.75/(ld - 1.8750612633))**1.2)
+#        pb = self.pb0(ld) * a**pd
+#        return pA * ((pb / sigM)**pa + 1) * np.exp(-self.pc(ld)/sigM**2)
+   
+   
     
     
 # c / H 
@@ -163,8 +162,10 @@ fiducial_log10_rel_step_size = { #for numerical derivativese
 
 
 #for evaluating dM integral
-M_min = 1e13
-M_max = 1e16
+#THESE WILL BE IN UNITS Msol instead of Msol/h
+#so that derivs wrt H0 make sense
+M_min = 1e13/.6736
+M_max = 1e16/.6736
 
 
 #for cluster richness relation
@@ -180,7 +181,7 @@ Mpiv = 5e14 # h^-1 M_sol
 # st_hmf = ccl.halos.MassFuncSheth99(mass_def='200m', mass_def_strict=False)
 # bocquet16_hmf= ccl.halos.MassFuncBocquet16(mass_def='200m')
 # tinker08_hmf =MassFuncTinker08Costanzi13(mass_def='200m')
-tinker08_hmf = None
+tinker08_hmf = Tinker08Costanzi13
 
 mass_functions = {'emu': emulator,
                   't08': tinker08_hmf}
@@ -215,12 +216,12 @@ def comoving_volume_elements(z, cosmo):
 
 
 
-def cluster_count_integrand(lam, M, z_val, cosmo, mf = emulator):
+def cluster_count_integrand(lam, M, z_val, cosmo, hmf_cosmology, mf = emulator):
     p = cluster_richness_relation(M, lam, z_val) # h / Msun
 
     h = cosmo['h']
 
-    dn_dM = mf(cosmo, M/h, redshiftToScale(z_val)) /(h**3 * M * np.log(10)) # h^4 / Mpc^3 Msun
+    dn_dM = mf(hmf_cosmology, M, redshiftToScale(z_val))  # h^4 / Mpc^3 Msun
     d2V_dzdOmega = comoving_volume_elements(z_val, cosmo=cosmo) # Mpc^3 / h^3
 
 
@@ -229,10 +230,10 @@ def cluster_count_integrand(lam, M, z_val, cosmo, mf = emulator):
 
 from scipy.integrate import tplquad
 
-def N_in_z_and_richness_bin(lambda_min, lambda_max, z_min, z_max, cosmo, mf = emulator):
-    cluster_count_integrand_cosmology = partial(cluster_count_integrand, cosmo=cosmo, mf = mf)
+def N_in_z_and_richness_bin(lambda_min, lambda_max, z_min, z_max, cosmo, hmf_cosmology, mf = emulator):
+    cluster_count_integrand_cosmology = partial(cluster_count_integrand, cosmo=cosmo, mf = mf, hmf_cosmology = hmf_cosmology)
 
-    result, error = tplquad(cluster_count_integrand_cosmology, z_min, z_max, M_min, M_max, lambda_min, lambda_max, epsrel=1e-4, epsabs=0)
+    result, error = tplquad(cluster_count_integrand_cosmology, z_min, z_max, M_min*cosmo['h'], M_max*cosmo['h'], lambda_min, lambda_max, epsrel=1e-4, epsabs=0)
 
     if(error/result > .001):
         print(error, result)
@@ -246,6 +247,7 @@ def N_in_z_bins_and_richness_bins(cosmology, richness_bin_edges, z_bin_edges, mf
 
     cosmo_vals = tuple(get_cosmo_vals(cosmology))
     cosmo = get_ccl_cosmology(cosmo_vals)
+    hmf_cosmology = hmf.cosmology(cosmology)
 
     print(mf.name)
 
@@ -259,6 +261,6 @@ def N_in_z_bins_and_richness_bins(cosmology, richness_bin_edges, z_bin_edges, mf
             lambda_max = richness_bin_edges[j + 1]
 
             # Evaluate the function for the given bin
-            N_values[i, j] = N_in_z_and_richness_bin(lambda_min, lambda_max, z_min, z_max, cosmo=cosmo, mf = mf)
+            N_values[i, j] = N_in_z_and_richness_bin(lambda_min, lambda_max, z_min, z_max, cosmo=cosmo, mf = mf, hmf_cosmology = hmf_cosmology)
 
     return N_values

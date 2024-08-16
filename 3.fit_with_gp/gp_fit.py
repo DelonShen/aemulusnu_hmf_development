@@ -6,7 +6,9 @@ import numpy as np
 import functools
 import sys
 from tqdm import tqdm, trange
-from aemulusnu_hmf_lib.utils import *
+from aemulusnu_hmf.utils import *
+from aemulusnu_hmf import massfunction as hmf
+
 from aemulusnu_massfunction.emulator_training import *
 
 from classy import Class
@@ -16,7 +18,6 @@ import torch
 import gpytorch
 from matplotlib import pyplot as plt
 
-import pyccl as ccl
 
 leave_out_box = sys.argv[1]
 print('Leaving out', leave_out_box)
@@ -55,14 +56,7 @@ for box in tqdm(cosmo_params):
     Ωb =  curr_cosmo['ombh2'] / h**2
     Ωc =  curr_cosmo['omch2'] / h**2
 
-    cosmo = ccl.Cosmology(Omega_c=Ωc,
-                          Omega_b=Ωb,
-                          h=h,
-                          A_s=curr_cosmo['10^9 As']*10**(-9),
-                          n_s=curr_cosmo['ns'],
-                          w0=curr_cosmo['w0'],
-                          m_nu=[curr_cosmo['nu_mass_ev']/3, curr_cosmo['nu_mass_ev']/3, curr_cosmo['nu_mass_ev']/3])
-
+#    cosmology = hmf.cosmology(cosmo_params[box])
 
     try:
         with open("/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/%s_params.pkl"%(box), "rb") as f:
@@ -180,7 +174,7 @@ with open("/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/GP_lo%s.p
                 out_scaler,
                 likelihood,], f)
 
-Emulator = AemulusNu_HMF_Emulator(emulator_loc = "/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/GP_lo%s.pkl"%(leave_out_box))
+Emulator = MassFuncAemulusNu_GP_emulator_training(emulator_loc = "/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/GP_lo%s.pkl"%(leave_out_box))
 
 box =leave_out_box
 
@@ -246,7 +240,7 @@ true_params = {}
 for c_X, c_Y, a in zip(Xlo, Ylo, a_list):
     true_params[a] = c_Y
 
-ccl_cosmo = get_ccl_cosmology(tuple(get_cosmo_vals(cosmo_params[leave_out_box])))
+cosmology = hmf.cosmology(cosmo_params[leave_out_box])
 
 h = cosmo_params[leave_out_box]['H0']/100
 
@@ -298,14 +292,16 @@ for a in tqdm(N_data):
 
 
     #Emulator 
-    f_dNdM_MCMC =  lambda M:Emulator(ccl_cosmo, M/h, a)*vol/(h**3 * M * np.log(10)) # h / Msun
+    f_dNdM_MCMC =  lambda M:Emulator(cosmology, M, a)*vol # h / Msun
     tinker_eval_MCMC = np.array([quad(f_dNdM_MCMC, edge[0],  edge[1], epsabs=0, epsrel=1e-5)[0] for edge in edge_pairs])
 
     axs[0].scatter(Ms, tinker_eval_MCMC, marker='x', c='red')
     axs[0].bar(x=edges[:-1], height=tinker_eval_MCMC, width=np.diff(edges),
                align='edge', fill=False, ec='red', label='Emulator')
-    with open("/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/%s_%.2f_NvMemulator_loo_output.pkl"%(box, a), "wb") as f:
+    emu_oup_fname = "/oak/stanford/orgs/kipac/users/delon/aemulusnu_massfunction/%s_%.2f_NvMemulator_loo_output.pkl"%(box, a)
+    with open(emu_oup_fname, "wb") as f:
         pickle.dump({'Ms':Ms, 'tinker_eval':tinker_eval_MCMC, 'N':N, 'edges':edges}, f)
+    print('dumped to ', emu_oup_fname)
 
     tmp = np.array([c_tmp*10**(0.01)-c_tmp for c_tmp in Ms])
     axs[1].errorbar(Ms + tmp, (tinker_eval_MCMC-N)/N, yerr/N, fmt='x', color='red')
@@ -320,7 +316,7 @@ for a in tqdm(N_data):
         mass_function.set_params(list(MLE_params.values()))
 
 
-    f_dNdM_MCMC =  lambda M:mass_function(ccl_cosmo, M/h, a)*vol/(h**3 * M * np.log(10)) # h / Msun
+    f_dNdM_MCMC =  lambda M:mass_function(cosmology, M, a)*vol # h / Msun
     tinker_eval_MCMC = np.array([quad(f_dNdM_MCMC, edge[0],  edge[1], epsabs=0, epsrel=1e-5)[0] for edge in edge_pairs])
     axs[0].scatter(Ms, tinker_eval_MCMC, s=50 , marker='x', c='blue')
     axs[0].bar(x=edges[:-1], height=tinker_eval_MCMC, width=np.diff(edges), 

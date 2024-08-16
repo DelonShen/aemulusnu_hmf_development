@@ -1,0 +1,21 @@
+
+CommandNotFoundError: Your shell has not been properly configured to use 'conda activate'.
+To initialize your shell, run
+
+    $ conda init <SHELL_NAME>
+
+Currently supported shells are:
+  - bash
+  - fish
+  - tcsh
+  - xonsh
+  - zsh
+  - powershell
+
+See 'conda init --help' for more information and options.
+
+IMPORTANT: You may need to close and restart your shell after running 'conda init'.
+
+
+/var/spool/slurmd/job51482156/slurm_script: line 14:   866 Killed                  python -u compute_cluster_abundance_at_cosmology.py "H0" -1.10
+slurmstepd: error: Detected 2 oom_kill events in StepId=51482156.batch. Some of the step tasks have been OOM Killed.

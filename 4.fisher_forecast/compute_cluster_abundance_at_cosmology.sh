@@ -3,10 +3,6 @@
 
 step_sizes=() # Initialize the array
 
-# param_names=('10^9 As' 'H0' 'ombh2' 'omch2' 'nu_mass_ev')
-# for i in $(seq 1 0.02 2); do
-#   step_sizes+=($i)
-# done
 
 # param_names=('10^9 As' 'nu_mass_ev')
 # for i in $(seq 2 0.02 2.3); do
@@ -20,10 +16,16 @@ step_sizes=() # Initialize the array
 #   step_sizes+=($i)
 # done
 
-param_names=( 'nu_mass_ev')
-for i in $(seq 2.0 0.005 2.5); do
-  step_sizes+=($i)
-done
+
+#####BLOCK A = PLANCK
+#####BLOCK B = DES Y3
+
+
+#####BLOCK 1
+# param_names=('10^9 As' 'H0' 'ombh2' 'omch2')
+# for i in $(seq 1 0.05 2.5); do
+#   step_sizes+=($i)
+# done
 
 
 # param_names=('ns')
@@ -31,6 +33,20 @@ done
 # for i in $(seq 1 0.2 3); do
 #  step_sizes+=($i)
 # done
+
+#####BLOCK 2
+# param_names=( 'nu_mass_ev')
+# for i in $(seq 1.7 0.005 2.3); do
+#   step_sizes+=($i)
+# done
+
+
+
+param_names=('10^9 As')
+for i in $(seq 1 0.05 1.1); do
+  step_sizes+=($i)
+done
+
 
 
 for ((i=0; i<${#param_names[@]}; i++)); do
@@ -55,8 +71,8 @@ for ((i=0; i<${#param_names[@]}; i++)); do
 #SBATCH --time=20:00
 #SBATCH -p kipac
 #SBATCH --nodes=1
-#SBATCH --mem=4096
-#SBATCH --cpus-per-task=16
+#SBATCH --mem=64GB
+#SBATCH --cpus-per-task=4
 
 conda init
 conda activate massfunction

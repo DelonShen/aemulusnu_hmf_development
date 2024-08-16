@@ -183,7 +183,7 @@ def log_likelihood(param_values):
     for a_fit in a_list:
         f_tinker_eval = lambda M:mass_function(cosmology, M, a_fit)*vol
         tinker_fs[a_fit] = f_tinker_eval
-        model_vals[a_fit] = np.array([quad(tinker_fs[a_fit], edge_pair[0], edge_pair[1], epsabs=0, epsrel=5e-3)[0]
+        model_vals[a_fit] = np.array([quad(tinker_fs[a_fit], edge_pair[0], edge_pair[1], epsabs=0, epsrel=1e-3)[0]
             for edge_pair in NvMs[a_fit]['edge_pairs']
         ])
 
