@@ -3,23 +3,18 @@
 
 step_sizes=() # Initialize the array
 
-# param_names=('10^9 As' 'H0' 'w0' 'ombh2' 'omch2' 'nu_mass_ev')
-# for i in $(seq 1.5 0.1 2.5); do
-#   step_sizes+=($i)
-# done
-
-param_names=('10^9 As')
-for i in $(seq 1.5 0.05 3.5); do
+param_names=('10^9 As' 'H0' 'ombh2' 'omch2' 'nu_mass_ev')
+for i in $(seq 1 0.05 2.5); do
   step_sizes+=($i)
 done
 
 
+
 # param_names=('ns')
 
-# for i in $(seq 2.5 0.1 3.5); do
+# for i in $(seq 1 0.2 5); do
 #  step_sizes+=($i)
 # done
-
 
 
 for ((i=0; i<${#param_names[@]}; i++)); do
@@ -29,7 +24,7 @@ for ((i=0; i<${#param_names[@]}; i++)); do
         echo $param
         echo -$step_size
         # Generate job name with index
-        job_name="computeN_desY3_"$param"_$step_size"
+        job_name="computeN_tinker_DESY3_"$param"_$step_size"
         # Define output and error log file paths
         output_log="logs/$(date +%Y-%m-%d)-$job_name.out"
         error_log="logs/$(date +%Y-%m-%d)-$job_name.err"
@@ -44,13 +39,13 @@ for ((i=0; i<${#param_names[@]}; i++)); do
 #SBATCH --time=20:00
 #SBATCH -p kipac
 #SBATCH --nodes=1
-#SBATCH --mem=4096
+#SBATCH --mem=64GB
 #SBATCH --cpus-per-task=16
 
 conda init
 conda activate massfunction
 
-python -u compute_cluster_abundance_at_cosmology-Copy1.py "$param" -$step_size
+python -u compute_cluster_abundance_at_cosmology_DESY3.py "$param" -$step_size
 
 
 EOF

@@ -162,10 +162,8 @@ fiducial_log10_rel_step_size = { #for numerical derivativese
 
 
 #for evaluating dM integral
-#THESE WILL BE IN UNITS Msol instead of Msol/h
-#so that derivs wrt H0 make sense
-M_min = 1e13/.6736
-M_max = 1e16/.6736
+M_min = 1e13
+M_max = 1e16
 
 
 #for cluster richness relation
@@ -181,7 +179,7 @@ Mpiv = 5e14 # h^-1 M_sol
 # st_hmf = ccl.halos.MassFuncSheth99(mass_def='200m', mass_def_strict=False)
 # bocquet16_hmf= ccl.halos.MassFuncBocquet16(mass_def='200m')
 # tinker08_hmf =MassFuncTinker08Costanzi13(mass_def='200m')
-tinker08_hmf = Tinker08Costanzi13
+tinker08_hmf = Tinker08Costanzi13()
 
 mass_functions = {'emu': emulator,
                   't08': tinker08_hmf}
@@ -219,8 +217,6 @@ def comoving_volume_elements(z, cosmo):
 def cluster_count_integrand(lam, M, z_val, cosmo, hmf_cosmology, mf = emulator):
     p = cluster_richness_relation(M, lam, z_val) # h / Msun
 
-    h = cosmo['h']
-
     dn_dM = mf(hmf_cosmology, M, redshiftToScale(z_val))  # h^4 / Mpc^3 Msun
     d2V_dzdOmega = comoving_volume_elements(z_val, cosmo=cosmo) # Mpc^3 / h^3
 
@@ -233,7 +229,7 @@ from scipy.integrate import tplquad
 def N_in_z_and_richness_bin(lambda_min, lambda_max, z_min, z_max, cosmo, hmf_cosmology, mf = emulator):
     cluster_count_integrand_cosmology = partial(cluster_count_integrand, cosmo=cosmo, mf = mf, hmf_cosmology = hmf_cosmology)
 
-    result, error = tplquad(cluster_count_integrand_cosmology, z_min, z_max, M_min*cosmo['h'], M_max*cosmo['h'], lambda_min, lambda_max, epsrel=1e-4, epsabs=0)
+    result, error = tplquad(cluster_count_integrand_cosmology, z_min, z_max, M_min, M_max, lambda_min, lambda_max, epsrel=1e-4, epsabs=0)
 
     if(error/result > .001):
         print(error, result)

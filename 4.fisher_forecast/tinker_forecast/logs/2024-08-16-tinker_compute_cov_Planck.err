@@ -1,0 +1,36 @@
+
+CommandNotFoundError: Your shell has not been properly configured to use 'conda activate'.
+To initialize your shell, run
+
+    $ conda init <SHELL_NAME>
+
+Currently supported shells are:
+  - bash
+  - fish
+  - tcsh
+  - xonsh
+  - zsh
+  - powershell
+
+See 'conda init --help' for more information and options.
+
+IMPORTANT: You may need to close and restart your shell after running 'conda init'.
+
+
+  0%|                                                                                               | 0/4 [00:00<?, ?it/s] 25%|█████████████████████▊                                                                 | 1/4 [00:23<01:11, 23.85s/it] 50%|███████████████████████████████████████████▌                                           | 2/4 [00:39<00:37, 18.82s/it] 75%|█████████████████████████████████████████████████████████████████▎                     | 3/4 [00:54<00:17, 17.35s/it]100%|███████████████████████████████████████████████████████████████████████████████████████| 4/4 [01:12<00:00, 17.50s/it]100%|███████████████████████████████████████████████████████████████████████████████████████| 4/4 [01:12<00:00, 18.12s/it]
+  0%|                                                                                               | 0/4 [00:00<?, ?it/s] 25%|█████████████████████▊                                                                 | 1/4 [00:24<01:13, 24.63s/it] 50%|███████████████████████████████████████████▌                                           | 2/4 [00:41<00:40, 20.14s/it] 75%|█████████████████████████████████████████████████████████████████▎                     | 3/4 [00:57<00:18, 18.14s/it]100%|███████████████████████████████████████████████████████████████████████████████████████| 4/4 [01:13<00:00, 17.47s/it]100%|███████████████████████████████████████████████████████████████████████████████████████| 4/4 [01:13<00:00, 18.46s/it]
+  0%|                                                                                               | 0/4 [00:00<?, ?it/s] 25%|█████████████████████▊                                                                 | 1/4 [00:25<01:16, 25.47s/it] 50%|███████████████████████████████████████████▌                                           | 2/4 [00:44<00:43, 21.54s/it] 75%|█████████████████████████████████████████████████████████████████▎                     | 3/4 [00:59<00:18, 18.88s/it]100%|███████████████████████████████████████████████████████████████████████████████████████| 4/4 [01:13<00:00, 16.64s/it]100%|███████████████████████████████████████████████████████████████████████████████████████| 4/4 [01:13<00:00, 18.29s/it]
+  0%|                                                                                               | 0/4 [00:00<?, ?it/s] 25%|█████████████████████▊                                                                 | 1/4 [00:24<01:14, 24.95s/it] 50%|███████████████████████████████████████████▌                                           | 2/4 [00:43<00:42, 21.21s/it] 75%|█████████████████████████████████████████████████████████████████▎                     | 3/4 [01:00<00:19, 19.30s/it]100%|███████████████████████████████████████████████████████████████████████████████████████| 4/4 [01:19<00:00, 19.32s/it]100%|███████████████████████████████████████████████████████████████████████████████████████| 4/4 [01:19<00:00, 19.98s/it]
+  0%|                                                                                             | 0/256 [00:00<?, ?it/s]/home/users/delon/aemulusnu_massfunction/4.fisher_forecast/tinker_forecast/compute_cluster_abundance_cov_tinker.py:163: DeprecationWarning: Conversion of an array with ndim > 0 to a scalar is deprecated, and will error in future. Ensure you extract a single element from your array before performing this operation. (Deprecated NumPy 1.25.)
+  Plin = pkclass.pk_lin(kperp*h, np.array([z_val]))*h**3 #units of Mpc^3/h^3
+/home/users/delon/.local/lib/python3.9/site-packages/scipy/integrate/_quadpack_py.py:1272: IntegrationWarning: The integral is probably divergent, or slowly convergent.
+  quad_r = quad(f, low, high, args=args, full_output=self.full_output,
+  0%|▎                                                                               | 1/256 [21:33<91:37:29, 1293.53s/it]  1%|▋                                                                                | 2/256 [22:26<39:45:30, 563.51s/it]  1%|▉                                                                                | 3/256 [23:17<23:10:53, 329.86s/it]  2%|█▎                                                                               | 4/256 [24:09<15:23:21, 219.85s/it]  2%|█▌                                                                               | 5/256 [24:45<10:42:52, 153.68s/it]  2%|█▉                                                                                | 6/256 [25:22<7:54:38, 113.92s/it]  3%|██▎                                                                                | 7/256 [25:58<6:07:47, 88.62s/it]  3%|██▌                                                                                | 8/256 [26:35<4:57:41, 72.02s/it]  4%|██▉                                                                                | 9/256 [27:11<4:10:06, 60.75s/it]  4%|███▏                                                                              | 10/256 [27:47<3:37:47, 53.12s/it]  4%|███▌                                                                              | 11/256 [28:22<3:15:00, 47.76s/it]  5%|███▊                                                                              | 12/256 [28:57<2:58:36, 43.92s/it]  5%|████▏                                                                             | 13/256 [29:32<2:47:00, 41.24s/it]  5%|████▍                                                                             | 14/256 [30:08<2:39:55, 39.65s/it]  6%|████▊                                                                             | 15/256 [30:44<2:34:25, 38.45s/it]  6%|█████▏                                                                            | 16/256 [31:21<2:31:21, 37.84s/it]/home/users/delon/.local/lib/python3.9/site-packages/scipy/integrate/_quadpack_py.py:1272: IntegrationWarning: The maximum number of subdivisions (1000) has been achieved.
+  If increasing the limit yields no improvement it is advised to analyze 
+  the integrand in order to determine the difficulties.  If the position of a 
+  local difficulty can be determined (singularity, discontinuity) one will 
+  probably gain from splitting up the interval and calling the integrator 
+  on the subranges.  Perhaps a special-purpose integrator should be used.
+  quad_r = quad(f, low, high, args=args, full_output=self.full_output,
+/var/spool/slurmd/job51500290/slurm_script: line 14: 233095 Killed                  python -u compute_cluster_abundance_cov_tinker.py 0.06
+slurmstepd: error: Detected 1 oom_kill event in StepId=51500290.batch. Some of the step tasks have been OOM Killed.

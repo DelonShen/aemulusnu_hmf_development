@@ -17,3 +17,17 @@ fiducial:
 {'10^9 As': 2.1, 'ns': 0.9649, 'H0': 67.36, 'w0': -1, 'ombh2': 0.02237, 'omch2': 0.12, 'nu_mass_ev': 0.06}
 pos step
 {'10^9 As': 2.1, 'ns': 0.974549, 'H0': 67.36, 'w0': -1, 'ombh2': 0.02237, 'omch2': 0.12, 'nu_mass_ev': 0.06}
+AemulusNu
+redshift bin 1 of 4
+redshift bin 2 of 4
+redshift bin 3 of 4
+redshift bin 4 of 4
+/scratch/users/delon/aemulusnu_massfunction/cluster_abundance_fisher_changing_ns_log10rel_step-2p0000_cosmo_1e9As_2p100000_ns_0p964900_H0_67p360000_w0_-1p000000_ombh2_0p022370_omch2_0p120000_nu_mass_ev_0p060000
+neg step
+{'10^9 As': 2.1, 'ns': 0.955251, 'H0': 67.36, 'w0': -1, 'ombh2': 0.02237, 'omch2': 0.12, 'nu_mass_ev': 0.06}
+AemulusNu
+redshift bin 1 of 4
+redshift bin 2 of 4
+redshift bin 3 of 4
+redshift bin 4 of 4
+/scratch/users/delon/aemulusnu_massfunction/cluster_abundance_fisher_changing_ns_log10rel_step-2p0000_cosmo_1e9As_2p100000_ns_0p964900_H0_67p360000_w0_-1p000000_ombh2_0p022370_omch2_0p120000_nu_mass_ev_0p060000_neg

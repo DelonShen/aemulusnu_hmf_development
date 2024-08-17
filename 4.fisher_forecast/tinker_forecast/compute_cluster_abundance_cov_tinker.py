@@ -1,20 +1,25 @@
 import sys 
 
+quad_limit = 1000
 nu_mass_ev = eval(sys.argv[1])
 from aemulusnu_massfunction.emulator_training import *
 from aemulusnu_massfunction.fisher_utils import *
+from aemulusnu_hmf import massfunction as hmf
 from scipy.integrate import quad
 fiducial_h = 0.6736
 
 
+
+
+
 # #(Plank 2018 table 2. TT,TE,EE+lowE+lensing  + neutrino mass put in by hand)
-# fiducial_cosmology = {'10^9 As':2.1,
-#                       'ns': 0.9649,
-#                       'H0': 67.36,
-#                       'w0': -1,
-#                       'ombh2': 0.02237,
-#                       'omch2': 0.12,
-#                       'nu_mass_ev': nu_mass_ev,}
+fiducial_cosmology = {'10^9 As':2.1,
+                      'ns': 0.9649,
+                      'H0': 67.36,
+                      'w0': -1,
+                      'ombh2': 0.02237,
+                      'omch2': 0.12,
+                      'nu_mass_ev': nu_mass_ev,}
 
 
 
@@ -35,8 +40,37 @@ fiducial_cosmology = {'10^9 As': 1.520813,  #from σ8 for DES Y3 3x2 and convert
 
 fiducial_cosmo_vals = get_cosmo_vals(fiducial_cosmology)
 fiducial_ccl_cosmo = get_ccl_cosmology(tuple(fiducial_cosmo_vals))
+fiducial_hmf_cosmology = hmf.cosmology(fiducial_cosmology)
 
 
+
+f_variance_fname = '../f_variance_integrals_'
+
+for key in fiducial_cosmology:
+    ckey = key
+    if key == '10^9 As':
+        ckey = '1e9As'
+    f_variance_fname += '%s_%f_'%(ckey, fiducial_cosmology[key])
+
+f_variance_fname = list(f_variance_fname)
+
+for i,char in enumerate(f_variance_fname):
+    if(char == '.'):
+        f_variance_fname[i] = 'p'
+
+f_variance_fname = f_variance_fname[:-1]
+
+f_variance_fname[0] = '.'
+f_variance_fname[1] = '.'
+
+f_variance_fname = ''.join(f_variance_fname)
+f_variance_fname += '.pkl'
+print('loading variance integral from', f_variance_fname)
+
+
+f_variance = -1
+with open(f_variance_fname, 'rb') as f:
+    f_variance = pickle.load(f)
 
 
 
@@ -134,7 +168,7 @@ def compute_chi_integrand(z_val):
     Ez = np.sqrt((Ωb+Ωc)*(1+z_val)**3 + (1-(Ωb+Ωc))) # unitless
     return DH/Ez #units of distance h^-1 Mpc
 def compute_chi(z_val):
-    chi, _ = quad(compute_chi_integrand, 0, z_val, epsabs=0, epsrel=1e-4)#units of h^-1 Mpc
+    chi, _ = quad(compute_chi_integrand, 0, z_val, epsabs=0, epsrel=1e-3, limit=quad_limit)#units of h^-1 Mpc
     return chi
 
 
@@ -144,7 +178,7 @@ chi_spline = InterpolatedUnivariateSpline(z_values, chi_values)
 
 
 
-from scipy.integrate import quad, dblquad
+from scipy.integrate import quad, dblquad, nquad
 from scipy.special import jv
 
 
@@ -166,23 +200,54 @@ def variance_integral(kperp1, kperp2, z_val):
 @cache
 def inner_integral(lam, M, z_val):
     p = cluster_richness_relation(M, lam, z_val)
-    dn_dM = tinker08_hmf(fiducial_ccl_cosmo, M/h, redshiftToScale(z_val)) /(h**3 * M * np.log(10)) # h^4 / Mpc^3 Msun
+    dn_dM = tinker08_hmf(fiducial_hmf_cosmology, M, redshiftToScale(z_val))  # h^4 / Mpc^3 Msun
 
-    bh = halo_bias(fiducial_ccl_cosmo, M * fiducial_h, 1./(1+z_val))
+    bh = halo_bias(fiducial_ccl_cosmo, M / fiducial_h, 1./(1+z_val))
     return p * dn_dM  * bh
 
     
 
 MAX_K = 10
-def outer_integral(z_val, lam_alpha_min, lam_alpha_max, lam_beta_min, lam_beta_max):
-    integral_M_val, _ = dblquad(inner_integral, M_min, M_max, lam_alpha_min, lam_alpha_max,
-                             args=(z_val,), 
-                             epsrel=1e-4, epsabs=0)
+options={'limit':quad_limit, 'epsrel': 1e-3, 'epsabs': 0}
 
-    integral_M_prime_val, _ = dblquad(inner_integral, M_min, M_max, lam_beta_min, lam_beta_max,
-                             args=(z_val,), 
-                             epsrel=1e-4, epsabs=0)
-    
+#############MODS
+
+
+f_richnesses_fname = 'f_richness_integrals_'
+
+for key in fiducial_cosmology:
+    ckey = key
+    if key == '10^9 As':
+        ckey = '1e9As'
+    f_richnesses_fname += '%s_%f_'%(ckey, fiducial_cosmology[key])
+
+f_richnesses_fname = list(f_richnesses_fname)
+
+for i,char in enumerate(f_richnesses_fname):
+    if(char == '.'):
+        f_richnesses_fname[i] = 'p'
+
+f_richnesses_fname = f_richnesses_fname[:-1]
+
+f_richnesses_fname = ''.join(f_richnesses_fname)
+f_richnesses_fname += '.pkl'
+print('loading richness integral from', f_richnesses_fname)
+
+
+f_richnesses = -1
+with open(f_richnesses_fname, 'rb') as f:
+    f_richnesses = pickle.load(f)
+
+
+
+
+
+def outer_integral(z_val, lam_alpha_min, lam_alpha_max, lam_beta_min, lam_beta_max):
+    integral_M_val = f_richnesses[(lam_alpha_min, lam_alpha_max)](z_val)
+
+    integral_M_prime_val = f_richnesses[(lam_beta_min, lam_beta_max)](z_val)
+
+
     d2V_dzdOmega = comoving_volume_elements(z_val, cosmo=fiducial_ccl_cosmo)
     h = fiducial_cosmology['H0']/100
     Ωb =  fiducial_cosmology['ombh2'] / h**2
@@ -190,10 +255,12 @@ def outer_integral(z_val, lam_alpha_min, lam_alpha_max, lam_beta_min, lam_beta_m
 
     Ez = np.sqrt((Ωb+Ωc)*(1+z_val)**3 + (1-(Ωb+Ωc))) # unitless
     
-    variance, _ = dblquad(variance_integral, 0, MAX_K, 0, MAX_K, args=(z_val,), epsrel=1e-4, epsabs=0)
+    variance = f_variance(z_val)
+
 
     return Ωs_rad**2 * integral_M_val * integral_M_prime_val * d2V_dzdOmega**2 * Ez/DH * variance
 
+##################
 
 
 
@@ -224,7 +291,8 @@ for i,j,a,b in tqdm(all_bin_combos):
                          zi_min, zi_max, 
                          args=(la_min, la_max, 
                                lb_min, lb_max),
-                        epsrel=1e-4, epsabs=0)
+                        limit = quad_limit,
+                        epsrel=1e-3, epsabs=0)
     cluster_count_cov[i,j,a,b] = result 
     if(i == j and a == b): #shot noise
         cluster_count_cov[i,j,a,b] +=  N_fiducial[i][a]

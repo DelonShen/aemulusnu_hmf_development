@@ -1,5 +1,5 @@
 # Generate job name with index
-job_name="tinker_compute_cov_DESy3"
+job_name="tinker_compute_cov_Planck"
 # Define output and error log file paths
 output_log="logs/$(date +%Y-%m-%d)-$job_name.out"
 error_log="logs/$(date +%Y-%m-%d)-$job_name.err"

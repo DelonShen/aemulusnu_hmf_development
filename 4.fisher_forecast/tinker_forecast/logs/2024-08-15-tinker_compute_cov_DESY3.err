@@ -1,0 +1,35 @@
+
+CommandNotFoundError: Your shell has not been properly configured to use 'conda activate'.
+To initialize your shell, run
+
+    $ conda init <SHELL_NAME>
+
+Currently supported shells are:
+  - bash
+  - fish
+  - tcsh
+  - xonsh
+  - zsh
+  - powershell
+
+See 'conda init --help' for more information and options.
+
+IMPORTANT: You may need to close and restart your shell after running 'conda init'.
+
+
+  0%|                                                                                               | 0/4 [00:00<?, ?it/s] 25%|█████████████████████▊                                                                 | 1/4 [00:20<01:01, 20.63s/it] 50%|███████████████████████████████████████████▌                                           | 2/4 [00:34<00:32, 16.48s/it] 75%|█████████████████████████████████████████████████████████████████▎                     | 3/4 [00:47<00:15, 15.15s/it]100%|███████████████████████████████████████████████████████████████████████████████████████| 4/4 [00:58<00:00, 13.51s/it]100%|███████████████████████████████████████████████████████████████████████████████████████| 4/4 [00:58<00:00, 14.69s/it]
+  0%|                                                                                               | 0/4 [00:00<?, ?it/s] 25%|█████████████████████▊                                                                 | 1/4 [00:21<01:04, 21.33s/it] 50%|███████████████████████████████████████████▌                                           | 2/4 [00:36<00:35, 17.87s/it] 75%|█████████████████████████████████████████████████████████████████▎                     | 3/4 [00:50<00:16, 16.01s/it]100%|███████████████████████████████████████████████████████████████████████████████████████| 4/4 [01:01<00:00, 14.16s/it]100%|███████████████████████████████████████████████████████████████████████████████████████| 4/4 [01:01<00:00, 15.48s/it]
+  0%|                                                                                               | 0/4 [00:00<?, ?it/s] 25%|█████████████████████▊                                                                 | 1/4 [00:21<01:04, 21.40s/it] 50%|███████████████████████████████████████████▌                                           | 2/4 [00:38<00:37, 18.69s/it] 75%|█████████████████████████████████████████████████████████████████▎                     | 3/4 [00:50<00:15, 15.69s/it]100%|███████████████████████████████████████████████████████████████████████████████████████| 4/4 [01:07<00:00, 16.35s/it]100%|███████████████████████████████████████████████████████████████████████████████████████| 4/4 [01:07<00:00, 16.92s/it]
+  0%|                                                                                               | 0/4 [00:00<?, ?it/s] 25%|█████████████████████▊                                                                 | 1/4 [00:22<01:06, 22.22s/it] 50%|███████████████████████████████████████████▌                                           | 2/4 [00:40<00:39, 19.78s/it] 75%|█████████████████████████████████████████████████████████████████▎                     | 3/4 [00:58<00:18, 18.97s/it]100%|███████████████████████████████████████████████████████████████████████████████████████| 4/4 [01:24<00:00, 21.98s/it]100%|███████████████████████████████████████████████████████████████████████████████████████| 4/4 [01:24<00:00, 21.22s/it]
+Traceback (most recent call last):
+  File "/home/users/delon/aemulusnu_massfunction/4.fisher_forecast/tinker_forecast/compute_cluster_abundance_cov_tinker_DESY3.py", line 179, in <module>
+    options={'limit':quad_limit, 'epsrel': 5e-3, 'epsabs': 0}
+NameError: name 'quad_limit' is not defined
+Exception ignored in: <function Cosmology.__del__ at 0x7f66c10944c0>
+Traceback (most recent call last):
+  File "/home/users/delon/.local/lib/python3.9/site-packages/pyccl/cosmology.py", line 504, in __del__
+TypeError: 'NoneType' object is not callable
+Exception ignored in: <function Pk2D.__del__ at 0x7f66c3e91f70>
+Traceback (most recent call last):
+  File "/home/users/delon/.local/lib/python3.9/site-packages/pyccl/pk2d.py", line 345, in __del__
+TypeError: 'NoneType' object is not callable

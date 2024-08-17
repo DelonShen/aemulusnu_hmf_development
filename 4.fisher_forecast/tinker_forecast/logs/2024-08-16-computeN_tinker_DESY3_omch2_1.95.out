@@ -1,0 +1,36 @@
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/condabin/conda
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/bin/conda
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/bin/conda-env
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/bin/activate
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/bin/deactivate
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/etc/profile.d/conda.sh
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/etc/fish/conf.d/conda.fish
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/shell/condabin/Conda.psm1
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/shell/condabin/conda-hook.ps1
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/lib/python3.10/site-packages/xontrib/conda.xsh
+no change     /oak/stanford/orgs/kipac/users/delon/miniconda3/etc/profile.d/conda.csh
+no change     /home/users/delon/.bashrc
+No action taken.
+DES Y3
+omch2 -1.95
+/scratch/users/delon/aemulusnu_massfunction/cluster_abundance_tinker_fisher_changing_omch2_log10rel_step-1p9500_cosmo_1e9As_1p520813_ns_0p964900_H0_67p360000_w0_-1p000000_ombh2_0p021950_omch2_0p131223_nu_mass_ev_0p060000
+fiducial: 
+{'10^9 As': 1.520813, 'ns': 0.9649, 'H0': 67.36, 'w0': -1, 'ombh2': 0.021949999999999997, 'omch2': 0.13122263790038222, 'nu_mass_ev': 0.06}
+pos step
+{'10^9 As': 1.520813, 'ns': 0.9649, 'H0': 67.36, 'w0': -1, 'ombh2': 0.021949999999999997, 'omch2': 0.13269498011384634, 'nu_mass_ev': 0.06}
+using tinker08
+Tinker08Costanzi13
+redshift bin 1 of 4
+redshift bin 2 of 4
+redshift bin 3 of 4
+redshift bin 4 of 4
+/scratch/users/delon/aemulusnu_massfunction/cluster_abundance_tinker_fisher_changing_omch2_log10rel_step-1p9500_cosmo_1e9As_1p520813_ns_0p964900_H0_67p360000_w0_-1p000000_ombh2_0p021950_omch2_0p131223_nu_mass_ev_0p060000
+neg step
+{'10^9 As': 1.520813, 'ns': 0.9649, 'H0': 67.36, 'w0': -1, 'ombh2': 0.021949999999999997, 'omch2': 0.1297502956869181, 'nu_mass_ev': 0.06}
+using tinker08
+Tinker08Costanzi13
+redshift bin 1 of 4
+redshift bin 2 of 4
+redshift bin 3 of 4
+redshift bin 4 of 4
+/scratch/users/delon/aemulusnu_massfunction/cluster_abundance_tinker_fisher_changing_omch2_log10rel_step-1p9500_cosmo_1e9As_1p520813_ns_0p964900_H0_67p360000_w0_-1p000000_ombh2_0p021950_omch2_0p131223_nu_mass_ev_0p060000_neg

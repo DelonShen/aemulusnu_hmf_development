@@ -30,20 +30,15 @@ step_sizes=() # Initialize the array
 
 # param_names=('ns')
 
-# for i in $(seq 1 0.2 3); do
+# for i in $(seq 1 0.2 5); do
 #  step_sizes+=($i)
 # done
 
+
+
 #####BLOCK 2
-# param_names=( 'nu_mass_ev')
-# for i in $(seq 1.7 0.005 2.3); do
-#   step_sizes+=($i)
-# done
-
-
-
-param_names=('10^9 As')
-for i in $(seq 1 0.05 1.1); do
+param_names=( 'nu_mass_ev')
+for i in $(seq 1.7 0.005 2.3); do
   step_sizes+=($i)
 done
 
@@ -56,7 +51,7 @@ for ((i=0; i<${#param_names[@]}; i++)); do
         echo $param
         echo -$step_size
         # Generate job name with index
-        job_name="computeN_planck_"$param"_$step_size"
+        job_name="computeN_DESY3_"$param"_$step_size"
         # Define output and error log file paths
         output_log="logs/$(date +%Y-%m-%d)-$job_name.out"
         error_log="logs/$(date +%Y-%m-%d)-$job_name.err"
@@ -77,7 +72,7 @@ for ((i=0; i<${#param_names[@]}; i++)); do
 conda init
 conda activate massfunction
 
-python -u compute_cluster_abundance_at_cosmology.py "$param" -$step_size
+python -u compute_cluster_abundance_at_cosmology_DESY3.py "$param" -$step_size
 
 
 EOF
