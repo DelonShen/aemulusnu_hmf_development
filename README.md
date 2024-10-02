@@ -7,7 +7,7 @@ python -m ipykernel install --user --name massfunction --display-name "massfunct
 Also install CLASS
 
 
-This is a very messy repository that contains all the numerical studies that went into buildling the [`aemulusnu_hmf`](https://github.com/DelonShen/aemulusnu_hmf) library which is described in [ [24XX.XXXXX]](TODO). If you have any questions or are looking for something specific, please feel free to get in contact at [delon@stanford.edu](mailto:delon@stanford.edu). 
+This is a very messy repository that contains all the numerical studies that went into buildling the [`aemulusnu_hmf`](https://github.com/DelonShen/aemulusnu_hmf) library which is described in [ [2410.00913]](https://arxiv.org/abs/2410.00913). If you have any questions or are looking for something specific, please feel free to get in contact at [delon@stanford.edu](mailto:delon@stanford.edu). 
 
 For now I'll simply specify which files generate the figures in the text
 - Figure 2: `2.fit_with_tinker_form/graph_fit_performance_tier2.ipynb`
