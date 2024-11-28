@@ -1,10 +1,9 @@
 README.md
 setup.py
 aemulusnu_massfunction/__init__.py
-aemulusnu_massfunction/emulator.py
+aemulusnu_massfunction/emulator_training.py
 aemulusnu_massfunction/fisher_utils.py
-aemulusnu_massfunction/massfunction.py
-aemulusnu_massfunction/utils.py
+aemulusnu_massfunction/massfunction_fitting_tinker.py
 aemulusnu_massfunction.egg-info/PKG-INFO
 aemulusnu_massfunction.egg-info/SOURCES.txt
 aemulusnu_massfunction.egg-info/dependency_links.txt
